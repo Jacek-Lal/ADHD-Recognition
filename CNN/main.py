@@ -1,8 +1,6 @@
 from training import check_saved_trained_models, save_trained_models, get_prepared_model
 from eeg_read import getCNNData
 from model_config import model
-
-
 import tensorflow as tf
 
 # Pobierz listę dostępnych urządzeń
@@ -15,10 +13,6 @@ if len(gpu_devices) > 0:
     print("TensorFlow używa karty graficznej do obliczeń.")
 else:
     print("TensorFlow używa CPU lub nie ma dostępnej karty graficznej.")
-
-
-
-
 
 cnn = None
 
