@@ -2,11 +2,9 @@ import os
 import numpy as np
 from scipy.io import loadmat
 from sklearn.model_selection import train_test_split
-from config import EEG_SUBFOLDERS, EEG_POS_PHRASE, EEG_NEG_PHRASE, EEG_DATA_PATH, CNN_POS_LABEL, CNN_NEG_LABEL, \
-    EEG_SIGNAL_FRAME_SIZE, CNN_TEST_RATIO, CUTOFFS
+from config import EEG_SUBFOLDERS, EEG_POS_PHRASE, EEG_NEG_PHRASE, EEG_DATA_PATH, CNN_POS_LABEL, CNN_NEG_LABEL, EEG_SIGNAL_FRAME_SIZE, CNN_TEST_RATIO, CUTOFFS
 from scipy import signal
-
-
+    
 def readEEGRaw(folder_path):
     """
         Matlab files from directory to numpy 2d arrays
@@ -49,43 +47,44 @@ def readEEGRaw(folder_path):
 
     return ADHD_DATA, CONTROL_DATA
 
-
 def filterEEGData(ADHD_DATA, CONTROL_DATA):
     ADHD_BANDWIDTHS, CONTROL_BANDWIDTHS = [], []
     fs = 128
     order = 4
-
+    
     for cutoff in CUTOFFS:
         ADHD_FILTERED = []
         CONTROL_FILTERED = []
-
+        
         low_cutoff = cutoff[0]
         high_cutoff = cutoff[1]
-        b, a = signal.butter(order, [low_cutoff / (0.5 * fs), high_cutoff / (0.5 * fs)], btype='band')
-
+        b, a = signal.butter(order, [low_cutoff/(0.5*fs), high_cutoff/(0.5*fs)], btype='band')
+        
         for i in range(len(ADHD_DATA)):
-            ADHD_FILTERED.append(signal.filtfilt(b, a, ADHD_DATA[i]))
-
+            ADHD_FILTERED.append(signal.filtfilt(b, a, ADHD_DATA[i])) 
+            
         for i in range(len(CONTROL_DATA)):
-            CONTROL_FILTERED.append(signal.filtfilt(b, a, CONTROL_DATA[i]))
-
+            CONTROL_FILTERED.append(signal.filtfilt(b, a, CONTROL_DATA[i])) 
+        
         ADHD_BANDWIDTHS.append(ADHD_FILTERED)
         CONTROL_BANDWIDTHS.append(CONTROL_FILTERED)
-
+        
     return ADHD_BANDWIDTHS, CONTROL_BANDWIDTHS
 
-
 def normalizeEEGData(ADHD_DATA, CONTROL_DATA):
+
     num_patients_A = len(ADHD_DATA)
     num_channels_A = len(ADHD_DATA[0])
     num_patients_C = len(CONTROL_DATA)
     num_channels_C = len(CONTROL_DATA[0])
 
+
+
     for i in range(num_patients_A):
         for j in range(num_channels_A):
             min_value = np.min(ADHD_DATA[i][j]).astype(np.float64)
             max_value = np.max(ADHD_DATA[i][j]).astype(np.float64)
-            ADHD_DATA[i][j] = ((ADHD_DATA[i][j] - min_value) / (max_value - min_value)).astype(np.float64)
+            ADHD_DATA[i][j]=((ADHD_DATA[i][j] - min_value) / (max_value - min_value)).astype(np.float64)
 
     for i in range(num_patients_C):
         for j in range(num_channels_C):
@@ -93,8 +92,8 @@ def normalizeEEGData(ADHD_DATA, CONTROL_DATA):
             max_value = np.max(CONTROL_DATA[i][j]).astype(np.float64)
             CONTROL_DATA[i][j] = (CONTROL_DATA[i][j] - min_value) / (max_value - min_value).astype(np.float64)
 
-    return ADHD_DATA, CONTROL_DATA
 
+    return ADHD_DATA, CONTROL_DATA
 
 def framedEEGData(dataList, frameSize):
     """
@@ -114,7 +113,6 @@ def framedEEGData(dataList, frameSize):
         result.extend(divided_matrix)
 
     return np.array(result)
-
 
 def getCNNData():
     ADHD_DATA, CONTROL_DATA = readEEGRaw(EEG_DATA_PATH)

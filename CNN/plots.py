@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from config import CUTOFFS
-
 def plot(data, patient_numer, channel_number):
     fs = 128
     t = np.arange(0, data[patient_numer][channel_number].shape[0])/fs
