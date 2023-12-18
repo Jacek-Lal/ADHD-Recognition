@@ -1,0 +1,28 @@
+INSTRUKCJA:
+
+ZMIANY ROBIMY NA SWOIMY BRANCHU
+PO ZMIANACH ROBIMY COMMIT NA SWOIM BRANCHU
+PRZECHODZIMY NA BRANCHA MAIN
+ROBIMY PULL NA BRANCHU MAIN
+ROBIMY MERGE NA BRANCHU MAIN
+
+np.
+*jeśli domyślnie jesteśmy na branchu main*
+git checkout jacek		# przechodze na swojego brancha
+* robie jakies tam zmiany *
+git add .			# dodaje zmiany do kolejki na swoim branchu
+git commit -m 'zmiany'		# commituje zmiany na swoim branchu
+git checkout main		# przechodze na brancha main
+git pull			# ściągam brancha main z githuba żeby był aktualny
+git merge jacek			# dołączam do brancha main zmiany ze swojego brancha
+
+JEŚLI KTOŚ ZROBIŁ ZMIANY KTÓRE CHCEMY DO SIEBIE ŚCIĄGNĄĆ TO:
+ROBIMY PULL NA BRANCHU MAIN
+PRZECHODZIMY NA SWOJEGO BRANCHA
+ROBIMY MERGE NA SWOIM BRANCHU
+
+np.
+*jeśli domyślnie jesteśmy na branchu main*
+git pull
+git checkout jacek
+git merge main
