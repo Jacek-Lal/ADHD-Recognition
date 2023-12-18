@@ -1,9 +1,9 @@
-EEG_DATA_PATH = 'CNN/EEG'                                                             # Folder z danymi
+EEG_DATA_PATH = 'CNN/EEG'                                                           # Folder z danymi
 EEG_SUBFOLDERS = ['ADHD_part1', 'ADHD_part2', 'Control_part1', 'Control_part2']     # Wszystkie podfoldery z głównego folderu z danymi
 EEG_POS_PHRASE = 'ADHD'                                                             # Fraza zawierająca się w nazwie folderu z grupą chorych pacjentów
 EEG_NEG_PHRASE = 'Control'                                                          # Fraza zawierająca się w nazwie folderu z grupą kontrolną
-EEG_SIGNAL_FRAME_SIZE = 100                                                         # wielkość pojedyńczej próbki pobieranej z danych elektrody
-CNN_MODELS_PATH = './trained_models'                                                # folder do zapisywania modeli
+EEG_SIGNAL_FRAME_SIZE = 128                                                         # wielkość pojedyńczej próbki pobieranej z danych elektrody
+CNN_MODELS_PATH = './CNN/trained_models'                                            # folder do zapisywania modeli
 CNN_POS_LABEL = 1                                                                   # wyjście pozytywne z modelu
 CNN_NEG_LABEL = 0                                                                   # wyjście negatywne
 CNN_TEST_RATIO = 0.2                                                                # proporcja ilości próbek danych testowych do treningowych 
