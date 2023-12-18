@@ -2,7 +2,7 @@ import os
 import numpy as np
 from scipy.io import loadmat
 from sklearn.model_selection import train_test_split
-from config import EEG_SUBFOLDERS, EEG_POS_PHRASE, EEG_NEG_PHRASE, EEG_DATA_PATH, CNN_POS_LABEL, CNN_NEG_LABEL, EEG_SIGNAL_FRAME_SIZE, CNN_TEST_RATIO, CUTOFFS
+from config import CNN_INPUT_SHAPE, EEG_SUBFOLDERS, EEG_POS_PHRASE, EEG_NEG_PHRASE, EEG_DATA_PATH, CNN_POS_LABEL, CNN_NEG_LABEL, EEG_SIGNAL_FRAME_SIZE, CNN_TEST_RATIO, CUTOFFS
 from scipy import signal
     
 def readEEGRaw(folder_path):
@@ -15,7 +15,7 @@ def readEEGRaw(folder_path):
 
     # Lista podfolderów
     subfolders = EEG_SUBFOLDERS
-
+    
     # Listy na dane
     ADHD_DATA = []
     CONTROL_DATA = []
@@ -73,27 +73,28 @@ def filterEEGData(ADHD_DATA, CONTROL_DATA):
 
 def normalizeEEGData(ADHD_DATA, CONTROL_DATA):
 
+    ADHD_NORMALIZED, CONTROL_NORMALIZED = [],[]
     num_patients_A = len(ADHD_DATA)
-    num_channels_A = len(ADHD_DATA[0])
     num_patients_C = len(CONTROL_DATA)
-    num_channels_C = len(CONTROL_DATA[0])
-
-
+    num_channels = CNN_INPUT_SHAPE[0]
 
     for i in range(num_patients_A):
-        for j in range(num_channels_A):
+        channels = []
+        for j in range(num_channels):
             min_value = np.min(ADHD_DATA[i][j]).astype(np.float64)
             max_value = np.max(ADHD_DATA[i][j]).astype(np.float64)
-            ADHD_DATA[i][j]=((ADHD_DATA[i][j] - min_value) / (max_value - min_value)).astype(np.float64)
+            channels.append(((ADHD_DATA[i][j] - min_value) / (max_value - min_value)).astype(np.float64))
+        ADHD_NORMALIZED.append(channels)
 
     for i in range(num_patients_C):
-        for j in range(num_channels_C):
+        channels = []
+        for j in range(num_channels):
             min_value = np.min(CONTROL_DATA[i][j]).astype(np.float64)
             max_value = np.max(CONTROL_DATA[i][j]).astype(np.float64)
-            CONTROL_DATA[i][j] = (CONTROL_DATA[i][j] - min_value) / (max_value - min_value).astype(np.float64)
+            channels.append(((CONTROL_DATA[i][j] - min_value) / (max_value - min_value)).astype(np.float64))
+        CONTROL_NORMALIZED
 
-
-    return ADHD_DATA, CONTROL_DATA
+    return ADHD_NORMALIZED, CONTROL_NORMALIZED
 
 def framedEEGData(dataList, frameSize):
     """
