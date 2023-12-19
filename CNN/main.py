@@ -12,11 +12,9 @@ if len(gpu_devices) > 0:
 else:
     print("TensorFlow używa CPU lub nie ma dostępnej karty graficznej.")
 
+
 print("---------------------------------------------------------------------------------------")
 
-print("pisze bo jacek prosi")
-print("pisze bo jacek prosi")
-print("pisze bo jacek prosi")
 
 cnn = None
 
