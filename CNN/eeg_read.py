@@ -2,7 +2,7 @@ import os
 import numpy as np
 from scipy.io import loadmat
 from sklearn.model_selection import train_test_split
-from config import CNN_INPUT_SHAPE, EEG_SUBFOLDERS, EEG_POS_PHRASE, EEG_NEG_PHRASE, EEG_DATA_PATH, CNN_POS_LABEL, CNN_NEG_LABEL, EEG_SIGNAL_FRAME_SIZE, CNN_TEST_RATIO, CUTOFFS
+from config import CNN_INPUT_SHAPE, EEG_SUBFOLDERS, EEG_POS_PHRASE, EEG_NEG_PHRASE, EEG_DATA_PATH, CNN_POS_LABEL, CNN_NEG_LABEL, EEG_SIGNAL_FRAME_SIZE, CNN_TEST_RATIO, CUTOFFS, FREQ
 from scipy import signal
     
 def readEEGRaw(folder_path):
@@ -49,7 +49,6 @@ def readEEGRaw(folder_path):
 
 def filterEEGData(ADHD_DATA, CONTROL_DATA):
     ADHD_BANDWIDTHS, CONTROL_BANDWIDTHS = [], []
-    fs = 128
     order = 4
     
     for cutoff in CUTOFFS:
@@ -58,7 +57,7 @@ def filterEEGData(ADHD_DATA, CONTROL_DATA):
         
         low_cutoff = cutoff[0]
         high_cutoff = cutoff[1]
-        b, a = signal.butter(order, [low_cutoff/(0.5*fs), high_cutoff/(0.5*fs)], btype='band')
+        b, a = signal.butter(order, [low_cutoff/(0.5*FREQ), high_cutoff/(0.5*FREQ)], btype='band')
         
         for i in range(len(ADHD_DATA)):
             ADHD_FILTERED.append(signal.filtfilt(b, a, ADHD_DATA[i])) 
