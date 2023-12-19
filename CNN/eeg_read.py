@@ -96,11 +96,13 @@ def framedEEGData(dataList, frameSize):
 
     return np.array(result)
 
-'''
+
 def getCNNData():
     ADHD_DATA, CONTROL_DATA = readEEGRaw(EEG_DATA_PATH)
 
-    ADHD_NORM, CONTROL_NORM = normalizeEEGData(ADHD_DATA, CONTROL_DATA)
+    ADHD_FILTERED, CONTROL_FILTERED = filterEEGData(ADHD_DATA,CONTROL_DATA)
+
+    ADHD_NORM, CONTROL_NORM = normalizeEEGData(ADHD_FILTERED, CONTROL_FILTERED)
 
     ADHD_FRAMED = framedEEGData(ADHD_NORM, EEG_SIGNAL_FRAME_SIZE)
     CONTROL_FRAMED = framedEEGData(CONTROL_NORM, EEG_SIGNAL_FRAME_SIZE)
@@ -113,4 +115,4 @@ def getCNNData():
     X_train, X_test, y_train, y_test = train_test_split(X_DATA, Y_DATA, test_size=CNN_TEST_RATIO, random_state=42)
 
     return X_train, X_test, y_train, y_test
-'''
+
