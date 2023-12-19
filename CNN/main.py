@@ -14,10 +14,6 @@ else:
 
 print("---------------------------------------------------------------------------------------")
 
-print("pisze bo jacek prosi")
-print("pisze bo jacek prosi")
-print("pisze bo jacek prosi")
-
 cnn = None
 
 user_choice = input("Do you want to train a new model (enter 'train') or load an existing one (enter 'load')? ").lower()
