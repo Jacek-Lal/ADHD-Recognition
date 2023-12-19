@@ -9,6 +9,7 @@ def plot(data, patient_numer, channel_number):
     print(f"Ilość próbek: {data[patient_numer][channel_number].shape[0]}")
 
 def plot_frequency_band(data, band_number):
+    #data = wektor pojedynczy
 
     frequencies = np.fft.fftfreq(len(data), d=1/FS)
     fft_values = np.fft.fft(data)
