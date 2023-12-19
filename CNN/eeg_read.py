@@ -8,13 +8,10 @@ import copy
     
 def readEEGRaw(folder_path):
 
-
     subfolders = EEG_SUBFOLDERS
-
 
     ADHD_DATA = []
     CONTROL_DATA = []
-
 
     for subfolder in subfolders:
         current_folder = os.path.join(folder_path, subfolder)

@@ -1,6 +1,19 @@
+import tensorflow as tf
 from tensorflow import keras
 from keras import layers
+
 from config import CNN_INPUT_SHAPE
+
+if tf.test.is_gpu_available():
+
+    physical_devices = tf.config.list_physical_devices('GPU')
+    print("Dostępne karty graficzne:")
+    for device in physical_devices:
+        print(f"- {device.name}")
+else:
+    print("Nie znaleziono dostępnych kart graficznych. Używane będą obliczenia na CPU.")
+
+print("---------------------------------------------------------------------------------------")
 
 
 model = keras.Sequential([

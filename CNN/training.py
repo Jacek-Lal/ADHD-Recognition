@@ -3,7 +3,6 @@ import re
 from tensorflow import keras
 from config import CNN_MODELS_PATH, CNN_EPOCHS
 
-
 def check_saved_trained_models():
     trained_model_files = [f for f in os.listdir(CNN_MODELS_PATH) if f.endswith('.h5')]
     if trained_model_files:
