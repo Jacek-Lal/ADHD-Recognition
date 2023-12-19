@@ -15,8 +15,8 @@ plot(ADHD_FILTERED[bandwith], patient, channel)
 plt.show()
 
 # Przykładowy sygnał w dziedzinie czasu
-T = 1/FREQ   # Okres próbkowania
-t = np.arange(0, ADHD_FILTERED[bandwith][patient][channel].shape[0])/FREQ
+T = 1/FS   # Okres próbkowania
+t = np.arange(0, ADHD_FILTERED[bandwith][patient][channel].shape[0])/FS
 
 # Wykonaj FFT
 fft_result = np.fft.fft(ADHD_FILTERED[bandwith][patient][channel])
