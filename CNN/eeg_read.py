@@ -81,6 +81,7 @@ def filterEEGData(ADHD_DATA, CONTROL_DATA, band_type = "all"):
         CONTROL_BANDWIDTHS.append(CONTROL_FILTERED)
         
     return ADHD_BANDWIDTHS, CONTROL_BANDWIDTHS
+
 def normalizeEEGData(ADHD_DATA, CONTROL_DATA):
     num_patients_A = len(ADHD_DATA)
     num_patients_C = len(CONTROL_DATA)
