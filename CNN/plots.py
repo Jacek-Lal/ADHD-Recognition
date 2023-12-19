@@ -6,7 +6,7 @@ def plot(data, patient_numer, channel_number):
     t = np.arange(0, data[patient_numer][channel_number].shape[0])/FS
     plt.plot(t, data[patient_numer][channel_number])
     print(f"Czas dla kanału: {t[-1]:.3f} s.")
-    print(f"Ilość próbek: {data[patient_numer][channel_number].shape}")
+    print(f"Ilość próbek: {data[patient_numer][channel_number].shape[0]}")
 
 def plot_frequency_band(data, band_number):
 
