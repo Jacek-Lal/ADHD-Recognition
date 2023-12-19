@@ -14,6 +14,8 @@ if len(gpu_devices) > 0:
 else:
     print("TensorFlow używa CPU lub nie ma dostępnej karty graficznej.")
 
+print("---------------------------------------------------------------------------------------")
+
 cnn = None
 
 user_choice = input("Do you want to train a new model (enter 'train') or load an existing one (enter 'load')? ").lower()
