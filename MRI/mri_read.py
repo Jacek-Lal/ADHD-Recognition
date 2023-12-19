@@ -31,7 +31,7 @@ def read_MRI_file(root_folder):
             sub_folder = f'sub-{sub_num:02d}'
             sub_path = os.path.join(root_folder, sub_folder, 'ses-T1', 'func')
             if os.path.exists(sub_path):
-                nii_files = [f for f in os.listdir(sub_path) if f.startswith(f'{sub_folder}_ses-T1_{task}_bold.nii')]
+                nii_files = [f for f in os.listdir(sub_path) if f.startswith(f'{sub_folder}_ses-T1_{task}_bold.nii.gz')]
                 if nii_files:
                     task_data[sub_folder] = []
                     for nii_file in nii_files:
@@ -46,3 +46,4 @@ def read_MRI_file(root_folder):
 
 MRI_data = read_MRI_file(MRI_DATA_PATH)
 print(MRI_data)
+
