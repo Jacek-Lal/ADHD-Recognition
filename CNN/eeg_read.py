@@ -8,13 +8,10 @@ import copy
     
 def readEEGRaw(folder_path):
 
-
     subfolders = EEG_SUBFOLDERS
-
 
     ADHD_DATA = []
     CONTROL_DATA = []
-
 
     for subfolder in subfolders:
         current_folder = os.path.join(folder_path, subfolder)
@@ -99,7 +96,7 @@ def framedEEGData(dataList, frameSize):
 def getCNNData():
     ADHD_DATA, CONTROL_DATA = readEEGRaw(EEG_DATA_PATH)
 
-    ADHD_FILTERED, CONTROL_FILTERED = filterEEGData(ADHD_DATA,CONTROL_DATA)
+    ADHD_FILTERED, CONTROL_FILTERED = filterEEGData(ADHD_DATA, CONTROL_DATA,2)
 
     ADHD_NORM, CONTROL_NORM = normalizeEEGData(ADHD_FILTERED, CONTROL_FILTERED)
 
