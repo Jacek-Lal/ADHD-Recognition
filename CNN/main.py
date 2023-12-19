@@ -3,16 +3,20 @@ from eeg_read import getCNNData
 from model_config import model
 import tensorflow as tf
 
-# Pobierz listę dostępnych urządzeń
 devices = tf.config.list_physical_devices()
 
-# Sprawdź, czy istnieje karta graficzna w dostępnych urządzeniach
 gpu_devices = [device for device in devices if 'GPU' in device.device_type]
 
 if len(gpu_devices) > 0:
     print("TensorFlow używa karty graficznej do obliczeń.")
 else:
     print("TensorFlow używa CPU lub nie ma dostępnej karty graficznej.")
+
+print("---------------------------------------------------------------------------------------")
+
+print("pisze bo jacek prosi")
+print("pisze bo jacek prosi")
+print("pisze bo jacek prosi")
 
 cnn = None
 
