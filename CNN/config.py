@@ -9,6 +9,5 @@ CNN_NEG_LABEL = 0                                                               
 CNN_TEST_RATIO = 0.2                                                                # proporcja ilości próbek danych testowych do treningowych 
 CNN_INPUT_SHAPE = (19, EEG_SIGNAL_FRAME_SIZE, 1)                                    # 19 - ilość elektrod ; wielkość ramki danych ; 1 - magiczna liczba którą wymaga keras
 CNN_EPOCHS = 5                                                                      # Ilość przejść do przodu przez model
-
-CUTOFFS = [(8,10), (10,13), (13,15), (15,18), (18,30)]                              # Przedziały częstotliwości
-FREQ = 128                                                                          # Częstotliwośc
+CUTOFFS = [(4,8), (13,30), (4,30)]                                                  # Przedziały częstotliwości theta, beta, wszystko
+FS = 128                                                                            # Częstotliwośc próbkowania
