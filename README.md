@@ -1,4 +1,4 @@
-"chuj" 
+ 
 
 # EEG DATABASE #
 https://ieee-dataport.org/open-access/eeg-data-adhd-control-children
