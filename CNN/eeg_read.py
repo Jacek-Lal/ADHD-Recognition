@@ -48,7 +48,7 @@ def filterEEGData(ADHD_DATA, CONTROL_DATA, band_type):
     high_cutoff = cutoff[1]
     b, a = signal.butter(order, [low_cutoff/(0.5*FS), high_cutoff/(0.5*FS)], btype='bandpass')
         
-    for i in range(len(ADHD_DATA)):
+    for i in range(len(ADHD_DATA)):        
         ADHD_FILTERED.append(signal.filtfilt(b, a, ADHD_DATA[i]))
             
     for i in range(len(CONTROL_DATA)):
