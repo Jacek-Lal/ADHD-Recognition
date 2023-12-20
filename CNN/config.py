@@ -11,4 +11,3 @@ CNN_INPUT_SHAPE = (19, EEG_SIGNAL_FRAME_SIZE, 1)                                
 CNN_EPOCHS = 5                                                                      # Ilość przejść do przodu przez model
 CUTOFFS = [(4,8), (13,30), (4,30)]                                                  # Przedziały częstotliwości theta, beta, wszystko
 FS = 128                                                                            # Częstotliwośc próbkowania
-CHANNELS = ["Fp1","Fp2", "F3", "F4", "C3", "C4", "P3", "P4", "O1", "O2", "F7", "F8", "T7","T8", "P7", "P8", "Fz", "Cz", "Pz"]

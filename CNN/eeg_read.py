@@ -50,7 +50,7 @@ def readEEGRaw(folder_path):
 
     return ADHD_DATA, CONTROL_DATA
 
-def filterEEGData(ADHD_DATA, CONTROL_DATA, band_type):
+def filterEEGData(ADHD_DATA, CONTROL_DATA, band_type=2):
     order = 4
     cutoff = CUTOFFS[band_type]
 
