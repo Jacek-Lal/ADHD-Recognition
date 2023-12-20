@@ -109,7 +109,7 @@ def getCNNData():
     X_DATA = np.concatenate((ADHD_FRAMED, CONTROL_FRAMED), axis=0)
     Y_DATA = np.array(labelList)
 
-    X_train, X_test, y_train, y_test = train_test_split(X_DATA, Y_DATA, test_size=CNN_TEST_RATIO, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X_DATA, Y_DATA, test_size=CNN_TEST_RATIO)
 
     return X_train, X_test, y_train, y_test
 
