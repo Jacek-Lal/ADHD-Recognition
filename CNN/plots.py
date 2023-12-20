@@ -2,11 +2,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 from config import CUTOFFS, FS
 
-def plot(data, patient_numer, channel_number):
-    t = np.arange(0, data[patient_numer][channel_number].shape[0])/FS
-    plt.plot(t, data[patient_numer][channel_number])
-    print(f"Czas dla kanału: {t[-1]:.3f} s.")
-    print(f"Ilość próbek: {data[patient_numer][channel_number].shape[0]}")
+def plot(data, patient_number, channel_number):
+
+    t = np.arange(0, data[patient_number][channel_number].shape[0]) / FS
+    signal = data[patient_number][channel_number]
+
+    plt.plot(t, signal, label=f'Pacjent {patient_number}, Kanał {channel_number}')
+
+    plt.xlabel('Czas (s)')
+    plt.ylabel('Wartości próbek')
+    plt.title('Wykres sygnału EEG')
+    plt.legend()
 
 def plot_frequency_band(data, band_number):
     #data = wektor pojedynczy

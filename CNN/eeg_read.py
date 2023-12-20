@@ -5,7 +5,20 @@ from sklearn.model_selection import train_test_split
 from config import *
 from scipy import signal
 import copy
-    
+from scipy.signal import butter, lfilter
+
+def highpassFilterEEG(ADHD_DATA, CONTROL_DATA):
+    ADHD_FILTERED = []
+    CONTROL_FILTERED = []
+
+    b, a = butter(4, 1.0 / (0.5 * FS), btype='high', analog=False)
+    for i in range(len(ADHD_DATA)):
+        ADHD_FILTERED.append(lfilter(b, a, ADHD_DATA[i]))
+    for i in range(len(CONTROL_DATA)):
+        CONTROL_FILTERED.append(lfilter(b, a, CONTROL_DATA[i]))
+
+    return ADHD_FILTERED, CONTROL_FILTERED
+
 def readEEGRaw(folder_path):
 
     subfolders = EEG_SUBFOLDERS
