@@ -1,8 +1,21 @@
 from training import check_saved_trained_models, save_trained_models, get_prepared_model
 from eeg_read import getCNNData
 from model_config import model
+import tensorflow as tf
 
 if __name__ == '__main__':
+
+    if tf.test.is_gpu_available():
+
+        physical_devices = tf.config.list_physical_devices('GPU')
+        print("Dostępne karty graficzne:")
+        for device in physical_devices:
+            print(f"- {device.name}")
+    else:
+        print("Nie znaleziono dostępnych kart graficznych. Używane będą obliczenia na CPU.")
+
+    print("---------------------------------------------------------------------------------------")
+
 
     cnn = None
 
