@@ -14,7 +14,7 @@ def plot(data, patient_number, channel_number):
     plt.title('Wykres sygnału EEG')
     plt.legend()
 
-def plot_frequency_band(data, band_number):
+def plot_frequency_band(data, band_number = 2):
     #data = wektor pojedynczy
 
     frequencies = np.fft.fftfreq(len(data), d=1/FS)
