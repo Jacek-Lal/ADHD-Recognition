@@ -57,6 +57,37 @@ def filterEEGData(ADHD_DATA, CONTROL_DATA, band_type):
         
     return ADHD_FILTERED, CONTROL_FILTERED
 
+def clipEEGData(ADHD_DATA, CONTROL_DATA):
+    num_patients_A = len(ADHD_DATA)
+    num_patients_C = len(CONTROL_DATA)
+    percentile = 99.8
+    
+    ADHD_CLIPPED = copy.deepcopy(ADHD_DATA)
+    CONTROL_CLIPPED = copy.deepcopy(CONTROL_DATA)
+    ADHD_TRESHOLDS = []
+    CONTROL_TRESHOLDS = []
+    
+    for i in range(num_patients_A):
+        for j in range(CNN_INPUT_SHAPE[0]):
+            channel_data = ADHD_DATA[i][j]
+            treshold = np.abs(np.percentile(channel_data, percentile))
+            clipped_data = np.clip(channel_data, a_min=-treshold, a_max=treshold)
+            ADHD_CLIPPED[i][j] = clipped_data
+            ADHD_TRESHOLDS.append(treshold)
+            
+    for i in range(num_patients_C):
+        for j in range(CNN_INPUT_SHAPE[0]):
+            channel_data = CONTROL_DATA[i][j]
+            treshold = np.abs(np.percentile(channel_data, percentile))
+            clipped_data = np.clip(channel_data, a_min=-treshold, a_max=treshold)
+            CONTROL_CLIPPED[i][j] = clipped_data
+            CONTROL_TRESHOLDS.append(treshold)  
+    
+    return ADHD_CLIPPED, CONTROL_CLIPPED, ADHD_TRESHOLDS, CONTROL_TRESHOLDS
+        
+    
+
+
 def normalizeEEGData(ADHD_DATA, CONTROL_DATA):
     num_patients_A = len(ADHD_DATA)
     num_patients_C = len(CONTROL_DATA)
