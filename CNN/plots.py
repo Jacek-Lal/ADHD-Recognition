@@ -6,9 +6,9 @@ def plot(data, patient_number, channel_number):
 
     t = np.arange(0, data[patient_number][channel_number].shape[0]) / FS
     signal = data[patient_number][channel_number]
-
+    print(f"Ilość próbek: {data[patient_number][channel_number].shape[0]}")
+    print(f"Czas: {t[-1]:.3f} s")
     plt.plot(t, signal, label=f'Pacjent {patient_number}, Kanał {channel_number}')
-
     plt.xlabel('Czas (s)')
     plt.ylabel('Wartości próbek')
     plt.title('Wykres sygnału EEG')
