@@ -6,6 +6,7 @@ from config import *
 from scipy import signal
 import copy
 from scipy.signal import butter, lfilter
+from eeg_filter import *
     
 def readEEGRaw(folder_path):
 
