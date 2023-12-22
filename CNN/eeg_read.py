@@ -49,14 +49,19 @@ def framedEEGData(dataList, frameSize):
     return np.array(result)
 
 def getCNNData():
+
     ADHD_DATA, CONTROL_DATA = readEEGRaw(EEG_DATA_PATH)
 
     ADHD_FILTERED, CONTROL_FILTERED = filterEEGData(ADHD_DATA, CONTROL_DATA,2)
 
-    ADHD_NORM, CONTROL_NORM = normalizeEEGData(ADHD_FILTERED, CONTROL_FILTERED)
+    ADHD_CLIPPED, CONTROL_CLIPPED = clipEEGData(ADHD_FILTERED, CONTROL_FILTERED)
+
+    ADHD_NORM, CONTROL_NORM = normalizeEEGData(ADHD_CLIPPED, CONTROL_CLIPPED)
 
     ADHD_FRAMED = framedEEGData(ADHD_NORM, EEG_SIGNAL_FRAME_SIZE)
     CONTROL_FRAMED = framedEEGData(CONTROL_NORM, EEG_SIGNAL_FRAME_SIZE)
+
+    print("Przetwarzanie danych zakończone, tworzenie sieci CNN...")
 
     labelList = [CNN_POS_LABEL] * len(ADHD_FRAMED) + [CNN_NEG_LABEL] * len(CONTROL_FRAMED)
 

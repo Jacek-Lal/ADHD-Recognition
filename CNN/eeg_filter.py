@@ -47,29 +47,6 @@ def normalizeEEGData(ADHD_DATA, CONTROL_DATA):
 
     return ADHD_DATA_normalized, CONTROL_DATA_normalized
 
-def deleteMedianEEG(ADHD_DATA,CONTROL_DATA, median_level = 4):
-    ADHD_MEDIANED = copy.deepcopy(ADHD_DATA)
-    CONTROL_MEDIANED = copy.deepcopy(CONTROL_DATA)
-
-
-    for i in range(len(ADHD_DATA)):
-        for j in range(CNN_INPUT_SHAPE[0]):
-            median = np.median(ADHD_DATA[i][j])
-            median_mask = np.abs(median_level*median)
-            channel_data = ADHD_DATA[i][j]
-            ADHD_MEDIANED[i][j][(channel_data>median_mask) | (channel_data<-median_mask)] = median
-
-    for i in range(len(CONTROL_DATA)):
-        for j in range(CNN_INPUT_SHAPE[0]):
-            median = np.median(CONTROL_DATA[i][j])
-            median_mask = np.abs(median_level*median)
-            channel_data = CONTROL_DATA[i][j]
-            CONTROL_MEDIANED[i][j][(channel_data>median_mask) | (channel_data<-median_mask)] = median
-
-
-    return ADHD_MEDIANED, CONTROL_MEDIANED
-
-
 def clipEEGData(ADHD_DATA, CONTROL_DATA):
     num_patients_A = len(ADHD_DATA)
     num_patients_C = len(CONTROL_DATA)
@@ -97,3 +74,25 @@ def clipEEGData(ADHD_DATA, CONTROL_DATA):
             CONTROL_TRESHOLDS.append(treshold)
 
     return ADHD_CLIPPED, CONTROL_CLIPPED
+
+def deleteMedianEEG(ADHD_DATA,CONTROL_DATA, median_level = 4):
+    ADHD_MEDIANED = copy.deepcopy(ADHD_DATA)
+    CONTROL_MEDIANED = copy.deepcopy(CONTROL_DATA)
+
+
+    for i in range(len(ADHD_DATA)):
+        for j in range(CNN_INPUT_SHAPE[0]):
+            median = np.median(ADHD_DATA[i][j])
+            median_mask = np.abs(median_level*median)
+            channel_data = ADHD_DATA[i][j]
+            ADHD_MEDIANED[i][j][(channel_data>median_mask) | (channel_data<-median_mask)] = median
+
+    for i in range(len(CONTROL_DATA)):
+        for j in range(CNN_INPUT_SHAPE[0]):
+            median = np.median(CONTROL_DATA[i][j])
+            median_mask = np.abs(median_level*median)
+            channel_data = CONTROL_DATA[i][j]
+            CONTROL_MEDIANED[i][j][(channel_data>median_mask) | (channel_data<-median_mask)] = median
+
+
+    return ADHD_MEDIANED, CONTROL_MEDIANED
