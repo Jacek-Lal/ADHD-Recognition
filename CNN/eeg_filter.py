@@ -60,7 +60,7 @@ def normalizeEEGData(ADHD_DATA, CONTROL_DATA):
 
     return ADHD_DATA_normalized, CONTROL_DATA_normalized
 
-def deleteMedianEEG(ADHD_DATA,CONTROL_DATA, median_level = 4):
+def deleteMedianEEG(ADHD_DATA,CONTROL_DATA, median_level = 400):
     ADHD_MEDIANED = copy.deepcopy(ADHD_DATA)
     CONTROL_MEDIANED = copy.deepcopy(CONTROL_DATA)
 
@@ -78,8 +78,6 @@ def deleteMedianEEG(ADHD_DATA,CONTROL_DATA, median_level = 4):
             median_mask = median_level*median
             channel_data = CONTROL_DATA[i][j]
             CONTROL_MEDIANED[i][j][(channel_data<median_mask) | (channel_data>-median_mask)] = median
-
-    print(f"Próg odcięcia: {median_mask}")
 
     return ADHD_MEDIANED, CONTROL_MEDIANED
 
