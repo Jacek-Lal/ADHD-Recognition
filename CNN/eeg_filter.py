@@ -77,7 +77,7 @@ def deleteMedianEEG(ADHD_DATA,CONTROL_DATA, median_level = 4):
             median = np.median(CONTROL_DATA[i][j])
             median_mask = np.abs(median_level*median)
             channel_data = CONTROL_DATA[i][j]
-            CONTROL_MEDIANED[i][j][(channel_data<median_mask) | (channel_data>-median_mask)] = median
+            CONTROL_MEDIANED[i][j][(channel_data>median_mask) | (channel_data<-median_mask)] = median
 
 
     return ADHD_MEDIANED, CONTROL_MEDIANED
@@ -109,4 +109,4 @@ def clipEEGData(ADHD_DATA, CONTROL_DATA):
             CONTROL_CLIPPED[i][j] = clipped_data
             CONTROL_TRESHOLDS.append(treshold)
 
-    return ADHD_CLIPPED, CONTROL_CLIPPED, ADHD_TRESHOLDS, CONTROL_TRESHOLDS
+    return ADHD_CLIPPED, CONTROL_CLIPPED
