@@ -1,6 +1,6 @@
 from tensorflow import keras
 from keras import layers
-from config import CNN_INPUT_SHAPE
+from config import *
 
 model = keras.Sequential([
         layers.Conv2D(32, (3, 3), activation='relu', input_shape=CNN_INPUT_SHAPE, padding='same'),

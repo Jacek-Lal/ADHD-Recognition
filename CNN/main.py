@@ -1,6 +1,6 @@
-from training import check_saved_trained_models, save_trained_models, get_prepared_model
-from eeg_read import getCNNData
-from model_config import model
+from training import *
+from eeg_read import *
+from model_config import *
 import tensorflow as tf
 
 devices = tf.config.list_physical_devices()
