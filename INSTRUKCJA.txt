@@ -26,3 +26,18 @@ np.
 git pull
 git checkout jacek
 git merge main
+
+
+pomocne komendy mateusz:
+
+wchodzisz na serwer i nic nie zrobiles, musisz zaktualizować się z mainem (stracisz to co masz na swoim branchu)
+bedac na swoim branchu
+git pull origin main
+git push
+- jestes zaktualizowany z mainem
+
+chcesz swojego brancha wrzucic na main
+wchodzisz na main, git checkout main
+git merge mateusz (twoj branch)
+git push
+wracasz na swojego brancha
