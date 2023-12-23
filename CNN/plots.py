@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from config import CUTOFFS, FS
+from config import *
 
 def plot(data, patient_number, channel_number):
 
@@ -25,4 +25,15 @@ def plot_frequency_band(data, band_number):
     plt.title('Widmo częstotliwościowe')
     plt.xlabel('Częstotliwość (Hz)')
     plt.ylabel('Amplituda')
+    plt.legend()
+
+def plot_with_treshold(data, patient_number, channel_number, treshold):
+    signal_length = data[patient_number][channel_number].shape[0]
+
+    plot(data, patient_number, channel_number)
+    plt.plot([x/FS for x in range(signal_length)], [treshold for x in range(signal_length)])
+    plt.plot([x/FS for x in range(signal_length)], [-treshold for x in range(signal_length)])
+    plt.xlabel('Czas (s)')
+    plt.ylabel('Wartości próbek')
+    plt.title('Wykres sygnału po zastosowaniu tresholda')
     plt.legend()
