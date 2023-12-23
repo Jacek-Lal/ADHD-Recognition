@@ -3,4 +3,4 @@ from eeg_filter import *
 from config import *
 from plots import *
 
-print("chuj")
+
