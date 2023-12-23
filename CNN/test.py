@@ -4,4 +4,3 @@ from config import *
 from plots import *
 
 
-print("chuj")
