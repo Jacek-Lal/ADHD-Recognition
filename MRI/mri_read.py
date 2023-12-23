@@ -9,8 +9,6 @@ def read_nii_file(file_path):
     img = nib.load(file_path)
     data = img.get_fdata()
     return data
-
-
 def read_MRI_file(root_folder):
     tasks = [
         'task-SLD',
