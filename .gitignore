@@ -2,3 +2,4 @@
 /CNN/test.py
 *.nii
 *.nii.gz
+/MRI/files
