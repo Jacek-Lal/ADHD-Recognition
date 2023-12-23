@@ -2,6 +2,7 @@ from training import *
 from eeg_read import *
 from model_config import *
 import tensorflow as tf
+from one_patient_predict import *
 
 devices = tf.config.list_physical_devices()
 
@@ -31,6 +32,15 @@ match user_choice:
             exit()
         
         cnn = trained_model
+
+        result, chance = predictPatient(cnn, PATIENT_INPUT_FILE)
+
+        print("Chance of ADHD: ", chance)
+        if result:
+            print("Patient has ADHD")
+        else:
+            print("Patient doesn't have ADHD")
+
     case _: 
         print("Input error")
         exit()
