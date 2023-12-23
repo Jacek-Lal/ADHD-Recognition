@@ -1,2 +1,4 @@
 *.nii
 *.nii.gz
+/MRI/files
+__pycache__
