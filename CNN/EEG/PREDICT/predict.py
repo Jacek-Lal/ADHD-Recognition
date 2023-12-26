@@ -11,13 +11,27 @@ MODEL_PATH = 'CNN/MODEL/model'
 
 DATA = readEEGRaw(PATIENT_DIR)
 
+
+
 DATA_FILTERED = filterEEGData(DATA)
+
 
 DATA_CLIPPED = clipEEGData(DATA_FILTERED)
 
+
 DATA_NORMALIZED = normalizeEEGData(DATA_CLIPPED)
 
-model = load_model(MODEL_PATH)
-
-predictions = model.predict()
-
+# model = load_model(MODEL_PATH)
+#
+# predictions = model.predict()
+#
+# MED_FOR_0 = np.mean(predictions[:, 0])
+#
+# MED_FOR_1 = np.mean(predictions[:, 1])
+#
+# if MED_FOR_0 > MED_FOR_1:
+#     print("Wykryto ADHD")
+# elif MED_FOR_0 < MED_FOR_1:
+#     print("Pacjent zdrowy")
+# else:
+#     print("Chuj wie, idz do lekarza")

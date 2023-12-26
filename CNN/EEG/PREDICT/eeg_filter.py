@@ -7,15 +7,12 @@ def filterEEGData(DATA, band_type=2):
     order = 4
     cutoff = CUTOFFS[band_type]
 
-    DATA_FILTERED = []
 
     low_cutoff = cutoff[0]
     high_cutoff = cutoff[1]
     b, a = signal.butter(order, [low_cutoff / (0.5 * FS), high_cutoff / (0.5 * FS)], btype='bandpass')
 
-    DATA_FILTERED.append(signal.filtfilt(b, a, DATA))
-
-    return DATA_FILTERED
+    return signal.filtfilt(b, a, DATA)
 
 def normalizeEEGData(DATA):
 
