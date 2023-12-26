@@ -5,13 +5,8 @@ from eeg_filter import *
 from config import *
 from plots import *
 
-import tensorflow as tf
+adhd_data, _ = readEEGRaw(EEG_DATA_PATH)
 
-devices = tf.config.list_physical_devices()
+adhd_data = adhd_data[0]
 
-gpu_devices = [device for device in devices if 'GPU' in device.device_type]
-
-if len(gpu_devices) > 0:
-    print("TensorFlow używa karty graficznej do obliczeń.")
-else:
-    print("TensorFlow używa CPU lub nie ma dostępnej karty graficznej.")
+print((adhd_data.reshape(-1,adhd_data.shape[0], adhd_data.shape[1])).shape)
