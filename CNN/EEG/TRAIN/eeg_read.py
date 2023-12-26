@@ -2,11 +2,11 @@ import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from scipy.io import loadmat
 from sklearn.model_selection import train_test_split
-from CNN.config import *
 from eeg_filter import *
 import math
 from sklearn.preprocessing import LabelEncoder
 from tensorflow.keras.utils import to_categorical
+from CNN.config import *
     
 def readEEGRaw(folder_path):
 
@@ -40,7 +40,7 @@ def readEEGRaw(folder_path):
     return ADHD_DATA, CONTROL_DATA
 
 
-def prepareforEEG(ADHD_DATA, CONTROL_DATA, frameSize):
+def prepareForCNN(ADHD_DATA, CONTROL_DATA, frameSize):
 
     ADHD_in_one = np.concatenate(ADHD_DATA, axis=1)
 

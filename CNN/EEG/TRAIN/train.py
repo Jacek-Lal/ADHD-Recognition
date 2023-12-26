@@ -12,7 +12,7 @@ ADHD_CLIPPED, CONTROL_CLIPPED = clipEEGData(ADHD_FILTERED, CONTROL_FILTERED)
 
 ADHD_NORMALIZED, CONTROL_NORMALIZED = normalizeEEGData(ADHD_CLIPPED, CONTROL_CLIPPED)
 
-X_train, y_train, X_test, y_test = prepareforEEG(ADHD_NORMALIZED, CONTROL_NORMALIZED)
+X_train, y_train, X_test, y_test = prepareForCNN(ADHD_NORMALIZED, CONTROL_NORMALIZED)
 
 model, accuracy = CnnFit1(X_train, y_train, X_test, y_test)
 
