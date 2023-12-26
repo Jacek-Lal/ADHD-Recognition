@@ -1,38 +1,26 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-from training import *
 from eeg_read import *
-from model_config import *
-import tensorflow as tf
+from config import *
+from plots import *
+from train import *
 
-devices = tf.config.list_physical_devices()
 
-gpu_devices = [device for device in devices if 'GPU' in device.device_type]
+ADHD_DATA, CONTROL_DATA = readEEGRaw(EEG_DATA_PATH)
 
-if len(gpu_devices) > 0:
-    print("TensorFlow używa karty graficznej do obliczeń.")
-else:
-    print("TensorFlow używa CPU lub nie ma dostępnej karty graficznej.")
+ADHD_FILTERED, CONTROL_FILTERED = filterEEGData(ADHD_DATA, CONTROL_DATA)
 
-print("---------------------------------------------------------------------------------------")
+ADHD_CLIPPED, CONTROL_CLIPPED = clipEEGData(ADHD_FILTERED, CONTROL_FILTERED)
 
-cnn = None
+ADHD_NORMALIZED, CONTROL_NORMALIZED = normalizeEEGData(ADHD_CLIPPED, CONTROL_CLIPPED)
 
-user_choice = input("Do you want to train a new model (enter 'train') or load an existing one (enter 'load')? ").lower()
+frameSize = 192
 
-match user_choice:
-    case "train":
-        x_train, x_test, y_train, y_test = getCNNData()
-        cnn, cnn_accuracy = get_prepared_model(model, x_train, y_train, x_test, y_test)
-        save_trained_models(cnn, cnn_accuracy)
-    case "load":
-        trained_model = check_saved_trained_models()
+numEpochs = 20
 
-        if trained_model is None:
-            print("No existing trained model found. Please train a new model.")
-            exit()
-        
-        cnn = trained_model
-    case _: 
-        print("Input error")
-        exit()
+X_train, y_train, X_test, y_test = prepareforEEG(ADHD_NORMALIZED, CONTROL_NORMALIZED, frameSize)
+
+
+model, accuracy = CnnFit1(X_train, y_train, X_test, y_test, frameSize, numEpochs)
+
+print(f"accuracy: {accuracy}")

@@ -13,6 +13,7 @@ def plot(data, patient_number, channel_number):
     plt.ylabel('Wartości próbek')
     plt.title('Wykres sygnału EEG')
     plt.legend()
+    plt.show()
 
 def plot_frequency_band(data, band_number):
     #data = wektor pojedynczy

@@ -1,8 +1,12 @@
 import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from scipy.io import loadmat
 from sklearn.model_selection import train_test_split
 from config import *
 from eeg_filter import *
+import math
+from sklearn.preprocessing import LabelEncoder
+from tensorflow.keras.utils import to_categorical
     
 def readEEGRaw(folder_path):
 
@@ -35,39 +39,41 @@ def readEEGRaw(folder_path):
 
     return ADHD_DATA, CONTROL_DATA
 
-def framedEEGData(dataList, frameSize):
 
-    result = []
+def prepareforEEG(ADHD_DATA, CONTROL_DATA, frameSize):
 
-    for matrix in dataList:
-        num_rows, num_samples = matrix.shape
-        num_frames = (num_samples // (frameSize))
+    ADHD_in_one = np.concatenate(ADHD_DATA, axis=1)
 
-        divided_matrix = np.array_split(matrix[:, :num_frames * frameSize], num_frames, axis=1)
-        result.extend(divided_matrix)
+    CONTROL_in_one = np.concatenate(CONTROL_DATA, axis=1)
 
-    return np.array(result)
+    ADHD_range = (math.floor(ADHD_in_one.shape[1] / frameSize))
+    CONTROL_range = (math.floor(CONTROL_in_one.shape[1] / frameSize))
 
-def getCNNData():
+    ADHD_framed = np.zeros((ADHD_range, ADHD_in_one.shape[0], frameSize))
 
-    ADHD_DATA, CONTROL_DATA = readEEGRaw(EEG_DATA_PATH)
+    CONTROL_framed = np.zeros((CONTROL_range, CONTROL_in_one.shape[0], frameSize))
 
-    ADHD_FILTERED, CONTROL_FILTERED = filterEEGData(ADHD_DATA, CONTROL_DATA,2)
+    for i in range(ADHD_range):
+        ADHD_framed[i, :, :] = ADHD_in_one[:, i * frameSize: (i + 1) * frameSize]
 
-    ADHD_CLIPPED, CONTROL_CLIPPED = clipEEGData(ADHD_FILTERED, CONTROL_FILTERED)
+    for i in range(CONTROL_range):
+        CONTROL_framed[i, :, :] = CONTROL_in_one[:, i * frameSize: (i + 1) * frameSize]
 
-    ADHD_NORM, CONTROL_NORM = normalizeEEGData(ADHD_CLIPPED, CONTROL_CLIPPED)
+    y_ADHD = [CNN_POS_LABEL for x in range(ADHD_framed.shape[0])]
+    y_CONTROL = [CNN_NEG_LABEL for x in range(CONTROL_framed.shape[0])]
 
-    ADHD_FRAMED = framedEEGData(ADHD_NORM, EEG_SIGNAL_FRAME_SIZE)
-    CONTROL_FRAMED = framedEEGData(CONTROL_NORM, EEG_SIGNAL_FRAME_SIZE)
 
-    print("Przetwarzanie danych zakończone, tworzenie sieci CNN...")
+    X = np.concatenate((ADHD_framed, CONTROL_framed))
 
-    labelList = [CNN_POS_LABEL] * len(ADHD_FRAMED) + [CNN_NEG_LABEL] * len(CONTROL_FRAMED)
+    y = np.concatenate((np.array(y_ADHD), np.array(y_CONTROL)))
 
-    X_DATA = np.concatenate((ADHD_FRAMED, CONTROL_FRAMED), axis=0)
-    Y_DATA = np.array(labelList)
+    X_4D = np.reshape(X,(X.shape[0],X.shape[1],X.shape[2],1))
 
-    X_train, X_test, y_train, y_test = train_test_split(X_DATA, Y_DATA, test_size=CNN_TEST_RATIO)
+    encoder = LabelEncoder()
+    y_encoded = encoder.fit_transform(y)
 
-    return X_train, X_test, y_train, y_test
+    y_one_hot = to_categorical(y_encoded, num_classes=2)
+
+    X_train, X_test, y_train, y_test = train_test_split(X_4D, y_one_hot, test_size=0.3, shuffle=True)
+
+    return X_train, y_train, X_test, y_test
