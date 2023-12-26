@@ -43,6 +43,8 @@ def CnnFit(X_train, y_train, X_test, y_test):   #funkcja z artykułu
 
     _, final_accuracy = model.evaluate(X_test,  y_test, verbose=2)
 
+    model.save(f"CNN/MODEL/{round(final_accuracy, 5)}.h5")
+
     return model, final_accuracy
 
 def CnnFit1(X_train, y_train, X_test, y_test):
@@ -81,5 +83,7 @@ def CnnFit1(X_train, y_train, X_test, y_test):
     model.fit(X_train, y_train, epochs=CNN_EPOCHS, validation_data=(X_test, y_test))
 
     _, final_accuracy = model.evaluate(X_test,  y_test, verbose=2)
+
+    model.save(f"CNN/MODEL/{round(final_accuracy, 5)}.h5")
 
     return model, final_accuracy

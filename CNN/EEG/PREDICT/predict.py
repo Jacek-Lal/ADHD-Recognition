@@ -4,6 +4,8 @@ from eeg_read import *
 from eeg_filter import *
 from keras.models import load_model
 from CNN.config import *
+from plots import *
+import joblib
 
 PATIENT_DIR = 'CNN/EEG/PREDICT/ADHD/v37p.mat'
 MODEL_PATH = 'CNN/MODEL/model'
@@ -21,13 +23,4 @@ DATA_NORMALIZED = normalizeEEGData(DATA_CLIPPED)
 #
 # predictions = model.predict()
 #
-# MED_FOR_0 = np.mean(predictions[:, 0])
-#
-# MED_FOR_1 = np.mean(predictions[:, 1])
-#
-# if MED_FOR_0 > MED_FOR_1:
-#     print("Wykryto ADHD")
-# elif MED_FOR_0 < MED_FOR_1:
-#     print("Pacjent zdrowy")
-# else:
-#     print("Chuj wie, idz do lekarza")
+# print(predictions)

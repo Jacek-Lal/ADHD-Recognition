@@ -7,6 +7,7 @@ import math
 from sklearn.preprocessing import LabelEncoder
 from tensorflow.keras.utils import to_categorical
 from CNN.config import *
+import joblib
     
 def readEEGRaw(folder_path):
 
@@ -40,24 +41,24 @@ def readEEGRaw(folder_path):
     return ADHD_DATA, CONTROL_DATA
 
 
-def prepareForCNN(ADHD_DATA, CONTROL_DATA, frameSize):
+def prepareForCNN(ADHD_DATA, CONTROL_DATA):
 
     ADHD_in_one = np.concatenate(ADHD_DATA, axis=1)
 
     CONTROL_in_one = np.concatenate(CONTROL_DATA, axis=1)
 
-    ADHD_range = (math.floor(ADHD_in_one.shape[1] / frameSize))
-    CONTROL_range = (math.floor(CONTROL_in_one.shape[1] / frameSize))
+    ADHD_range = (math.floor(ADHD_in_one.shape[1] / EEG_SIGNAL_FRAME_SIZE))
+    CONTROL_range = (math.floor(CONTROL_in_one.shape[1] / EEG_SIGNAL_FRAME_SIZE))
 
-    ADHD_framed = np.zeros((ADHD_range, ADHD_in_one.shape[0], frameSize))
+    ADHD_framed = np.zeros((ADHD_range, ADHD_in_one.shape[0], EEG_SIGNAL_FRAME_SIZE))
 
-    CONTROL_framed = np.zeros((CONTROL_range, CONTROL_in_one.shape[0], frameSize))
+    CONTROL_framed = np.zeros((CONTROL_range, CONTROL_in_one.shape[0], EEG_SIGNAL_FRAME_SIZE))
 
     for i in range(ADHD_range):
-        ADHD_framed[i, :, :] = ADHD_in_one[:, i * frameSize: (i + 1) * frameSize]
+        ADHD_framed[i, :, :] = ADHD_in_one[:, i * EEG_SIGNAL_FRAME_SIZE: (i + 1) * EEG_SIGNAL_FRAME_SIZE]
 
     for i in range(CONTROL_range):
-        CONTROL_framed[i, :, :] = CONTROL_in_one[:, i * frameSize: (i + 1) * frameSize]
+        CONTROL_framed[i, :, :] = CONTROL_in_one[:, i * EEG_SIGNAL_FRAME_SIZE: (i + 1) * EEG_SIGNAL_FRAME_SIZE]
 
     y_ADHD = [CNN_POS_LABEL for x in range(ADHD_framed.shape[0])]
     y_CONTROL = [CNN_NEG_LABEL for x in range(CONTROL_framed.shape[0])]
@@ -73,6 +74,8 @@ def prepareForCNN(ADHD_DATA, CONTROL_DATA, frameSize):
     y_encoded = encoder.fit_transform(y)
 
     y_one_hot = to_categorical(y_encoded, num_classes=2)
+
+    joblib.dump(encoder, 'CNN/MODEL/encoder.joblib')
 
     X_train, X_test, y_train, y_test = train_test_split(X_4D, y_one_hot, test_size=0.3, shuffle=True)
 
