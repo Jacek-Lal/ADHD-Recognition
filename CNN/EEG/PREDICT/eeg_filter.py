@@ -1,5 +1,5 @@
 import numpy as np
-from config import *
+from CNN.config import *
 from scipy import signal
 import copy
 

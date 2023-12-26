@@ -2,7 +2,7 @@ import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from scipy.io import loadmat
 from sklearn.model_selection import train_test_split
-from config import *
+from CNN.config import *
 from eeg_filter import *
 import math
 from sklearn.preprocessing import LabelEncoder

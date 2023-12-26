@@ -7,6 +7,6 @@ CNN_MODELS_PATH = './CNN/trained_models'                                        
 CNN_POS_LABEL = "ADHD"                                                            # wyjście pozytywne z modelu
 CNN_NEG_LABEL = "NO_ADHD"                                                         # wyjście negatywne
 CNN_INPUT_SHAPE = (19, EEG_SIGNAL_FRAME_SIZE, 1)                                    # 19 - ilość elektrod ; wielkość ramki danych ; 1 - magiczna liczba którą wymaga keras
-CNN_EPOCHS = 5                                                                      # Ilość przejść do przodu przez model
+CNN_EPOCHS = 10                                                                      # Ilość przejść do przodu przez model
 CUTOFFS = [(4,8), (13,30), (4,30)]                                                  # Przedziały częstotliwości theta, beta, wszystko
 FS = 128                                                                            # Częstotliwośc próbkowania

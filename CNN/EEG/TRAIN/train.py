@@ -1,8 +1,8 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from eeg_read import *
-from config import *
-from train_model import *
+from CNN.config import *
+from CNN.EEG.TRAIN.train_model import *
 
 ADHD_DATA, CONTROL_DATA = readEEGRaw(EEG_DATA_PATH)
 

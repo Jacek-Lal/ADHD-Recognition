@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from config import *
+from CNN.config import *
 
 def plot(data, patient_number, channel_number):
 
