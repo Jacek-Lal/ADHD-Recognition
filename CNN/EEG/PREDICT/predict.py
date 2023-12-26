@@ -7,17 +7,13 @@ from CNN.config import *
 
 PATIENT_DIR = 'CNN/EEG/PREDICT/ADHD/v37p.mat'
 MODEL_PATH = 'CNN/MODEL/model'
-
+y = CNN_LABELS
 
 DATA = readEEGRaw(PATIENT_DIR)
 
-
-
 DATA_FILTERED = filterEEGData(DATA)
 
-
 DATA_CLIPPED = clipEEGData(DATA_FILTERED)
-
 
 DATA_NORMALIZED = normalizeEEGData(DATA_CLIPPED)
 
