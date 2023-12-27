@@ -59,8 +59,8 @@ def prepareForCNN(ADHD_DATA, CONTROL_DATA):
     y_CONTROL = [CNN_NEG_LABEL for x in range(CONTROL_framed.shape[0])]
 
 
-    X = np.concatenate((ADHD_framed, CONTROL_framed))
-    y = np.concatenate((np.array(y_ADHD), np.array(y_CONTROL)))
+    X = np.concatenate((CONTROL_framed, ADHD_framed))
+    y = np.concatenate((np.array(y_CONTROL), np.array(y_ADHD)))
 
     X_4D = np.reshape(X,(X.shape[0],X.shape[1],X.shape[2],1))
 
