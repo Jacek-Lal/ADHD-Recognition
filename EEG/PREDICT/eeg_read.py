@@ -26,9 +26,9 @@ def frameDATA(DATA):
 
 def checkResult(predictions):
 
-    mean = np.mean(predictions)
+    mean = np.mean(predictions, axis=0)
 
     if mean > 0.75:
-        print(f"Wynik pacjenta: ADHD, z prawdopodobieństwem: {np.round(mean*100,3)}%")
+        print(f"Wynik pacjenta: ADHD, z prawdopodobieństwem: {np.round(mean*100,2)}%")
     else:
-        print(f"Wynik pacjenta: ZDROWY, z prawdopodobieństwem: {np.abs(np.round((1-mean)*100,3))}%")
+        print(f"Wynik pacjenta: ZDROWY, z prawdopodobieństwem: {np.abs(np.round((1-mean)*100,2))}%")
