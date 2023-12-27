@@ -8,9 +8,9 @@ from EEG.config import *
 from EEG.PREDICT.plots import *
 
 
-PATIENT_DIR = 'CONTROL/v307'
+PATIENT_DIR = 'ADHD/v15p'
 
-MODEL_NAME = "0.8828"
+MODEL_NAME = "0.7247"
 
 DATA = readEEGRaw(f'EEG/PREDICT/PREDICT_DATA/{PATIENT_DIR}.mat')
 
