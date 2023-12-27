@@ -66,11 +66,6 @@ def prepareForCNN(ADHD_DATA, CONTROL_DATA):
 
     X_4D = np.reshape(X,(X.shape[0],X.shape[1],X.shape[2],1))
 
-    encoder = LabelEncoder()
-    y_encoded = encoder.fit_transform(y)
-
-    joblib.dump(encoder, f'{CNN_MODELS_PATH}/encoder.joblib')
-
-    X_train, X_test, y_train, y_test = train_test_split(X_4D, y_encoded, test_size=0.3, shuffle=True)
+    X_train, X_test, y_train, y_test = train_test_split(X_4D, y, test_size=0.3, shuffle=True)
 
     return X_train, y_train, X_test, y_test

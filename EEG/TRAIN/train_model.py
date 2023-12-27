@@ -42,9 +42,9 @@ def CnnFit(X_train, y_train, X_test, y_test):   #funkcja z artykułu
 
     _, final_accuracy = model.evaluate(X_test,  y_test, verbose=2)
 
-    model.save(f"{CNN_MODELS_PATH}/{round(final_accuracy, 5)}.h5")
+    model.save(f"{CNN_MODELS_PATH}/{round(final_accuracy, 4)}.h5")
 
-    return model, final_accuracy
+    return round(final_accuracy, 4)
 
 def CnnFit_test(X_train, y_train, X_test, y_test):
 
@@ -56,24 +56,24 @@ def CnnFit_test(X_train, y_train, X_test, y_test):
     model.add(AveragePooling2D(pool_size=(1, 2)))
 
     #Second spatial
-    model.add(Conv2D(16,(3,3), activation='relu'))
+    model.add(Conv2D(32,(3,3), activation='relu'))
     model.add(BatchNormalization())
     model.add(AveragePooling2D(pool_size=(1, 2)))
 
-    #First temporal
-    model.add(Conv2D(32, (3, 3), activation='relu'))
-    model.add(BatchNormalization())
-    model.add(AveragePooling2D(pool_size=(1, 2)))
-
-    #Second temporial
-    model.add(Conv2D(32, (3, 3), activation='relu'))
-    model.add(BatchNormalization())
-    model.add(AveragePooling2D(pool_size=(1, 2)))
+    # #First temporal
+    # model.add(Conv2D(32, (3, 3), activation='relu'))
+    # model.add(BatchNormalization())
+    # model.add(AveragePooling2D(pool_size=(1, 2)))
+    #
+    # #Second temporial
+    # model.add(Conv2D(32, (3, 3), activation='relu'))
+    # model.add(BatchNormalization())
+    # model.add(AveragePooling2D(pool_size=(1, 2)))
 
     #Feature selection
     model.add(Flatten())
-    model.add(Dense(64, activation='relu'))
     model.add(Dense(32, activation='relu'))
+    model.add(Dense(16, activation='relu'))
     model.add(Dense(1, activation='sigmoid'))
 
     #Compile
@@ -83,6 +83,6 @@ def CnnFit_test(X_train, y_train, X_test, y_test):
 
     _, final_accuracy = model.evaluate(X_test,  y_test, verbose=2)
 
-    model.save(f"{CNN_MODELS_PATH}/{round(final_accuracy, 5)}.h5")
+    model.save(f"{CNN_MODELS_PATH}/{round(final_accuracy, 4)}.h5")
 
-    return model, final_accuracy
+    return round(final_accuracy, 4)

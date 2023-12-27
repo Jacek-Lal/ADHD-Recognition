@@ -23,3 +23,12 @@ def frameDATA(DATA):
 
 
     return np.reshape(DATA_framed,(DATA_framed.shape[0],DATA_framed.shape[1],DATA_framed.shape[2],1))
+
+def checkResult(predictions):
+
+    mean = np.mean(predictions)
+
+    if mean > 0.75:
+        print(f"Wynik pacjenta: ADHD, z prawdopodobieństwem: {np.round(mean,3)*100}%")
+    else:
+        print(f"Wynik pacjenta: ZDROWY, z prawdopodobieństwem: {np.abs(np.round(1-mean,3))*100}%")
