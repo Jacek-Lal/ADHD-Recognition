@@ -7,12 +7,13 @@ def filterEEGData(DATA, band_type=2):
     order = 4
     cutoff = CUTOFFS[band_type]
 
+    DATA_filtered = copy.deepcopy(DATA)
 
     low_cutoff = cutoff[0]
     high_cutoff = cutoff[1]
     b, a = signal.butter(order, [low_cutoff / (0.5 * FS), high_cutoff / (0.5 * FS)], btype='bandpass')
 
-    return signal.filtfilt(b, a, DATA)
+    return signal.filtfilt(b, a, DATA_filtered)
 
 def normalizeEEGData(DATA):
 
