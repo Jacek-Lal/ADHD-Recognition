@@ -1,6 +1,5 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-import joblib
 from keras.models import load_model
 
 from EEG.PREDICT.eeg_read import *
@@ -12,7 +11,6 @@ from EEG.PREDICT.plots import *
 PATIENT_DIR = 'CONTROL/v129'
 
 MODEL_NAME = "0.8828"
-
 
 DATA = readEEGRaw(f'EEG/PREDICT/PREDICT_DATA/{PATIENT_DIR}.mat')
 

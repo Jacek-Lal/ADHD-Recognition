@@ -32,6 +32,7 @@ MATEUSZ:
 bedac na swoim branch:
 
 git pull origin main update z mainem
+git push
 
 git fetch ""
 git reset --hard ""  te 2 komendy sciagaja ostatniego commita z brancha
