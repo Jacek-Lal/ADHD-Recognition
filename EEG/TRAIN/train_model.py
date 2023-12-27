@@ -1,9 +1,16 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-from tensorflow.keras.models import Sequential
+from tensorflow import keras 
+from keras.models import Sequential
 from keras.layers import Conv2D, Flatten, Dense, BatchNormalization, AveragePooling2D
 
-from EEG.config import *
+import sys
+
+# Add the directory containing config.py to the Python path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_dir)
+from config import *
 
 def CnnFit(X_train, y_train, X_test, y_test):   #funkcja z artykułu
 
@@ -20,14 +27,14 @@ def CnnFit(X_train, y_train, X_test, y_test):   #funkcja z artykułu
     model.add(AveragePooling2D(pool_size=(2, 1)))
 
     #First temporal
-    model.add(Conv2D(32, (1, 128), activation='relu'))
+    model.add(Conv2D(32, (1, 32), activation='relu'))
     model.add(BatchNormalization())
-    model.add(AveragePooling2D(pool_size=(1, 64)))
+    model.add(AveragePooling2D(pool_size=(1, 16)))
 
     #Second temporial
-    model.add(Conv2D(32, (1, 64), activation='relu'))
+    model.add(Conv2D(32, (1, 16), activation='relu'))
     model.add(BatchNormalization())
-    model.add(AveragePooling2D(pool_size=(1, 32)))
+    model.add(AveragePooling2D(pool_size=(1, 8)))
 
     #Feature selection
     model.add(Flatten())
