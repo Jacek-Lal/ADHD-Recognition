@@ -2,7 +2,7 @@ import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from tensorflow.keras.models import Sequential
 from keras.layers import Conv2D, Flatten, Dense, BatchNormalization, AveragePooling2D
-from CNN.config import *
+from EEG.config import *
 
 
 def CnnFit(X_train, y_train, X_test, y_test):   #funkcja z artykułu

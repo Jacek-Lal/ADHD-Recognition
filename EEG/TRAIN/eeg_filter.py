@@ -1,5 +1,5 @@
 import numpy as np
-from CNN.config import *
+from EEG.config import *
 from scipy import signal
 import copy
 
