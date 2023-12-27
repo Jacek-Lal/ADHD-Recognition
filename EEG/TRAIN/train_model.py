@@ -6,6 +6,7 @@ from EEG.config import *
 
 
 def CnnFit(X_train, y_train, X_test, y_test):   #funkcja z artykułu
+
     model = Sequential()
 
     #First spatial
@@ -32,22 +33,20 @@ def CnnFit(X_train, y_train, X_test, y_test):   #funkcja z artykułu
     model.add(Flatten())
     model.add(Dense(64, activation='relu'))
     model.add(Dense(32, activation='relu'))
-    model.add(Dense(2, activation='softmax'))
+    model.add(Dense(1, activation='sigmoid'))
 
     #Compile
-    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-
-
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
     model.fit(X_train, y_train, epochs=CNN_EPOCHS, validation_data=(X_test, y_test))
 
     _, final_accuracy = model.evaluate(X_test,  y_test, verbose=2)
 
-    model.save(f"CNN/MODEL/{round(final_accuracy, 5)}.h5")
+    model.save(f"{CNN_MODELS_PATH}/{round(final_accuracy, 5)}.h5")
 
     return model, final_accuracy
 
-def CnnFit1(X_train, y_train, X_test, y_test):
+def CnnFit_test(X_train, y_train, X_test, y_test):
 
     model = Sequential()
 
@@ -75,15 +74,15 @@ def CnnFit1(X_train, y_train, X_test, y_test):
     model.add(Flatten())
     model.add(Dense(64, activation='relu'))
     model.add(Dense(32, activation='relu'))
-    model.add(Dense(2, activation='softmax'))
+    model.add(Dense(1, activation='sigmoid'))
 
     #Compile
-    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
     model.fit(X_train, y_train, epochs=CNN_EPOCHS, validation_data=(X_test, y_test))
 
     _, final_accuracy = model.evaluate(X_test,  y_test, verbose=2)
 
-    model.save(f"CNN/MODEL/{round(final_accuracy, 5)}.h5")
+    model.save(f"{CNN_MODELS_PATH}/{round(final_accuracy, 5)}.h5")
 
     return model, final_accuracy

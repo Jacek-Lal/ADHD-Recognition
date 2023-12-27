@@ -5,6 +5,7 @@ import copy
 
 
 def filterEEGData(ADHD_DATA, CONTROL_DATA, band_type=2):
+
     order = 4
     cutoff = CUTOFFS[band_type]
 
@@ -13,6 +14,7 @@ def filterEEGData(ADHD_DATA, CONTROL_DATA, band_type=2):
 
     low_cutoff = cutoff[0]
     high_cutoff = cutoff[1]
+
     b, a = signal.butter(order, [low_cutoff / (0.5 * FS), high_cutoff / (0.5 * FS)], btype='bandpass')
 
     for i in range(len(ADHD_DATA)):
@@ -24,6 +26,7 @@ def filterEEGData(ADHD_DATA, CONTROL_DATA, band_type=2):
     return ADHD_FILTERED, CONTROL_FILTERED
 
 def normalizeEEGData(ADHD_DATA, CONTROL_DATA):
+
     num_patients_A = len(ADHD_DATA)
     num_patients_C = len(CONTROL_DATA)
 
@@ -48,8 +51,10 @@ def normalizeEEGData(ADHD_DATA, CONTROL_DATA):
     return ADHD_DATA_normalized, CONTROL_DATA_normalized
 
 def clipEEGData(ADHD_DATA, CONTROL_DATA):
+
     num_patients_A = len(ADHD_DATA)
     num_patients_C = len(CONTROL_DATA)
+
     percentile = 99.8
 
     ADHD_CLIPPED = copy.deepcopy(ADHD_DATA)
@@ -76,9 +81,9 @@ def clipEEGData(ADHD_DATA, CONTROL_DATA):
     return ADHD_CLIPPED, CONTROL_CLIPPED
 
 def deleteMedianEEG(ADHD_DATA,CONTROL_DATA, median_level = 4):
+
     ADHD_MEDIANED = copy.deepcopy(ADHD_DATA)
     CONTROL_MEDIANED = copy.deepcopy(CONTROL_DATA)
-
 
     for i in range(len(ADHD_DATA)):
         for j in range(CNN_INPUT_SHAPE[0]):
@@ -93,6 +98,5 @@ def deleteMedianEEG(ADHD_DATA,CONTROL_DATA, median_level = 4):
             median_mask = np.abs(median_level*median)
             channel_data = CONTROL_DATA[i][j]
             CONTROL_MEDIANED[i][j][(channel_data>median_mask) | (channel_data<-median_mask)] = median
-
 
     return ADHD_MEDIANED, CONTROL_MEDIANED
