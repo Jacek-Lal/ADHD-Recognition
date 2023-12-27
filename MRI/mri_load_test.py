@@ -5,8 +5,8 @@ from mri_read import *
 from config import *
 from mri_plot import *
 
-adhdLabels = getAdhdLabels(PATIENTS_DATA_PATH)
-patientsNumber = 11
+#adhdLabels = getAdhdLabels(PATIENTS_DATA_PATH)
+#patientsNumber = 11
 
 # data = getTaskMRI(TASKS[0], adhdLabels, patientsNumber) # List[{data: np.array, hasAdhd: int}]
 # print(f"Shape: {data[0]['data'].shape}, {data[1]['data'].shape}, {data[2]['data'].shape}")
@@ -17,7 +17,7 @@ with open('lista.pkl', 'rb') as f:
     data = pickle.load(f)    
 
 plot_mri(data[0]['data'])
-
+print(getData(data[0]['data']))
 
 del data
 gc.collect()

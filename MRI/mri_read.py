@@ -9,6 +9,9 @@ def read_nii_file(file_path):
 
     return img
 
+def getData(img):
+    return img.get_fdata()
+
 def getAdhdLabels(file_path):
     data = []
     with open(file_path, 'r', newline='', encoding='utf-8') as file:
