@@ -1,7 +1,8 @@
 import numpy as np
-from EEG.config import *
 from scipy import signal
 import copy
+
+from EEG.config import *
 
 def filterEEGData(DATA, band_type=2):
 

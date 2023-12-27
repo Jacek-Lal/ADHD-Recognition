@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+
 from EEG.config import *
 
 def plot(data, patient_number, channel_number):

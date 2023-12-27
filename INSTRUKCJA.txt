@@ -27,17 +27,14 @@ git pull
 git checkout jacek
 git merge main
 
+MATEUSZ:
 
-pomocne komendy mateusz:
+bedac na swoim branch:
 
-wchodzisz na serwer i nic nie zrobiles, musisz zaktualizować się z mainem (stracisz to co masz na swoim branchu)
-bedac na swoim branchu
-git pull origin main
-git push
-- jestes zaktualizowany z mainem
+git pull origin main update z mainem
 
-chcesz swojego brancha wrzucic na main
-wchodzisz na main, git checkout main
-git merge mateusz (twoj branch)
-git push
-wracasz na swojego brancha
+git fetch ""
+git reset --hard ""  te 2 komendy sciagaja ostatniego commita z brancha
+
+git merge ""
+git push bedac na branchu np main robiac merge mateusz, wsadzasz na main dane branch mateusz
