@@ -17,15 +17,13 @@ def readEEGRaw(folder_path):
     CONTROL_DATA = []
 
     for subfolder in subfolders:
-        current_folder = os.path.join(folder_path, subfolder)
 
+        current_folder = os.path.join(folder_path, subfolder)
 
         mat_files = [f for f in os.listdir(current_folder) if f.endswith('.mat')]
 
-
         for mat_file in mat_files:
             file_path = os.path.join(current_folder, mat_file)
-
 
             loaded_data = loadmat(file_path, mat_dtype=True)
 
@@ -44,14 +42,12 @@ def readEEGRaw(folder_path):
 def prepareForCNN(ADHD_DATA, CONTROL_DATA):
 
     ADHD_in_one = np.concatenate(ADHD_DATA, axis=1)
-
     CONTROL_in_one = np.concatenate(CONTROL_DATA, axis=1)
 
     ADHD_range = (math.floor(ADHD_in_one.shape[1] / EEG_SIGNAL_FRAME_SIZE))
     CONTROL_range = (math.floor(CONTROL_in_one.shape[1] / EEG_SIGNAL_FRAME_SIZE))
 
     ADHD_framed = np.zeros((ADHD_range, ADHD_in_one.shape[0], EEG_SIGNAL_FRAME_SIZE))
-
     CONTROL_framed = np.zeros((CONTROL_range, CONTROL_in_one.shape[0], EEG_SIGNAL_FRAME_SIZE))
 
     for i in range(ADHD_range):
@@ -65,7 +61,6 @@ def prepareForCNN(ADHD_DATA, CONTROL_DATA):
 
 
     X = np.concatenate((ADHD_framed, CONTROL_framed))
-
     y = np.concatenate((np.array(y_ADHD), np.array(y_CONTROL)))
 
     X_4D = np.reshape(X,(X.shape[0],X.shape[1],X.shape[2],1))
@@ -73,10 +68,8 @@ def prepareForCNN(ADHD_DATA, CONTROL_DATA):
     encoder = LabelEncoder()
     y_encoded = encoder.fit_transform(y)
 
-    y_one_hot = to_categorical(y_encoded, num_classes=2)
-
     joblib.dump(encoder, f'{CNN_MODELS_PATH}/encoder.joblib')
 
-    X_train, X_test, y_train, y_test = train_test_split(X_4D, y_one_hot, test_size=0.3, shuffle=True)
+    X_train, X_test, y_train, y_test = train_test_split(X_4D, y_encoded, test_size=0.3, shuffle=True)
 
     return X_train, y_train, X_test, y_test
