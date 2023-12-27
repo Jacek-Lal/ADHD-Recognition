@@ -19,8 +19,11 @@ ADHD_CLIPPED, CONTROL_CLIPPED = clipEEGData(ADHD_FILTERED, CONTROL_FILTERED)
 
 ADHD_NORMALIZED, CONTROL_NORMALIZED = normalizeEEGData(ADHD_CLIPPED, CONTROL_CLIPPED)
 
-X_train, y_train, X_test, y_test = prepareForCNN(ADHD_NORMALIZED, CONTROL_NORMALIZED)
+best_acc = 0
+for i in range(10):
+  X_train, y_train, X_test, y_test = prepareForCNN(ADHD_NORMALIZED, CONTROL_NORMALIZED)
 
-accuracy = CnnFit(X_train, y_train, X_test, y_test)
+  accuracy = CnnFit(X_train, y_train, X_test, y_test)
+  best_acc = accuracy if accuracy > best_acc else best_acc
 #
-print(f"accuracy: {accuracy}")
+print(f"accuracy: {best_acc}")

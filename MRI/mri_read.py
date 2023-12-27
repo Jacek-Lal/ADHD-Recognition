@@ -7,7 +7,7 @@ def read_nii_file(file_path):
     img = nib.load(file_path)
     data = img.get_fdata()
 
-    return data
+    return img
 
 def getAdhdLabels(file_path):
     data = []
@@ -21,12 +21,11 @@ def getAdhdLabels(file_path):
     
     return data
 
-def getTaskMRI(task, adhd_labels):
+def getTaskMRI(task, adhd_labels, patientsNumber):
     
-    adhd_diagnosis = getAdhdLabels(PATIENTS_DATA_PATH)
     data = []
 
-    for sub_num in range(1,len(adhd_diagnosis) + 1):
+    for sub_num in range(1, patientsNumber + 1):
         
         hasAdhd = adhd_labels[sub_num - 1]
         

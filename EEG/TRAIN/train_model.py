@@ -31,10 +31,10 @@ def CnnFit(X_train, y_train, X_test, y_test):   #funkcja z artykułu
     model.add(BatchNormalization())
     model.add(AveragePooling2D(pool_size=(1, 16)))
 
-    #Second temporial
-    model.add(Conv2D(32, (1, 16), activation='relu'))
-    model.add(BatchNormalization())
-    model.add(AveragePooling2D(pool_size=(1, 8)))
+    # #Second temporial
+    # model.add(Conv2D(32, (1, 16), activation='relu'))
+    # model.add(BatchNormalization())
+    # model.add(AveragePooling2D(pool_size=(1, 8)))
 
     #Feature selection
     model.add(Flatten())
