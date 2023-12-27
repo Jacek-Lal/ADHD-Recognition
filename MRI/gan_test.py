@@ -58,14 +58,14 @@ def build_gan(generator, discriminator):
 noise_dim = 100
 image_dim = (128, 120, 32, 1)  # Rozmiar obrazu po dodaniu warstwy Reshape
 batch_size = 64
-epochs = 10
+epochs = 1500
 
 # Wczytanie danych z pliku .pkl
 data_path = 'lista.pkl'
 X_data, y_data = load_images_from_pickle(data_path)
 print(X_data.shape, y_data.shape)
 X_train, X_test, y_train, y_test = train_test_split(X_data, y_data, test_size=0.20, shuffle=True)
-print(X_train.shape, y_train.shape)
+
 # Tworzenie i kompilacja modeli
 discriminator = build_discriminator(image_dim)
 discriminator.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
@@ -78,24 +78,28 @@ gan.compile(optimizer='adam', loss='binary_crossentropy')
 
 # Pętla ucząca
 for epoch in range(epochs):
-  
     # Trening dyskryminatora
+    idx = np.random.randint(0, len(X_data), batch_size)
+    real_images = np.array(X_data)[idx]
+    labels_real = np.ones((batch_size, 1))
+
     noise = generate_noise(batch_size, noise_dim)
     generated_images = generator.predict(noise)
     labels_fake = np.zeros((batch_size, 1))
 
-    d_loss_real = discriminator.train_on_batch(X_train, y_train)
+    d_loss_real = discriminator.train_on_batch(real_images, labels_real)
     d_loss_fake = discriminator.train_on_batch(generated_images, labels_fake)
     d_loss = 0.5 * np.add(d_loss_real, d_loss_fake)
 
     # Trening generatora
     noise = generate_noise(batch_size, noise_dim)
     labels_gan = np.ones((batch_size, 1))
+
     g_loss = gan.train_on_batch(noise, labels_gan)
 
     # Wydruk statystyk co kilka epok
-    #if epoch % 100 == 0:
-    print(f"Epoch {epoch}, D Loss: {d_loss[0]}, G Loss: {g_loss}")
+    if epoch % 100 == 0:
+        print(f"Epoch {epoch}, D Loss: {d_loss[0]}, G Loss: {g_loss}")
 
 '''
 # Generowanie przykładowego obrazka po zakończeniu treningu
