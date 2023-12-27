@@ -1,9 +1,15 @@
 import os
+import sys
+
+# Add the directory containing config.py to the Python path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_dir)
+from config import *
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-from EEG.TRAIN.eeg_read import *
-from EEG.config import *
-from EEG.TRAIN.train_model import *
+from eeg_read import *
+from train_model import *
 
 ADHD_DATA, CONTROL_DATA = readEEGRaw(EEG_DATA_PATH)
 
@@ -15,6 +21,6 @@ ADHD_NORMALIZED, CONTROL_NORMALIZED = normalizeEEGData(ADHD_CLIPPED, CONTROL_CLI
 
 X_train, y_train, X_test, y_test = prepareForCNN(ADHD_NORMALIZED, CONTROL_NORMALIZED)
 
-# accuracy = CnnFit_test(X_train, y_train, X_test, y_test)
+accuracy = CnnFit(X_train, y_train, X_test, y_test)
 #
-# print(f"accuracy: {accuracy}")
+print(f"accuracy: {accuracy}")

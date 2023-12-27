@@ -1,7 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
-from EEG.config import *
+import sys
+import os
+# Add the directory containing config.py to the Python path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_dir)
+from config import *
 
 def plot(data, channel_number):
 

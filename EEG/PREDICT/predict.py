@@ -2,10 +2,16 @@ import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from keras.models import load_model
 
-from EEG.PREDICT.eeg_read import *
-from EEG.PREDICT.eeg_filter import *
-from EEG.config import *
-from EEG.PREDICT.plots import *
+from eeg_read import *
+from eeg_filter import *
+import sys
+
+# Add the directory containing config.py to the Python path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_dir)
+from config import *
+from plots import *
 
 
 PATIENT_DIR = 'CONTROL/v307'
