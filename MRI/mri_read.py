@@ -1,49 +1,57 @@
 import os
 import nibabel as nib
-import numpy as np
-
-MRI_DATA_PATH = './MRI'
-
+import csv
+from config import *
 
 def read_nii_file(file_path):
     img = nib.load(file_path)
     data = img.get_fdata()
+
     return data
 
+def getAdhdLabels(file_path):
+    data = []
+    with open(file_path, 'r', newline='', encoding='utf-8') as file:
+        reader = csv.reader(file, delimiter='\t')
+        next(reader, None)
 
-def read_MRI_file(root_folder):
-    tasks = [
-        'task-SLD',
-        'task-SLI',
-        'task-SSD',
-        'task-SSI',
-        'task-VLD',
-        'task-VLI',
-        'task-VSD',
-        'task-VSI',
-    ]
+        for row in reader:
+            hasAdhd = int(row[5])
+            data.append(hasAdhd)
+    
+    return data
 
-    data_dict = {}
+def getTaskMRI(task, adhd_labels):
+    
+    adhd_diagnosis = getAdhdLabels(PATIENTS_DATA_PATH)
+    data = []
 
-    for task in tasks:
-        task_data = {}
-        for sub_num in range(1, 80):
-            sub_folder = f'sub-{sub_num:02d}'
-            sub_path = os.path.join(root_folder, sub_folder, 'ses-T1', 'func')
-            if os.path.exists(sub_path):
-                nii_files = [f for f in os.listdir(sub_path) if f.startswith(f'{sub_folder}_ses-T1_{task}_bold.nii.gz')]
-                if nii_files:
-                    task_data[sub_folder] = []
-                    for nii_file in nii_files:
-                        nii_path = os.path.join(sub_path, nii_file)
-                        nii_data = read_nii_file(nii_path)
-                        task_data[sub_folder].append(np.array(nii_data))
+    for sub_num in range(1,len(adhd_diagnosis) + 1):
+        
+        hasAdhd = adhd_labels[sub_num - 1]
+        
+        sub_folder_name = f'sub-{sub_num:02d}'
+        sub_folder_path = os.path.join(MRI_DATA_PATH, sub_folder_name, 'ses-T1', 'func')
+        
+        if not os.path.exists(sub_folder_path): 
+            print("Path does not exist")
+            continue
+        
+        file = None
+        for f in os.listdir(sub_folder_path):
+            if f.endswith(f"{task}_bold.nii.gz"):
+                file = f
+           
+        if file == None: 
+            print(f"There is no task {task} in this folder")
+            continue
+        
+        nii_path = os.path.join(sub_folder_path, file)
+        nii_file_data = read_nii_file(nii_path)
 
-        data_dict[task] = task_data
-
-    return data_dict
-
-
-MRI_data = read_MRI_file(MRI_DATA_PATH)
-print(MRI_data)
+        patient_data = {"data": nii_file_data, "hasAdhd": hasAdhd}
+        
+        data.append(patient_data)
+            
+    return data
 
