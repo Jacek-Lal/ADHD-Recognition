@@ -9,11 +9,12 @@ from EEG.config import *
 from EEG.PREDICT.plots import *
 
 
-PATIENT_DIR = 'EEG/PREDICT/PREDICT_DATA/ADHD/v15p.mat'
+PATIENT_DIR = 'CONTROL/v129'
 
-MODEL_NAME = ""
+MODEL_NAME = "0.8828"
 
-DATA = readEEGRaw(PATIENT_DIR)
+
+DATA = readEEGRaw(f'EEG/PREDICT/PREDICT_DATA/{PATIENT_DIR}.mat')
 
 DATA_FILTERED = filterEEGData(DATA)
 
@@ -23,10 +24,8 @@ DATA_NORMALIZED = normalizeEEGData(DATA_CLIPPED)
 
 DATA_FRAMED = frameDATA(DATA_NORMALIZED)
 
-print(DATA_FRAMED.shape)
+model = load_model(f'{CNN_MODELS_PATH}/{MODEL_NAME}.h5')
 
-# model = load_model(f'{EEG/MODEL}/{MODEL_NAME}")
-#
-# predictions = model.predict()
-#
-# print(predictions)
+predictions = model.predict(DATA_FRAMED)
+
+checkResult(predictions)

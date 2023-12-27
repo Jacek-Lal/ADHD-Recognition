@@ -15,6 +15,6 @@ ADHD_NORMALIZED, CONTROL_NORMALIZED = normalizeEEGData(ADHD_CLIPPED, CONTROL_CLI
 
 X_train, y_train, X_test, y_test = prepareForCNN(ADHD_NORMALIZED, CONTROL_NORMALIZED)
 
-# model, accuracy = CnnFit_test(X_train, y_train, X_test, y_test)
-#
-# print(f"accuracy: {accuracy}")
+accuracy = CnnFit_test(X_train, y_train, X_test, y_test)
+
+print(f"accuracy: {accuracy}")
