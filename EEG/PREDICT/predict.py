@@ -8,7 +8,7 @@ from EEG.config import *
 from EEG.PREDICT.plots import *
 
 
-PATIENT_DIR = 'CONTROL/v129'
+PATIENT_DIR = 'CONTROL/v41p'
 
 MODEL_NAME = "0.8828"
 

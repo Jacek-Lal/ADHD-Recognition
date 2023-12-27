@@ -29,6 +29,6 @@ def checkResult(predictions):
     mean = np.mean(predictions)
 
     if mean > 0.75:
-        print(f"Wynik pacjenta: ADHD, z prawdopodobieństwem: {np.round(mean,3)*100}%")
+        print(f"Wynik pacjenta: ADHD, z prawdopodobieństwem: {np.round(mean*100,3)}%")
     else:
-        print(f"Wynik pacjenta: ZDROWY, z prawdopodobieństwem: {np.abs(np.round(1-mean,3))*100}%")
+        print(f"Wynik pacjenta: ZDROWY, z prawdopodobieństwem: {np.abs(np.round((1-mean)*100,3))}%")
