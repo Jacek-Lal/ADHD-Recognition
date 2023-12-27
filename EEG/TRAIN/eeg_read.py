@@ -6,7 +6,7 @@ from eeg_filter import *
 import math
 from sklearn.preprocessing import LabelEncoder
 from tensorflow.keras.utils import to_categorical
-from CNN.config import *
+from EEG.config import *
 import joblib
     
 def readEEGRaw(folder_path):
@@ -75,7 +75,7 @@ def prepareForCNN(ADHD_DATA, CONTROL_DATA):
 
     y_one_hot = to_categorical(y_encoded, num_classes=2)
 
-    joblib.dump(encoder, 'CNN/MODEL/encoder.joblib')
+    joblib.dump(encoder, f'{CNN_MODELS_PATH}/encoder.joblib')
 
     X_train, X_test, y_train, y_test = train_test_split(X_4D, y_one_hot, test_size=0.3, shuffle=True)
 

@@ -1,5 +1,5 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-from CNN.config import *
+from config import *
 
 print("main")

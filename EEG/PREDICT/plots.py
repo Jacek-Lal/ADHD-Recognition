@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from CNN.config import *
+from EEG.config import *
 
 def plot(data, channel_number):
 
@@ -11,7 +11,7 @@ def plot(data, channel_number):
     plt.plot(t, signal, label=f'Kanał {channel_number}')
     plt.xlabel('Czas (s)')
     plt.ylabel('Wartości próbek')
-    plt.title('Wykres sygnału EEG')
+    plt.title('Wykres sygnału TRAIN_DATA')
     plt.legend()
     plt.show()
 
