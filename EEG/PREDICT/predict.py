@@ -9,8 +9,9 @@ from EEG.config import *
 from EEG.PREDICT.plots import *
 
 
-PATIENT_DIR = 'TRAIN_DATA/TRAIN_DATA/PREDICT/ADHD/v37p.mat'
-MODEL_PATH = 'TRAIN_DATA/MODEL/model'
+PATIENT_DIR = 'EEG/PREDICT/PREDICT_DATA/ADHD/v15p.mat'
+
+MODEL_NAME = ""
 
 DATA = readEEGRaw(PATIENT_DIR)
 
@@ -20,7 +21,11 @@ DATA_CLIPPED = clipEEGData(DATA_FILTERED)
 
 DATA_NORMALIZED = normalizeEEGData(DATA_CLIPPED)
 
-# model = load_model(MODEL_PATH)
+DATA_FRAMED = frameDATA(DATA_NORMALIZED)
+
+print(DATA_FRAMED.shape)
+
+# model = load_model(f'{EEG/MODEL}/{MODEL_NAME}")
 #
 # predictions = model.predict()
 #
