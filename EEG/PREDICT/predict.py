@@ -7,23 +7,20 @@ from EEG.PREDICT.eeg_filter import *
 from EEG.config import *
 from EEG.PREDICT.plots import *
 
+def predict(PATIENT_DIR, MODEL_NAME):
 
-PATIENT_DIR = 'CONTROL/v307'
+    DATA = readEEGRaw(f'EEG/PREDICT/PREDICT_DATA/{PATIENT_DIR}.mat')
 
-MODEL_NAME = "0.8445"
+    DATA_FILTERED = filterEEGData(DATA)
 
-DATA = readEEGRaw(f'EEG/PREDICT/PREDICT_DATA/{PATIENT_DIR}.mat')
+    DATA_CLIPPED = clipEEGData(DATA_FILTERED)
 
-DATA_FILTERED = filterEEGData(DATA)
+    DATA_NORMALIZED = normalizeEEGData(DATA_CLIPPED)
 
-DATA_CLIPPED = clipEEGData(DATA_FILTERED)
+    DATA_FRAMED = frameDATA(DATA_NORMALIZED)
 
-DATA_NORMALIZED = normalizeEEGData(DATA_CLIPPED)
+    model = load_model(f'{CNN_MODELS_PATH}/{MODEL_NAME}.h5')
 
-DATA_FRAMED = frameDATA(DATA_NORMALIZED)
+    predictions = model.predict(DATA_FRAMED)
 
-model = load_model(f'{CNN_MODELS_PATH}/{MODEL_NAME}.h5')
-
-predictions = model.predict(DATA_FRAMED)
-
-checkResult(predictions)
+    checkResult(predictions)
