@@ -42,10 +42,10 @@ def build_generator(latent_dim):
     model = models.Sequential()
     model.add(layers.Dense(128 * 120 * 32, input_dim=latent_dim))
     model.add(layers.Reshape((128, 120, 32, 1)))
-    model.add(layers.Conv3D(128, (4, 4, 4), strides=(2, 2, 2), padding='same'))
+    model.add(layers.Conv3DTranspose(128, (4, 4, 4), strides=(1, 1, 1), padding='same'))
     model.add(layers.BatchNormalization())
     model.add(layers.LeakyReLU(alpha=0.2))
-    model.add(layers.Conv3DTranspose(64, (4, 4, 4), strides=(2, 2, 2), padding='same'))
+    model.add(layers.Conv3DTranspose(64, (4, 4, 4), strides=(1, 1, 1), padding='same'))
     model.add(layers.BatchNormalization())
     model.add(layers.LeakyReLU(alpha=0.2))
     model.add(layers.Conv3DTranspose(1, (4, 4, 4), activation='sigmoid', padding='same'))
@@ -55,10 +55,10 @@ def build_generator(latent_dim):
 # Discriminator Model
 def build_discriminator(img_shape):
     model = models.Sequential()
-    model.add(layers.Conv3D(64, (4, 4, 4), strides=(2, 2, 2), padding='same', input_shape=[128,120,32,1]))
+    model.add(layers.Conv3D(64, (4, 4, 4), strides=(1, 1, 1), padding='same', input_shape=[128,120,32,1]))
     
     model.add(layers.LeakyReLU(alpha=0.2))
-    model.add(layers.Conv3D(128, (4, 4, 4), strides=(2, 2, 2), padding='same'))
+    model.add(layers.Conv3D(128, (4, 4, 4), strides=(1, 1, 1), padding='same'))
     model.add(layers.BatchNormalization())
     model.add(layers.LeakyReLU(alpha=0.2))
     model.add(layers.Flatten())
