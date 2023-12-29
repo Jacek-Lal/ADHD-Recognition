@@ -24,13 +24,13 @@ def showPhoto(X):
 
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
-X_train = splitdata(x_train, y_train, 0)
+X_train = splitdata(x_train, y_train, 8)
 
 
 # Parametry
 noise_dim = 100 # Wymiar szumu generowanego przez generator.
 image_dim = (28, 28)  # Rozmiar obrazu
-batch_size = 128 # Liczba obrazów w jednej iteracji treningowej.
+batch_size = 256 # Liczba obrazów w jednej iteracji treningowej.
 epochs = 3000 # Liczba epok treningowych.
 
 
@@ -41,7 +41,6 @@ def generate_noise(batch_size, noise_dim):
     #np.random.normal(0, 1, size=(batch_size, noise_dim))
 
     return x_input
-
 
 
 def build_generator(noise_dim, output_dim):
@@ -84,15 +83,15 @@ gan.compile(optimizer='adam', loss='binary_crossentropy')
 
 for epoch in range(epochs):
 
-    # Losowe indeksy do pobrania próbek z zestawu treningowego
+    # Pobranie rzeczywistych obrazów
     idx = np.random.randint(0, X_train.shape[0], batch_size)
-    real_images = X_train[idx]  # Pobranie rzeczywistych obrazów
-    labels_real = np.ones((batch_size, 1))  # Etykiety dla rzeczywistych obrazów
+    real_images = X_train[idx]
+    labels_real = np.ones((batch_size, 1))
 
-    # Generowanie szumu jako dane wejściowe dla generatora
+    #  Generowanie obrazów przy użyciu generatora
     noise = generate_noise(batch_size, noise_dim)
-    generated_images = generator.predict(noise)  # Generowanie obrazów przy użyciu generatora
-    labels_fake = np.zeros((batch_size, 1))  # Etykiety dla wygenerowanych obrazów
+    generated_images = generator.predict(noise)
+    labels_fake = np.zeros((batch_size, 1))
 
     # Trening dyskryminatora na rzeczywistych i wygenerowanych danych
     d_loss_real, d_acc_real = discriminator.train_on_batch(real_images, labels_real)
