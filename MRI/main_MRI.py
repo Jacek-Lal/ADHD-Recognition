@@ -11,31 +11,20 @@ def splitdata(X,y,labelnumber):
 
     id_s = np.where(y == labelnumber)
 
-    X_splited = X[id_s].astype('float32')
+    X_splited = X[id_s]
 
-    return (X_splited-127.5)/127.5
+    return X_splited/255
 
 def showPhoto(X):
-    X = (X + 1) / 2.0
 
-    X = (X * 255).astype(np.uint8)
-
-    plt.imshow((X).reshape(28, 28))
+    plt.imshow((X*-1).reshape(28, 28), cmap="gray")
 
     plt.show()
 
 
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
-X_train = splitdata(x_train,y_train, 0)
-
-# X_trainN, y_train = read_data()
-#
-# X_train_transposed = makearray(X_trainN)
-#
-# X_train = splitdata(X_train_transposed,y_train,0)
-
-
+X_train = splitdata(x_train, y_train, 0)
 
 
 # Parametry
