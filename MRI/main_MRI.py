@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tensorflow.keras import layers, models
 from keras.datasets import mnist
-from functions import *
+
 
 def splitdata(X,y,labelnumber):
 
