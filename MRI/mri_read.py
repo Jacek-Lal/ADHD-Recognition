@@ -2,7 +2,8 @@ import os
 import nibabel as nib
 import csv
 from config import *
-
+import pickle
+import numpy as np
 
 def read_nii_file(file_path):
     img = nib.load(file_path)
@@ -59,3 +60,18 @@ def getTaskMRI(task, adhd_labels, patientsNumber):
         data.append(patient_data)
 
     return data
+
+
+def load_images_from_pickle(file_path):
+    with open(file_path, 'rb') as file:
+        data = pickle.load(file)
+
+    images = []
+    labels = []
+    for patient in data:
+        patientData = getData(patient['data'])
+        for i in range(patientData.shape[-1]):
+            images.append(patientData[:,:,:,i])
+            labels.append(patient['hasAdhd'])
+
+    return np.array(images), np.array(labels)
