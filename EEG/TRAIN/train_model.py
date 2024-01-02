@@ -46,6 +46,7 @@ Budując model od dwóch warstw konwolucyjnych po cztery zauważyłem następuj�
     - Zbyt niskie parametry zmniejszają loss i accuracy
     - Zbyt wysokie parametry znacznie bardziej zwiększają loss niż accuracy
     - Zwiększanie modelu o kolejne warstwy zwiększa loss i accuracy
+    - Zbyt duży model zwiększa loss i zmniejsza accuracy
     - Odpowiednie dobranie parametrów redukuje loss i zwiększa accuracy
 
 OPTYMALNE USTAWIENIA: [loss: 0.6518 - accuracy: 0.8175]
