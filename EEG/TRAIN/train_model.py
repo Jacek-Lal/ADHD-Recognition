@@ -18,11 +18,11 @@ def CnnFit_test(X_train, y_train, X_test, y_test):
     model.add(BatchNormalization())
     model.add(AveragePooling2D(pool_size=(2, 1)))
 
-    model.add(Conv2D(32, (1, 128), activation='relu'))
+    model.add(Conv2D(32, (1, 64), activation='relu'))
     model.add(BatchNormalization())
     model.add(AveragePooling2D(pool_size=(1, 1)))
 
-    model.add(Conv2D(32, (1, 128), activation='relu'))
+    model.add(Conv2D(32, (1, 64), activation='relu'))
     model.add(BatchNormalization())
     model.add(AveragePooling2D(pool_size=(1, 1)))
     
