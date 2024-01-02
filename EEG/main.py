@@ -23,13 +23,13 @@ def predict():
     patient_dir = patient_dir_var.get()
     model_name = model_name_var.get()
 
-    DATA = readEEGRaw(f'C:/Users/Artur/Desktop/pyton_test/Projekt_całość/main01/IPZ/EEG/PREDICT/PREDICT_DATA/ADHD/{patient_dir}.mat')
+    DATA = readEEGRaw(patient_dir)
     DATA_FILTERED = filterEEGData(DATA)
     DATA_CLIPPED = clipEEGData(DATA_FILTERED)
     DATA_NORMALIZED = normalizeEEGData(DATA_CLIPPED)
     DATA_FRAMED = frameDATA(DATA_NORMALIZED)
 
-    model = load_model(f'C:/Users/Artur/Desktop/pyton_test/Projekt_całość/main01/IPZ/{CNN_MODELS_PATH}/{model_name}')
+    model = load_model(f'{CNN_MODELS_PATH}/{model_name}')
     predictions = model.predict(DATA_FRAMED)
 
     probability, textStatus = checkResult(predictions)
@@ -40,7 +40,7 @@ def predict():
 
 def browse_file():
     filename = filedialog.askopenfilename(initialdir="/", title="Select EEG Data File")
-    patient_dir_var.set(os.path.splitext(os.path.basename(filename))[0])
+    patient_dir_var.set(filename)
 
 # GUI setup
 root = Tk()
@@ -48,7 +48,7 @@ root.title("EEG Prediction GUI")
 
 # Model Dropdown
 model_name_var = StringVar(root)
-model_name_var.set("0.8828")  # default value
+model_name_var.set("[Select Model]")  # default value
 models_list = os.listdir("./MODEL")
 model_dropdown = OptionMenu(root, model_name_var, *models_list)
 model_dropdown_label = Label(root, text="Select Model:")
