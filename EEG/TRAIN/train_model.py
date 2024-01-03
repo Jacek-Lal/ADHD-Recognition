@@ -41,28 +41,28 @@ def CnnFit(X_train, y_train, X_test, y_test):   #funkcja z artykułu
     model = Sequential()
 
     #First spatial
-    model.add(Conv2D(16, (10, 1), input_shape=CNN_INPUT_SHAPE, activation='relu', padding='same'))
+    model.add(Conv2D(16, (2, 10), input_shape=CNN_INPUT_SHAPE, activation='relu', padding='same'))
     model.add(BatchNormalization())
-    model.add(AveragePooling2D(pool_size=(2, 1)))
+    model.add(AveragePooling2D(pool_size=(2, 2)))
 
     #Second spatial
-    model.add(Conv2D(16,(4,1), activation='relu'))
+    model.add(Conv2D(16,(2,4), activation='relu'))
     model.add(BatchNormalization())
-    model.add(AveragePooling2D(pool_size=(2, 1)))
+    model.add(AveragePooling2D(pool_size=(2, 2)))
 
-    #First temporal
-    model.add(Conv2D(32, (1, 128), activation='relu'))
-    model.add(BatchNormalization())
-    model.add(AveragePooling2D(pool_size=(1, 64)))
-
-    #Second temporial
-    model.add(Conv2D(32, (1, 64), activation='relu'))
-    model.add(BatchNormalization())
-    model.add(AveragePooling2D(pool_size=(1, 32)))
+    # #First temporal
+    # model.add(Conv2D(32, (1, 128), activation='relu'))
+    # model.add(BatchNormalization())
+    # model.add(AveragePooling2D(pool_size=(1, 64)))
+    #
+    # #Second temporial
+    # model.add(Conv2D(32, (1, 64), activation='relu'))
+    # model.add(BatchNormalization())
+    # model.add(AveragePooling2D(pool_size=(1, 32)))
 
     #Feature selection
     model.add(Flatten())
-    model.add(Dense(64, activation='relu'))
+    #model.add(Dense(64, activation='relu'))
     model.add(Dense(32, activation='relu'))
     model.add(Dense(1, activation='sigmoid'))
 

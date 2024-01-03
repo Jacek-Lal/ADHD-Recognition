@@ -26,7 +26,7 @@ def showPhoto(X):
 
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
-X_train = splitdata(x_train, y_train, 8)
+X_train = splitdata(x_train, y_train, 4)
 
 
 def generate_noise(batch_size, noise_dim):
@@ -103,7 +103,7 @@ for epoch in range(epochs):
     g_loss = gan.train_on_batch(noise, labels_gan)
 
     # Wydruk statystyk co kilka epok
-    if epoch % 250 == 0:
+    if epoch % 2000 == 0:
         # Wydruk wartości straty dla dyskryminatora i generatora
         print(f"Epoch {epoch}, D Loss: {d_loss}, D Acc: {d_acc}, G Loss: {g_loss}")
 
@@ -113,4 +113,4 @@ for epoch in range(epochs):
 
         showPhoto(generated_sample)
 
-    generator.save(f"{GAN_MODEL_PATH}/{round(d_acc, 4)}.h5")
+generator.save(f"{GAN_MODEL_PATH}/{round(g_loss, 4)}.h5")

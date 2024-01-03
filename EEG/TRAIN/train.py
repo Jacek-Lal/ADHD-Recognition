@@ -16,6 +16,6 @@ def train():
 
     X_train, y_train, X_test, y_test = prepareForCNN(ADHD_NORMALIZED, CONTROL_NORMALIZED)
 
-    accuracy = CnnFit_test(X_train, y_train, X_test, y_test)
+    accuracy = CnnFit(X_train, y_train, X_test, y_test)
 
     print(f"accuracy: {accuracy}")
