@@ -4,19 +4,15 @@ import pickle
 from mri_read import *
 from config import *
 from mri_plot import *
+import matplotlib.pyplot as plt
 
-#adhdLabels = getAdhdLabels(PATIENTS_DATA_PATH)
-#patientsNumber = 11
-# data = getTaskMRI(TASKS[0], adhdLabels, patientsNumber) # List[{data: np.array, hasAdhd: int}]
-# print(f"Shape: {data[0]['data'].shape}, {data[1]['data'].shape}, {data[2]['data'].shape}")
-# print(f"Size of data: {asizeof.asizeof(data) / (1024.0**3):.2f} GB")
-# print(f"Subs in task: {len(data)}")
+task = "VLI"
+patientsNumber = 79
+dataControl = getTaskMRI(task, patientsNumber, 0) 
+dataAdhd = getTaskMRI(task, patientsNumber, 1) 
 
-with open('lista.pkl', 'rb') as f:
-    data = pickle.load(f)    
-
-#plot_mri(data[0]['data'])
-print(getData(data[0]['data']))
-#del data
-#gc.collect()
-
+# with open("controlImages.pkl", 'wb') as f1:
+#         pickle.dump(dataControl, f1)
+        
+# with open("adhdImages.pkl", 'wb') as f2:
+#         pickle.dump(dataAdhd, f2)

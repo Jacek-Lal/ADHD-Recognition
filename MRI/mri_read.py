@@ -8,34 +8,33 @@ import numpy as np
 def read_nii_file(file_path):
     img = nib.load(file_path)
     data = img.get_fdata()
-
-    return img
-
-
-def getData(img):
-    return img.get_fdata()
-
+    
+    return data[:, :, 15, 60:70].astype(np.float16)    # slice nr 15, 10 próbek w czasie od 60 do 70
 
 def getAdhdLabels(file_path):
     data = []
     with open(file_path, 'r', newline='', encoding='utf-8') as file:
         reader = csv.reader(file, delimiter='\t')
         next(reader, None)
-
+        count = 0
         for row in reader:
             hasAdhd = int(row[5])
+            count += hasAdhd
             data.append(hasAdhd)
-
+            
     return data
 
 
-def getTaskMRI(task, adhd_labels, patientsNumber):
+def getTaskMRI(task, patientsNumber, patientType): # patientType: 0 for control, 1 for adhd
     data = []
+    adhdLabels = getAdhdLabels(PATIENTS_DATA_PATH)
 
     for sub_num in range(1, patientsNumber + 1):
 
-        hasAdhd = adhd_labels[sub_num - 1]
+        hasAdhd = adhdLabels[sub_num - 1]
 
+        if hasAdhd != patientType: continue
+        
         sub_folder_name = f'sub-{sub_num:02d}'
         sub_folder_path = os.path.join(MRI_DATA_PATH, sub_folder_name, 'ses-T1', 'func')
 
@@ -51,13 +50,11 @@ def getTaskMRI(task, adhd_labels, patientsNumber):
         if file == None:
             print(f"There is no task {task} in this folder")
             continue
-
+        
         nii_path = os.path.join(sub_folder_path, file)
-        nii_file_data = read_nii_file(nii_path)
-
-        patient_data = {"data": nii_file_data, "hasAdhd": hasAdhd}
-
-        data.append(patient_data)
+        patient_images = read_nii_file(nii_path)
+        for i in range(patient_images.shape[-1]):
+            data.append(patient_images[:,:,i])
 
     return data
 
@@ -69,7 +66,7 @@ def load_images_from_pickle(file_path):
     images = []
     labels = []
     for patient in data:
-        patientData = getData(patient['data'])
+        patientData = patient['data']
         for i in range(patientData.shape[-1]):
             images.append(patientData[:,:,:,i])
             labels.append(patient['hasAdhd'])

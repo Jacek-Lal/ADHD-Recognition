@@ -2,4 +2,3 @@
 *.nii.gz
 /MRI/files
 __pycache__
-*.pkl
