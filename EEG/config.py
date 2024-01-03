@@ -7,6 +7,6 @@ CNN_MODELS_PATH = '../EEG/MODEL'                                                
 CNN_POS_LABEL = 1                                                             # wyjście pozytywne z modelu
 CNN_NEG_LABEL = 0                                                           # wyjście negatywne
 CNN_INPUT_SHAPE = (19, EEG_SIGNAL_FRAME_SIZE, 1)                                    # 19 - ilość elektrod ; wielkość ramki danych ; 1 - magiczna liczba którą wymaga keras
-CNN_EPOCHS = 100                                                                     # Ilość przejść do przodu przez model
+CNN_EPOCHS = 11                                                                    # Ilość przejść do przodu przez model
 CUTOFFS = [(4,8), (13,30), (4,30)]                                                  # Przedziały częstotliwości theta, beta, wszystko
 FS = 128                                                                            # Częstotliwośc próbkowania

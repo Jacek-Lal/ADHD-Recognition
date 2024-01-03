@@ -9,7 +9,7 @@ from EEG.PREDICT.plots import *
 
 def predict(PATIENT_DIR, MODEL_NAME):
 
-    DATA = readEEGRaw(f'EEG/PREDICT/PREDICT_DATA/{PATIENT_DIR}.mat')
+    DATA = readEEGRaw(f'../EEG/PREDICT/PREDICT_DATA/{PATIENT_DIR}.mat')
 
     DATA_FILTERED = filterEEGData(DATA)
 
