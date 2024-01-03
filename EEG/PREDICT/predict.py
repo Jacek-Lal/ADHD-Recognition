@@ -6,32 +6,20 @@ from eeg_read import *
 from eeg_filter import *
 import sys
 
-# Add the directory containing config.py to the Python path
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(current_dir)
-sys.path.append(parent_dir)
-from config import *
-from plots import *
+def predict(PATIENT_DIR, MODEL_NAME):
 
-PATIENT_DIRS = ['ADHD/v15p','ADHD/v37p','ADHD/v274','CONTROL/v41p','CONTROL/v129','CONTROL/v307']
+    DATA = readEEGRaw(f'../EEG/PREDICT/PREDICT_DATA/{PATIENT_DIR}.mat')
 
-for dir in PATIENT_DIRS:
-  PATIENT_DIR = dir
+    DATA_FILTERED = filterEEGData(DATA)
 
-  MODEL_NAME = "0.9038"
+    DATA_CLIPPED = clipEEGData(DATA_FILTERED)
 
-  DATA = readEEGRaw(f'EEG/PREDICT/PREDICT_DATA/{PATIENT_DIR}.mat')
+    DATA_NORMALIZED = normalizeEEGData(DATA_CLIPPED)
 
-  DATA_FILTERED = filterEEGData(DATA)
+    DATA_FRAMED = frameDATA(DATA_NORMALIZED)
 
-  DATA_CLIPPED = clipEEGData(DATA_FILTERED)
+    model = load_model(f'{CNN_MODELS_PATH}/{MODEL_NAME}.h5')
 
-  DATA_NORMALIZED = normalizeEEGData(DATA_CLIPPED)
+    predictions = model.predict(DATA_FRAMED)
 
-  DATA_FRAMED = frameDATA(DATA_NORMALIZED)
-
-  model = load_model(f'{CNN_MODELS_PATH}/{MODEL_NAME}.h5')
-
-  predictions = model.predict(DATA_FRAMED)
-
-  checkResult(predictions)
+    checkResult(predictions)
