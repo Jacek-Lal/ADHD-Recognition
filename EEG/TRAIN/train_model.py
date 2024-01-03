@@ -1,12 +1,10 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from tensorflow import keras
-from keras import models
-from models import Sequential
+from keras.models import Sequential
+from keras.optimizers import Adam
+
 from keras.layers import Conv2D, Flatten, Dense, BatchNormalization, AveragePooling2D, Dropout
-from tensorflow import keras
-from keras import optimizers 
-from optimizers import Adam
 import matplotlib.pyplot as plt
 
 import sys
