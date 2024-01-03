@@ -4,8 +4,14 @@ from scipy.io import loadmat
 from sklearn.model_selection import train_test_split
 import math
 
-from EEG.TRAIN.eeg_filter import *
-from EEG.config import *
+from eeg_filter import *
+import sys
+
+# Add the directory containing config.py to the Python path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_dir)
+from config import *
 
     
 def readEEGRaw(folder_path):
@@ -64,6 +70,6 @@ def prepareForCNN(ADHD_DATA, CONTROL_DATA):
 
     X_4D = np.reshape(X,(X.shape[0],X.shape[1],X.shape[2],1))
 
-    X_train, X_test, y_train, y_test = train_test_split(X_4D, y, test_size=0.3, shuffle=True)
+    X_train, X_test, y_train, y_test = train_test_split(X_4D, y, test_size=0.20, shuffle=True)
 
     return X_train, y_train, X_test, y_test

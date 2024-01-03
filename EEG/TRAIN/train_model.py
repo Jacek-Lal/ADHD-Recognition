@@ -1,11 +1,19 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-from tensorflow.keras.models import Sequential
+from tensorflow import keras
+from keras.models import Sequential
+from keras.optimizers import Adam
+
 from keras.layers import Conv2D, Flatten, Dense, BatchNormalization, AveragePooling2D, Dropout
-from tensorflow.keras.optimizers import Adam
 import matplotlib.pyplot as plt
 
-from EEG.config import *
+import sys
+
+# Add the directory containing config.py to the Python path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_dir)
+from config import *
 
 def CnnFit(X_train, y_train, X_test, y_test):   #funkcja z artykułu
 

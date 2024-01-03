@@ -2,10 +2,9 @@ import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from keras.models import load_model
 
-from EEG.PREDICT.eeg_read import *
-from EEG.PREDICT.eeg_filter import *
-from EEG.config import *
-from EEG.PREDICT.plots import *
+from eeg_read import *
+from eeg_filter import *
+import sys
 
 def predict(PATIENT_DIR, MODEL_NAME):
 

@@ -1,9 +1,15 @@
 import os
+import sys
+
+# Add the directory containing config.py to the Python path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_dir)
+from config import *
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-from EEG.TRAIN.eeg_read import *
-from EEG.config import *
-from EEG.TRAIN.train_model import *
+from eeg_read import *
+from train_model import *
 
 def train():
     ADHD_DATA, CONTROL_DATA = readEEGRaw(EEG_DATA_PATH)
