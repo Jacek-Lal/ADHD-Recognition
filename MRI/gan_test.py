@@ -8,6 +8,7 @@ import tensorflow as tf
 from tensorflow import keras 
 from keras import layers, models
 from mri_read import *
+from pympler import asizeof
 
 # Funkcja wczytująca obrazy z pliku .pkl
 def load_images_from_pickle(file_path):
@@ -22,7 +23,7 @@ def load_images_from_pickle(file_path):
             images.append(patientData[:,:,:,i])
             labels.append(patient['hasAdhd'])
 
-    return np.array(images), np.array(labels)
+    return np.array(images, dtype=np.float16), np.array(labels, dtype=np.int8)
 
 # Funkcja generująca losowy szum jako dane wejściowe dla generatora
 def generate_noise(batch_size, noise_dim):
@@ -42,14 +43,15 @@ def build_generator(latent_dim):
     model = models.Sequential()
     model.add(layers.Dense(128 * 120 * 32, input_dim=latent_dim))
     model.add(layers.Reshape((128, 120, 32, 1)))
-    model.add(layers.Conv3DTranspose(128, (4, 4, 4), strides=(1, 1, 1), padding='same'))
-    model.add(layers.BatchNormalization())
-    model.add(layers.LeakyReLU(alpha=0.2))
+    #model.add(layers.Conv3DTranspose(128, (4, 4, 4), strides=(1, 1, 1), padding='same'))
+    #model.add(layers.BatchNormalization())
+    #model.add(layers.LeakyReLU(alpha=0.2))
     model.add(layers.Conv3DTranspose(64, (4, 4, 4), strides=(1, 1, 1), padding='same'))
     model.add(layers.BatchNormalization())
     model.add(layers.LeakyReLU(alpha=0.2))
     model.add(layers.Conv3DTranspose(1, (4, 4, 4), activation='sigmoid', padding='same'))
     model.summary()
+    print(model.dtype)
     return model
 
 # Discriminator Model
@@ -95,11 +97,14 @@ gan.compile(optimizer='adam', loss='binary_crossentropy')
 epochs = 10
 batch_size = 32
 X_data, y_data = load_images_from_pickle('lista.pkl')
+
 mri_images = normalize(X_data)
+print(f"Size of data: {asizeof.asizeof(mri_images) / (1024.0**3):.2f} GB")
+print(mri_images.dtype)
 
 for epoch in range(epochs):
     print(1)
-    # Generowanie szumu z rozkładu normalnego jako wejście do generatora
+    
     # Generowanie szumu z rozkładu normalnego jako wejście do generatora
     noise = np.random.normal(0, 1, (batch_size, latent_dim))
     generated_images = generator.predict(noise)
@@ -108,12 +113,11 @@ for epoch in range(epochs):
     # Losowy wybór rzeczywistych obrazów z danych wejściowych
     idx = np.random.randint(0, mri_images.shape[0], batch_size)
     real_images = mri_images[idx]
-
     print(3)
+    
     # Etykiety dla rzeczywistych i wygenerowanych obrazów
     labels_real = np.ones((batch_size, 1))
     labels_fake = np.zeros((batch_size, 1))
-
     print(4)
     
     # Trenowanie dyskryminatora na rzeczywistych i wygenerowanych danych
@@ -128,8 +132,8 @@ for epoch in range(epochs):
     # Generowanie nowego szumu dla wejścia do GAN
     noise = np.random.normal(0, 1, (batch_size, latent_dim))
     labels_gan = np.ones((batch_size, 1))
-
     print(7)
+    
     # Trenowanie GAN na wygenerowanych danych
     g_loss = gan.train_on_batch(noise, labels_gan)
     print(8)
