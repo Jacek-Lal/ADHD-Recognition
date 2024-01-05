@@ -6,10 +6,13 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(
 import pickle
 import numpy as np
 import matplotlib.pyplot as plt
-from tensorflow import keras 
+from tensorflow import keras
+from tensorflow.keras.layers import Dense, Reshape, BatchNormalization, Conv2DTranspose, Flatten, Conv2D, Input, UpSampling2D
+from tensorflow.keras.models import Sequential, Model
+from tensorflow.keras.optimizers import Adam
 from keras import layers, models
 from keras.datasets import mnist
-from config import *
+from MRI.config import *
 
 #DLA ZBIORU MNIST - SZKIELET GAN
 
@@ -35,7 +38,7 @@ def trim(data, nr_rows=4):
     return trimmed
 
 
-with open(r"MRI\PICKLE_DATA\adhdImages.pkl", 'rb') as file:
+with open(r"C:\Users\Radek\Desktop\IPZ\GIT\ADHD-Recognition\MRI\PICKLE_DATA\adhdImages.pkl", 'rb') as file:
     data = pickle.load(file)
  
 X_train = np.array(trim(data))
@@ -49,22 +52,30 @@ def generate_noise(batch_size, noise_dim):
 
 
 def build_generator(noise_dim, output_dim):
-    model = models.Sequential()
-    model.add(layers.Dense(128, input_dim=noise_dim, activation='relu'))
-    model.add(layers.BatchNormalization())
-    model.add(layers.Dense(256, activation='relu'))
-    model.add(layers.BatchNormalization())
-    model.add(layers.Dense(np.prod(output_dim), activation='sigmoid'))
-    model.add(layers.Reshape(output_dim))  # Dodaj warstwę Reshape
+    input_layer = Input(shape=(noise_dim,))
+
+    x = Dense(30 * 30 * 128, activation='relu')(input_layer)
+    x = Reshape((30, 30, 128))(x)
+    x = BatchNormalization()(x)
+
+    x = Conv2DTranspose(64, kernel_size=4, strides=2, padding='same', activation='relu')(x)
+    x = BatchNormalization()(x)
+
+    generated_output = Conv2DTranspose(1, kernel_size=4, strides=2, padding='same', activation='sigmoid')(x)
+
+    model = Model(inputs=input_layer, outputs=generated_output)
     return model
 
 
 def build_discriminator(input_dim):
-    model = models.Sequential()
-    model.add(layers.Flatten(input_shape=input_dim))
-    model.add(layers.Dense(256, activation='relu'))
-    model.add(layers.Dense(128, activation='relu'))
-    model.add(layers.Dense(1, activation='sigmoid'))
+    input_layer = Input(shape=input_dim)
+
+    x = Conv2D(64, kernel_size=3, strides=2, padding='same', activation='relu')(input_layer)
+    x = Conv2D(128, kernel_size=3, strides=2, padding='same', activation='relu')(x)
+    x = Flatten()(x)
+    discriminator_output = Dense(1, activation='sigmoid')(x)
+
+    model = Model(inputs=input_layer, outputs=discriminator_output)
     return model
 
 
@@ -75,15 +86,17 @@ def build_gan(generator, discriminator):
     model.add(discriminator)
     return model
 
+discriminator_optimizer = keras.optimizers.Adam(learning_rate=0.00018)
+generator_optimizer = keras.optimizers.Adam(learning_rate=0.00018)
 
 discriminator = build_discriminator(image_dim)
-discriminator.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+discriminator.compile(optimizer=discriminator_optimizer, loss='binary_crossentropy', metrics=['accuracy'])
 
 generator = build_generator(noise_dim, image_dim)
-generator.compile(optimizer='adam', loss='binary_crossentropy')
+generator.compile(optimizer=generator_optimizer, loss='binary_crossentropy')
 
 gan = build_gan(generator, discriminator)
-gan.compile(optimizer='adam', loss='binary_crossentropy')
+gan.compile(optimizer=generator_optimizer, loss='binary_crossentropy')
 
 
 for epoch in range(epochs):
