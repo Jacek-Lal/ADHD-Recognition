@@ -2,7 +2,7 @@ import os
 import sys
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-
+import pickle
 import numpy as np
 import matplotlib.pyplot as plt
 from tensorflow import keras 
@@ -22,15 +22,19 @@ def splitdata(X,y,labelnumber):
 
 def showPhoto(X):
 
-    plt.imshow((X*-1).reshape(28, 28), cmap="gray")
+    plt.imshow(X, cmap="gray")
 
     plt.show()
 
 
-(x_train, y_train), (x_test, y_test) = mnist.load_data()
+#(x_train, y_train), (x_test, y_test) = mnist.load_data()
 
-X_train = splitdata(x_train, y_train, 4)
+#X_train = splitdata(x_train, y_train, 4)
 
+with open(r"MRI\PICKLE_DATA\adhdImages.pkl", 'rb') as file:
+    X_train = pickle.load(file)
+ 
+X_train = np.array(X_train)
 
 def generate_noise(batch_size, noise_dim):
     x_input = np.random.randn(batch_size * noise_dim)
@@ -79,7 +83,7 @@ gan.compile(optimizer='adam', loss='binary_crossentropy')
 
 
 for epoch in range(epochs):
-
+    
     # Pobranie rzeczywistych obrazów
     idx = np.random.randint(0, X_train.shape[0], batch_size)
     real_images = X_train[idx]
@@ -113,7 +117,6 @@ for epoch in range(epochs):
         # Generowanie przykładowego obrazka po zakończeniu treningu
         sample_noise = generate_noise(1, noise_dim)
         generated_sample = generator.predict(sample_noise)
+        showPhoto(generated_sample[0])
 
-        showPhoto(generated_sample)
-
-generator.save(f"{GAN_MODEL_PATH}/{round(g_loss, 4)}.h5")
+generator.save(f"{round(g_loss, 4)}.h5")

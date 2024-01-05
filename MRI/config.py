@@ -5,6 +5,6 @@ GAN_MODEL_PATH = "../MODEL/"
 
 # Parametry
 noise_dim = 100 # Wymiar szumu generowanego przez generator.
-image_dim = (28, 28)  # Rozmiar obrazu
-batch_size = 96 # Liczba obrazów w jednej iteracji treningowej.
+image_dim = (128, 120)  # Rozmiar obrazu
+batch_size = 16 # Liczba obrazów w jednej iteracji treningowej.
 epochs = 10000 # Liczba epok treningowych.
