@@ -25,7 +25,7 @@ def generate_noise(batch_size, noise_dim):
 
 MODEL_NAME = "12345"
 
-generator = load_model(f"{GAN_MODEL_PATH}/{MODEL_NAME}.h5")
+generator = load_model(f"{MODEL_NAME}.h5")
 
 sample_noise = generate_noise(1, noise_dim)
 
