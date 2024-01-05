@@ -5,11 +5,11 @@ from keras.models import load_model
 from EEG.PREDICT.eeg_read import *
 from EEG.PREDICT.eeg_filter import *
 from EEG.config import *
-from EEG.PREDICT.plots import *
+import sys
 
 def predict(PATIENT_DIR, MODEL_NAME):
 
-    DATA = readEEGRaw(f'EEG/PREDICT/PREDICT_DATA/{PATIENT_DIR}.mat')
+    DATA = readEEGRaw(f'../EEG/PREDICT/PREDICT_DATA/{PATIENT_DIR}.mat')
 
     DATA_FILTERED = filterEEGData(DATA)
 
