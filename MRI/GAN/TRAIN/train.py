@@ -1,8 +1,9 @@
 import os
 import sys
+import copy
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-
+import pickle
 import numpy as np
 import matplotlib.pyplot as plt
 from tensorflow import keras 
@@ -22,15 +23,22 @@ def splitdata(X,y,labelnumber):
 
 def showPhoto(X):
 
-    plt.imshow((X*-1).reshape(28, 28), cmap="gray")
+    plt.imshow(X, cmap="viridis")
 
     plt.show()
 
+def trim(data, nr_rows=4):
+    trimmed = copy.deepcopy(data)
+    for i in range(len(data)):
+        trimmed[i] = data[i][nr_rows:-nr_rows]
 
-(x_train, y_train), (x_test, y_test) = mnist.load_data()
+    return trimmed
 
-X_train = splitdata(x_train, y_train, 4)
 
+with open(r"MRI\PICKLE_DATA\adhdImages.pkl", 'rb') as file:
+    data = pickle.load(file)
+ 
+X_train = np.array(trim(data))
 
 def generate_noise(batch_size, noise_dim):
     x_input = np.random.randn(batch_size * noise_dim)
@@ -79,7 +87,7 @@ gan.compile(optimizer='adam', loss='binary_crossentropy')
 
 
 for epoch in range(epochs):
-
+    
     # Pobranie rzeczywistych obrazów
     idx = np.random.randint(0, X_train.shape[0], batch_size)
     real_images = X_train[idx]
@@ -106,14 +114,13 @@ for epoch in range(epochs):
     g_loss = gan.train_on_batch(noise, labels_gan)
 
     # Wydruk statystyk co kilka epok
-    if epoch % 10 == 0:
+    if epoch % 100 == 0:
         # Wydruk wartości straty dla dyskryminatora i generatora
         print(f"Epoch {epoch}, D Loss: {d_loss}, D Acc: {d_acc}, G Loss: {g_loss}")
 
         # Generowanie przykładowego obrazka po zakończeniu treningu
         sample_noise = generate_noise(1, noise_dim)
         generated_sample = generator.predict(sample_noise)
-
-        showPhoto(generated_sample)
+        showPhoto(generated_sample[0])
 
 generator.save(f"{round(g_loss, 4)}.h5")
