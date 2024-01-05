@@ -5,74 +5,60 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import pickle
 import numpy as np
-import matplotlib.pyplot as plt
 from tensorflow import keras 
 from keras import layers, models
-from keras.datasets import mnist
-from config import *
 
-#DLA ZBIORU MNIST - SZKIELET GAN
+from MRI.mri_filter import *
+from MRI.config import *
+from MRI.mri_read import *
+from MRI.mri_plot import *
 
-def splitdata(X,y,labelnumber):
-
-    id_s = np.where(y == labelnumber)
-
-    X_splited = X[id_s]
-
-    return X_splited/255
-
-def showPhoto(X):
-
-    plt.imshow(X, cmap="viridis")
-
-    plt.show()
-
-def trim(data, nr_rows=4):
-    trimmed = copy.deepcopy(data)
-    for i in range(len(data)):
-        trimmed[i] = data[i][nr_rows:-nr_rows]
-
-    return trimmed
-
-
-with open(r"MRI\PICKLE_DATA\adhdImages.pkl", 'rb') as file:
-    data = pickle.load(file)
+data = readPickle(PICKLE_DATA_ADHD_PATH)
  
 X_train = np.array(trim(data))
 
 def generate_noise(batch_size, noise_dim):
+
     x_input = np.random.randn(batch_size * noise_dim)
     x_input = x_input.reshape(batch_size, noise_dim)
     #np.random.normal(0, 1, size=(batch_size, noise_dim))
 
     return x_input
 
-
 def build_generator(noise_dim, output_dim):
+
     model = models.Sequential()
+
     model.add(layers.Dense(128, input_dim=noise_dim, activation='relu'))
     model.add(layers.BatchNormalization())
+
     model.add(layers.Dense(256, activation='relu'))
     model.add(layers.BatchNormalization())
+
     model.add(layers.Dense(np.prod(output_dim), activation='sigmoid'))
-    model.add(layers.Reshape(output_dim))  # Dodaj warstwę Reshape
+    model.add(layers.Reshape(output_dim))
+
     return model
 
-
 def build_discriminator(input_dim):
+
     model = models.Sequential()
+
     model.add(layers.Flatten(input_shape=input_dim))
     model.add(layers.Dense(256, activation='relu'))
     model.add(layers.Dense(128, activation='relu'))
     model.add(layers.Dense(1, activation='sigmoid'))
+
     return model
 
-
 def build_gan(generator, discriminator):
+
     discriminator.trainable = False
     model = models.Sequential()
+
     model.add(generator)
     model.add(discriminator)
+
     return model
 
 
@@ -108,19 +94,18 @@ for epoch in range(epochs):
 
     # Generowanie niby prawidlowego zdjecia
     noise = generate_noise(batch_size, noise_dim)
-    labels_gan = np.ones((batch_size, 1))  # Etykiety, które sugerują, że wygenerowane obrazy są rzeczywiste
+    labels_gan = np.ones((batch_size, 1))
 
     # Trening generatora na wygenerowanym szumie
     g_loss = gan.train_on_batch(noise, labels_gan)
 
-    # Wydruk statystyk co kilka epok
     if epoch % 100 == 0:
         # Wydruk wartości straty dla dyskryminatora i generatora
-        print(f"Epoch {epoch}, D Loss: {d_loss}, D Acc: {d_acc}, G Loss: {g_loss}")
+        print(f"Epoch: {epoch}, D Loss: {d_loss}, G Loss: {g_loss}")
 
         # Generowanie przykładowego obrazka po zakończeniu treningu
         sample_noise = generate_noise(1, noise_dim)
         generated_sample = generator.predict(sample_noise)
-        showPhoto(generated_sample[0])
+        plot_mri(generated_sample[0])
 
 generator.save(f"{round(g_loss, 4)}.h5")

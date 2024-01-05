@@ -8,7 +8,7 @@ epochs = 10000
 CNN_EPOCHS_MRI = 11
 BATCH_SIZE_MRI = 16
 CNN_INPUT_SHAPE_MRI = (120,120,1)
-VALIDATE_RATIO = 0.9   # ilosc w % ktora idzie na zbior walidacyjny ze zbioru testowego
+VALIDATE_RATIO = 0.9   # ilosc w % ktora idzie na zbior testowy ze zbioru temp
 
 CNN_MODELS_PATH_MRI = "MRI/CNN/MODEL"
 CNN_PREDICT_PATH_MRI = "MRI/CNN/PREDICT/PREDICT_DATA"

@@ -5,23 +5,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 sys.path.append(os.path.abspath(__file__))
-from config import *
 
-def showPhoto(X):
-
-    plt.imshow(X, cmap="gray")
-
-    plt.show()
-
-def generate_noise(batch_size, noise_dim):
-    x_input = np.random.randn(batch_size * noise_dim)
-
-    x_input = x_input.reshape(batch_size, noise_dim)
-
-    #np.random.normal(0, 1, size=(batch_size, noise_dim))
-
-    return x_input
-
+from MRI.config import *
+from MRI.mri_plot import *
+from MRI.GAN.TRAIN.train import generate_noise
 
 MODEL_NAME = "0.9531"
 
@@ -31,4 +18,4 @@ sample_noise = generate_noise(1, noise_dim)
 
 generated_sample = generator.predict(sample_noise)
 
-showPhoto(generated_sample)
+plot_mri(generated_sample)
