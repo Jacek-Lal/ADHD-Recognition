@@ -1,4 +1,4 @@
-EEG_DATA_PATH = '/home/user/Desktop/ADHD-Recognition/EEG/TRAIN/TRAIN_DATA'                                             # Folder z danymi
+EEG_DATA_PATH = 'EEG/TRAIN/TRAIN_DATA'                                             # Folder z danymi
 EEG_SUBFOLDERS = ['ADHD', 'CONTROL']                                                # Wszystkie podfoldery z głównego folderu z danymi
 EEG_POS_PHRASE = 'ADHD'                                                             # Fraza zawierająca się w nazwie folderu z grupą chorych pacjentów
 EEG_NEG_PHRASE = 'CONTROL'                                                          # Fraza zawierająca się w nazwie folderu z grupą kontrolną
