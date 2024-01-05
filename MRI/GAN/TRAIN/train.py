@@ -1,5 +1,6 @@
 import os
 import sys
+import copy
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import pickle
@@ -22,19 +23,22 @@ def splitdata(X,y,labelnumber):
 
 def showPhoto(X):
 
-    plt.imshow(X, cmap="gray")
+    plt.imshow(X, cmap="viridis")
 
     plt.show()
 
+def trim(data, nr_rows=4):
+    trimmed = copy.deepcopy(data)
+    for i in range(len(data)):
+        trimmed[i] = data[i][nr_rows:-nr_rows]
 
-#(x_train, y_train), (x_test, y_test) = mnist.load_data()
+    return trimmed
 
-#X_train = splitdata(x_train, y_train, 4)
 
 with open(r"MRI\PICKLE_DATA\adhdImages.pkl", 'rb') as file:
-    X_train = pickle.load(file)
+    data = pickle.load(file)
  
-X_train = np.array(X_train)
+X_train = np.array(trim(data))
 
 def generate_noise(batch_size, noise_dim):
     x_input = np.random.randn(batch_size * noise_dim)
@@ -110,7 +114,7 @@ for epoch in range(epochs):
     g_loss = gan.train_on_batch(noise, labels_gan)
 
     # Wydruk statystyk co kilka epok
-    if epoch % 2000 == 0:
+    if epoch % 100 == 0:
         # Wydruk wartości straty dla dyskryminatora i generatora
         print(f"Epoch {epoch}, D Loss: {d_loss}, D Acc: {d_acc}, G Loss: {g_loss}")
 
