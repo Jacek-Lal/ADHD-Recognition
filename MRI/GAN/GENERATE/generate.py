@@ -1,7 +1,11 @@
 from keras.models import load_model
+import os
+import sys
 import numpy as np
 import matplotlib.pyplot as plt
-from MRI.config import *
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
+from config import *
 
 def showPhoto(X):
 

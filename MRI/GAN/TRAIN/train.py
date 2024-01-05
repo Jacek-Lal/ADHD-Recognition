@@ -1,11 +1,14 @@
 import os
+import sys
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 import numpy as np
 import matplotlib.pyplot as plt
-from tensorflow.keras import layers, models
+from tensorflow import keras 
+from keras import layers, models
 from keras.datasets import mnist
-from MRI.config import *
+from config import *
 
 #DLA ZBIORU MNIST - SZKIELET GAN
 
