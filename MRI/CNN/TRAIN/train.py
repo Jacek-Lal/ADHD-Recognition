@@ -3,7 +3,7 @@ from MRI.mri_filter import *
 from MRI.CNN.TRAIN.train_model import *
 from MRI.config import *
 
-def train(save):
+def train_CNN(save):
 
     ADHD = readPickle(PICKLE_DATA_ADHD_PATH)
 

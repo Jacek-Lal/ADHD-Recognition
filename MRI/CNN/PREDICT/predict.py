@@ -8,7 +8,7 @@ from MRI.config import *
 from MRI.mri_plot import *
 from MRI.mri_read import *
 
-def predict(MODEL_NAME):
+def predict_CNN(MODEL_NAME):
 
     try:
         model = load_model(f'{CNN_MODELS_PATH_MRI}/{MODEL_NAME}.h5')

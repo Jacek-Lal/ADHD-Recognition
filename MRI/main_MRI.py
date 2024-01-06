@@ -14,10 +14,9 @@ else:
     print("TensorFlow korzysta z CPU.")
 
 # uruchamia trening
-#train(save=True)
+#train_CNN(save=True)
 
 # uruchamia predict
 # MODEL_NAME = "0.9478"
 #
-# predict(MODEL_NAME)
-
+# predict_CNN(MODEL_NAME)
