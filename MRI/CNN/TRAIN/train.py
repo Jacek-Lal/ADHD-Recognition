@@ -18,22 +18,22 @@ def train_CNN(save):
 
     CONTROL_normalized = normalize(CONTROL_trimmed)
 
-    MODEL_GAN_NAME = ""
+    MODEL_GAN_NAME = "CONTROL_0.6647"
 
-    ADHD_GAN = generate_GAN(MODEL_GAN_NAME,im_amount=50, data_type="ADHD")
+    ADHD_GAN = generate_GAN(MODEL_GAN_NAME,im_amount=10, data_type="CONTROL")
 
-    CONTROL_GAN = generate_GAN(MODEL_GAN_NAME,im_amount=50, data_type="")
+    #CONTROL_GAN = generate_GAN(MODEL_GAN_NAME,im_amount=50, data_type="")
 
-    ADHD_CONCAT, CONTROL_CONCAT = concatWithGan(ADHD_GAN, CONTROL_GAN)
+    #ADHD_CONCAT, CONTROL_CONCAT = concatWithGan(ADHD_GAN, CONTROL_GAN)
 
-    X_train, y_train, X_test, y_test, X_val, y_val = prepareForCnn(ADHD_CONCAT, CONTROL_normalized)
+    #X_train, y_train, X_test, y_test, X_val, y_val = prepareForCnn(ADHD_CONCAT, CONTROL_normalized)
 
-    accuracy = CnnFit(X_train, y_train, X_test, y_test, save)
+    #accuracy = CnnFit(X_train, y_train, X_test, y_test, save)
 
-    print(f"accuracy: {accuracy}")
+    #print(f"accuracy: {accuracy}")
 
-    if save == True:
-
-        savePickle(f"{CNN_PREDICT_PATH_MRI}/X_val_{round(accuracy, 4)}", X_val)
-
-        savePickle(f"{CNN_PREDICT_PATH_MRI}/y_val_{round(accuracy, 4)}", y_val)
+    # if save == True:
+    #
+    #     savePickle(f"{CNN_PREDICT_PATH_MRI}/X_val_{round(accuracy, 4)}", X_val)
+    #
+    #     savePickle(f"{CNN_PREDICT_PATH_MRI}/y_val_{round(accuracy, 4)}", y_val)

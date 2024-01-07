@@ -15,7 +15,7 @@ else:
     print("TensorFlow korzysta z CPU.")
 
 # uruchamia trening
-#train_CNN(save=False)
+train_CNN(save=False)
 
 # uruchamia predict
 # MODEL_CNN_NAME = "0.9478"
@@ -23,4 +23,4 @@ else:
 # predict_CNN(MODEL_CNN_NAME)
 
 # uruchamia trening GAN
-train_GAN(save=True, data_type="CONTROL")
+#train_GAN(save=True, data_type="CONTROL")
