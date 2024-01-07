@@ -2,7 +2,7 @@ import pickle
 from sklearn.model_selection import train_test_split
 import numpy as np
 
-from config import *
+from MRI.config import *
 
 def readPickle(nazwa):
     with open(nazwa, 'rb') as file:
