@@ -33,5 +33,5 @@ def prepareForCnn(ADHD, CONTROL):
 
     return X_train, y_train, X_test, y_test, X_val, y_val
 
-def concatWithGan(ADHD, CONTROL):
-    pass
+def concatWithGan(ADHD_GAN, CONTROL_GAN, ADHD, CONTROL):
+    return ADHD+ADHD_GAN, CONTROL_GAN+CONTROL

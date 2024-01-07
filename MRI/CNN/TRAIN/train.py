@@ -18,15 +18,13 @@ def train_CNN(save):
 
     CONTROL_normalized = normalize(CONTROL_trimmed)
 
-    MODEL_GAN_NAME = "CONTROL_0.6647"
+    ADHD_GAN = generate_GAN("",im_amount=10, data_type="CONTROL")
 
-    ADHD_GAN = generate_GAN(MODEL_GAN_NAME,im_amount=10, data_type="CONTROL")
+    CONTROL_GAN = generate_GAN("CONTROL_0.6647",im_amount=50, data_type="")
 
-    #CONTROL_GAN = generate_GAN(MODEL_GAN_NAME,im_amount=50, data_type="")
+    ADHD_CONCAT, CONTROL_CONCAT = concatWithGan(ADHD_GAN, CONTROL_GAN, ADHD_normalized, CONTROL_normalized)
 
-    #ADHD_CONCAT, CONTROL_CONCAT = concatWithGan(ADHD_GAN, CONTROL_GAN)
-
-    #X_train, y_train, X_test, y_test, X_val, y_val = prepareForCnn(ADHD_CONCAT, CONTROL_normalized)
+    X_train, y_train, X_test, y_test, X_val, y_val = prepareForCnn(ADHD_CONCAT, CONTROL_CONCAT)
 
     #accuracy = CnnFit(X_train, y_train, X_test, y_test, save)
 
