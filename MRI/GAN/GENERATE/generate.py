@@ -13,19 +13,11 @@ from MRI.mri_read import *
 from MRI.GAN.TRAIN.train import latent_vector, latent_dim
 
 
-def generate_GAN(MODEL_GAN_NAME, im_amount, data_type):
+def generate_GAN(MODEL_GAN_NAME, im_amount):
 
 
-    if data_type == "ADHD":
-        generator = load_model(f"{GAN_MODELS_PATH}/ADHD_{MODEL_GAN_NAME}.h5")
+    generator = load_model(f"{GAN_MODELS_PATH}/{MODEL_GAN_NAME}.h5")
 
-    elif data_type == "CONTROL":
-        generator = load_model(r"C:\Users\matim\Desktop\IPZ_GIT\MRI\GAN\MODELS\CONTROL_0.6647.h5")
-
-    else:
-        print("data_type: ADHD LUB CONTROL")
-        return
-    print("chuj")
     data = []
 
     for i in range(im_amount):

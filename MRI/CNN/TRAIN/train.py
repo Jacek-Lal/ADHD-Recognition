@@ -18,9 +18,9 @@ def train_CNN(save):
 
     CONTROL_normalized = normalize(CONTROL_trimmed)
 
-    ADHD_GAN = generate_GAN("",im_amount=10, data_type="CONTROL")
+    ADHD_GAN = generate_GAN("ADHD_",im_amount=len(ADHD_normalized)*10)
 
-    CONTROL_GAN = generate_GAN("CONTROL_0.6647",im_amount=50, data_type="")
+    CONTROL_GAN = generate_GAN("CONTROL_0.6647",im_amount=len(CONTROL_normalized)*10)
 
     ADHD_CONCAT, CONTROL_CONCAT = concatWithGan(ADHD_GAN, CONTROL_GAN, ADHD_normalized, CONTROL_normalized)
 
