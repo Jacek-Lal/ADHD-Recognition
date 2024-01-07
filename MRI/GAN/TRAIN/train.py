@@ -128,7 +128,7 @@ def train(g_model, d_model, gan_model, dataset, latent_dim, n_epochs, n_batch, s
 
         # Evaluate the model at every n_eval epochs
         if (i) % 500 == 0:
-            sample_noise = latent_vector(1, noise_dim)
+            sample_noise = latent_vector(1, latent_dim)
             generated_sample = g_model.predict(sample_noise)
             plt.imshow(generated_sample[0])
             plt.title(f"Epoch: {i}, D loss: {discriminator_loss:}, A acc: {discriminator_acc:}, G loss: {generator_loss:}")
@@ -137,14 +137,14 @@ def train(g_model, d_model, gan_model, dataset, latent_dim, n_epochs, n_batch, s
     if save == True:
         generator.save(f"{GAN_MODELS_PATH}/{round(discriminator_acc, 4)}.h5")
 
-def train_GAN(save, data_type = "ADHD"):
+def train_GAN(save, data_type):
 
     while True:
         if data_type == "ADHD":
-            data = readPickle("C:/home/user/Desktop/IPZ_GIT/MRI/PICKLE_DATA/ADHDImages.pkl")
+            data = readPickle(PICKLE_DATA_ADHD_PATH)
             break
         elif data_type == "CONTROL":
-            data = readPickle("C:/home/user/Desktop/IPZ_GIT/MRI/PICKLE_DATA/controlImages.pkl")
+            data = readPickle(PICKLE_DATA_CONTROL_PATH)
             break
         else:
             print("data_type ADHD LUB CONTROL")
@@ -155,12 +155,10 @@ def train_GAN(save, data_type = "ADHD"):
 
     X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], X_train.shape[2], 1))
 
-    latent_dim = 100
-
     gen_model = generator(latent_dim)
 
-    dis_model = discriminator(in_shape=(120, 120, 1))
+    dis_model = discriminator(in_shape=image_dim)
 
     gan_model = def_gan(gen_model, dis_model)
 
-    train(gen_model, dis_model, gan_model, X_train, latent_dim, n_epochs=10000, n_batch=32, save=save)
+    train(gen_model, dis_model, gan_model, X_train, latent_dim, n_epochs=epochs, n_batch=batch_size, save=save)

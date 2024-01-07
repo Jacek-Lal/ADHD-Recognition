@@ -23,8 +23,9 @@ else:
 # predict_CNN(MODEL_CNN_NAME)
 
 # uruchamia trening GAN
-# train_GAN(False, "ADHD")
+# train_GAN(False, data_type="ADHD")
 
 # MODEL_GAN_NAME = ""
 
-#predict_GAN(MODEL_GAN_NAME)
+#generate_GAN(MODEL_GAN_NAME)
+

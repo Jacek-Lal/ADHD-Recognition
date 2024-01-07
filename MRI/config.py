@@ -1,7 +1,7 @@
 # Parametry GAN
-noise_dim = 100 # Wymiar szumu generowanego przez generator.
+latent_dim = 100 # Wymiar szumu generowanego przez generator.
 image_dim = (120, 120, 1)
-batch_size = 16 # Liczba obrazów w jednej iteracji treningowej.
+batch_size = 32 # Liczba obrazów w jednej iteracji treningowej.
 epochs = 10000 
 
 # Parametry CNN
@@ -12,6 +12,6 @@ VALIDATE_RATIO = 0.9   # ilosc w % ktora idzie na zbior testowy ze zbioru temp
 
 CNN_MODELS_PATH_MRI = "MRI/CNN/MODEL"
 CNN_PREDICT_PATH_MRI = "MRI/CNN/PREDICT/PREDICT_DATA"
-PICKLE_DATA_ADHD_PATH = "MRI/PICKLE_DATA/adhdImages.pkl"
+PICKLE_DATA_ADHD_PATH = "MRI/PICKLE_DATA/ADHDImages.pkl"
 PICKLE_DATA_CONTROL_PATH = "MRI/PICKLE_DATA/controlImages.pkl"
 GAN_MODELS_PATH = "MRI/GAN/MODEL"
