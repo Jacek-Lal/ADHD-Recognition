@@ -1,111 +1,166 @@
 import os
-import sys
-import copy
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-import pickle
+
+from keras.models import Sequential
+from keras.layers import Dense, Reshape, Flatten, Conv2D, Conv2DTranspose, ReLU, LeakyReLU, Dropout
+from tensorflow.keras.optimizers import Adam
 import numpy as np
-from tensorflow import keras 
-from keras import layers, models
 
-from MRI.mri_filter import *
 from MRI.config import *
-from MRI.mri_read import *
+from MRI.mri_filter import *
 from MRI.mri_plot import *
+from MRI.mri_read import *
 
-data = readPickle(PICKLE_DATA_ADHD_PATH)
- 
-X_train = np.array(trim(data))
 
-def generate_noise(batch_size, noise_dim):
+optimizer = Adam(learning_rate=0.0002, beta_1=0.5)
 
-    x_input = np.random.randn(batch_size * noise_dim)
-    x_input = x_input.reshape(batch_size, noise_dim)
-    #np.random.normal(0, 1, size=(batch_size, noise_dim))
+def generator(latent_dim):
 
-    return x_input
+    model = Sequential()
 
-def build_generator(noise_dim, output_dim):
+    # Hidden Layer 1: Start with 15 x 15 image
+    n_nodes = 15 * 15 * 128
+    model.add(Dense(n_nodes, input_dim=latent_dim))
+    model.add(Reshape((15, 15, 128)))
 
-    model = models.Sequential()
+    # Hidden Layer 2: Upsample to 30 x 30
+    model.add(Conv2DTranspose(filters=128, kernel_size=(4, 4), strides=(2, 2), padding='same'))
+    model.add(ReLU())
 
-    model.add(layers.Dense(128, input_dim=noise_dim, activation='relu'))
-    model.add(layers.BatchNormalization())
+    # Hidden Layer 3: Upsample to 60 x 60
+    model.add(Conv2DTranspose(filters=256, kernel_size=(4, 4), strides=(2, 2), padding='same'))
+    model.add(ReLU())
 
-    model.add(layers.Dense(256, activation='relu'))
-    model.add(layers.BatchNormalization())
+    # Hidden Layer 4: Upsample to 120 x 120
+    model.add(Conv2DTranspose(filters=512, kernel_size=(4, 4), strides=(2, 2), padding='same'))
+    model.add(ReLU())
 
-    model.add(layers.Dense(np.prod(output_dim), activation='sigmoid'))
-    model.add(layers.Reshape(output_dim))
+    # Output Layer (Grayscale would have only 1 filter)
+    model.add(Conv2D(filters=1, kernel_size=(5, 5), activation='tanh', padding='same'))
+    return model
+
+
+def discriminator(in_shape):
+
+    model = Sequential()
+
+    # Hidden Layer 1
+    model.add(Conv2D(filters=64, kernel_size=(4, 4), strides=(2, 2), padding='same', input_shape=in_shape))
+    model.add(LeakyReLU(alpha=0.2))
+
+    # Hidden Layer 2
+    model.add(Conv2D(filters=128, kernel_size=(4, 4), strides=(2, 2), padding='same', input_shape=in_shape))
+    model.add(LeakyReLU(alpha=0.2))
+
+    # Hidden Layer 3
+    model.add(Conv2D(filters=128, kernel_size=(4, 4), strides=(2, 2), padding='same', input_shape=in_shape))
+    model.add(LeakyReLU(alpha=0.2))
+
+    # Flatten and Output Layers
+    model.add(Flatten())
+    model.add(Dropout(0.3))
+
+    # Output Layer
+    model.add(Dense(1, activation='sigmoid'))
+
+    model.compile(loss='binary_crossentropy', optimizer=optimizer, metrics=['accuracy'])
 
     return model
 
-def build_discriminator(input_dim):
 
-    model = models.Sequential()
-
-    model.add(layers.Flatten(input_shape=input_dim))
-    model.add(layers.Dense(256, activation='relu'))
-    model.add(layers.Dense(128, activation='relu'))
-    model.add(layers.Dense(1, activation='sigmoid'))
-
-    return model
-
-def build_gan(generator, discriminator):
+def def_gan(generator, discriminator):
 
     discriminator.trainable = False
-    model = models.Sequential()
 
+    model = Sequential()
     model.add(generator)
     model.add(discriminator)
 
+    model.compile(loss='binary_crossentropy', optimizer=optimizer)
     return model
 
 
-discriminator = build_discriminator(image_dim)
-discriminator.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+def real_samples(n, dataset):
 
-generator = build_generator(noise_dim, image_dim)
-generator.compile(optimizer='adam', loss='binary_crossentropy')
+    X = dataset[np.random.choice(dataset.shape[0], n, replace=True), :]
+    y = np.ones((n, 1))
 
-gan = build_gan(generator, discriminator)
-gan.compile(optimizer='adam', loss='binary_crossentropy')
+    return X, y
 
+def latent_vector(batch_size, latent_dim):
 
-for epoch in range(epochs):
-    
-    # Pobranie rzeczywistych obrazów
-    idx = np.random.randint(0, X_train.shape[0], batch_size)
-    real_images = X_train[idx]
-    labels_real = np.ones((batch_size, 1))
+    latent_input = np.random.randn(batch_size * latent_dim)
+    latent_input = latent_input.reshape(batch_size, latent_dim)
 
-    #  Generowanie obrazów przy użyciu generatora
-    noise = generate_noise(batch_size, noise_dim)
-    generated_images = generator.predict(noise)
-    labels_fake = np.zeros((batch_size, 1))
+    return latent_input
 
-    # Trening dyskryminatora na rzeczywistych i wygenerowanych danych
-    d_loss_real, d_acc_real = discriminator.train_on_batch(real_images, labels_real)
-    d_loss_fake, d_acc_fake = discriminator.train_on_batch(generated_images, labels_fake)
+def fake_samples(generator, latent_dim, n):
 
-    # Obliczenie łącznej straty i dokładności dla dyskryminatora
-    d_loss = 0.5 * np.add(d_loss_real, d_loss_fake)
-    d_acc = 0.5 * np.add(d_acc_real, d_acc_fake)
+    latent_output = latent_vector(latent_dim, n)
 
-    # Generowanie niby prawidlowego zdjecia
-    noise = generate_noise(batch_size, noise_dim)
-    labels_gan = np.ones((batch_size, 1))
+    X = generator.predict(latent_output)
+    y = np.zeros((n, 1))
 
-    # Trening generatora na wygenerowanym szumie
-    g_loss = gan.train_on_batch(noise, labels_gan)
+    return X, y
 
-    if epoch % 100 == 0:
-        # Wydruk wartości straty dla dyskryminatora i generatora
-        print(f"Epoch: {epoch}, D Loss: {d_loss}, G Loss: {g_loss}")
+def train(g_model, d_model, gan_model, dataset, latent_dim, n_epochs, n_batch, save):
 
-        # Generowanie przykładowego obrazka po zakończeniu treningu
-        sample_noise = generate_noise(1, noise_dim)
-        generated_sample = generator.predict(sample_noise)
-        plot_mri(generated_sample[0])
+    # Our batch to train the discriminator will consist of half real images and half fake (generated) images
+    half_batch = int(n_batch / 2)
 
-generator.save(f"{round(g_loss, 4)}.h5")
+    for i in range(n_epochs):
+
+        # Discriminator training
+
+        x_real, y_real = real_samples(half_batch, dataset)
+        x_fake, y_fake = fake_samples(g_model, latent_dim, half_batch)
+
+        # Train the discriminator using real and fake samples
+        X, y = np.vstack((x_real, x_fake)), np.vstack((y_real, y_fake))
+        discriminator_loss, discriminator_acc = d_model.train_on_batch(X, y)
+
+        # Generator training
+        x_gan = latent_vector(latent_dim, n_batch)
+        y_gan = np.ones((n_batch, 1))
+
+        # Train the generator via a composite GAN model
+        generator_loss = gan_model.train_on_batch(x_gan, y_gan)
+
+        # Evaluate the model at every n_eval epochs
+        if (i) % 500 == 0:
+            sample_noise = latent_vector(1, noise_dim)
+            generated_sample = g_model.predict(sample_noise)
+            plt.imshow(generated_sample[0])
+            plt.title(f"Epoch: {i}, D loss: {discriminator_loss:}, A acc: {discriminator_acc:}, G loss: {generator_loss:}")
+            plt.show()
+
+    if save == True:
+        generator.save(f"{GAN_MODELS_PATH}/{round(discriminator_acc, 4)}.h5")
+
+def train_GAN(save, data_type = "ADHD"):
+
+    while True:
+        if data_type == "ADHD":
+            data = readPickle("C:/home/user/Desktop/IPZ_GIT/MRI/PICKLE_DATA/ADHDImages.pkl")
+            break
+        elif data_type == "CONTROL":
+            data = readPickle("C:/home/user/Desktop/IPZ_GIT/MRI/PICKLE_DATA/controlImages.pkl")
+            break
+        else:
+            print("data_type ADHD LUB CONTROL")
+
+    X_train = np.array(trim(data))
+
+    X_train = normalize(X_train)
+
+    X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], X_train.shape[2], 1))
+
+    latent_dim = 100
+
+    gen_model = generator(latent_dim)
+
+    dis_model = discriminator(in_shape=(120, 120, 1))
+
+    gan_model = def_gan(gen_model, dis_model)
+
+    train(gen_model, dis_model, gan_model, X_train, latent_dim, n_epochs=10000, n_batch=32, save=save)

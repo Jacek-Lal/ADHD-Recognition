@@ -4,6 +4,7 @@ import tensorflow as tf
 
 from CNN.TRAIN.train import *
 from CNN.PREDICT.predict import *
+from GAN.TRAIN.train import *
 
 gpu_devices = tf.config.list_physical_devices('GPU')
 
@@ -14,9 +15,16 @@ else:
     print("TensorFlow korzysta z CPU.")
 
 # uruchamia trening
-#train_CNN(save=True)
+#train_CNN(save=False)
 
 # uruchamia predict
-# MODEL_NAME = "0.9478"
+# MODEL_CNN_NAME = "0.9478"
 #
-# predict_CNN(MODEL_NAME)
+# predict_CNN(MODEL_CNN_NAME)
+
+# uruchamia trening GAN
+# train_GAN(False, "ADHD")
+
+# MODEL_GAN_NAME = ""
+
+#predict_GAN(MODEL_GAN_NAME)
