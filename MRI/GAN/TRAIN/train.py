@@ -11,8 +11,6 @@ from MRI.mri_filter import *
 from MRI.mri_read import *
 
 
-
-
 def generator(latent_dim):
     model = Sequential()
 
@@ -150,7 +148,7 @@ def train_GAN(save, data_type, n_epochs=10000, n_batch=32, g_model=gen_model, d_
         generator_loss = gan_model.train_on_batch(x_gan, y_gan)
 
 
-        if (i) % 1000 == 0:
+        if (i) % 500 == 0:
             sample_noise = latent_vector(latent_dim, 1)
             generated_sample = g_model.predict(sample_noise)
             plt.imshow(generated_sample[0])

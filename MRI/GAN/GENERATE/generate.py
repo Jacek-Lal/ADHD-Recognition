@@ -29,7 +29,7 @@ def generate_GAN(MODEL_GAN_NAME, im_amount, data_type):
 
     for i in range(im_amount):
 
-        sample_noise = latent_vector(1, latent_dim)
+        sample_noise = latent_vector(latent_dim, 1)
 
         generated_sample = generator.predict(sample_noise)
 
