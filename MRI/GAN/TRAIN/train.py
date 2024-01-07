@@ -107,10 +107,10 @@ def fake_samples(generator, latent_dim, n):
 def train_GAN(save, data_type):
 
     if data_type == "ADHD":
-        data = readPickle(PICKLE_DATA_ADHD_PATH)
+        data = readPickle(PICKLE_DATA_ADHD_PATH_GAN)
 
     elif data_type == "CONTROL":
-        data = readPickle(PICKLE_DATA_CONTROL_PATH)
+        data = readPickle(PICKLE_DATA_CONTROL_PATH_GAN)
 
     else:
         print("data_type ADHD LUB CONTROL")
