@@ -23,4 +23,4 @@ else:
 # predict_CNN(MODEL_CNN_NAME)
 
 # uruchamia trening GAN
-train_GAN(save=False, data_type="CONTROL")
+train_GAN(save=True, data_type="CONTROL")
