@@ -34,4 +34,11 @@ def prepareForCnn(ADHD, CONTROL):
     return X_train, y_train, X_test, y_test, X_val, y_val
 
 def concatWithGan(ADHD_GAN, CONTROL_GAN, ADHD, CONTROL):
+
+    for i in range(len(ADHD)):
+        ADHD[i] = ADHD[i].reshape(ADHD[i].shape[0], ADHD[i].shape[1],1)
+
+    for i in range(len(CONTROL)):
+        CONTROL[i] = CONTROL[i].reshape(CONTROL[i].shape[0], CONTROL[i].shape[1], 1)
+
     return ADHD+ADHD_GAN, CONTROL_GAN+CONTROL

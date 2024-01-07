@@ -20,7 +20,7 @@ def CnnFit(X_train, y_train, X_test, y_test, save):
     model.add(layers.Dense(128, activation='relu'))
     model.add(layers.Dense(1, activation='sigmoid'))
 
-    optimizer = Adam(learning_rate=0.001)
+    optimizer = Adam(learning_rate=0.0002, beta_1=0.5)
 
     model.compile(loss='binary_crossentropy', optimizer=optimizer, metrics=['accuracy'])
 
@@ -40,6 +40,7 @@ def CnnFit(X_train, y_train, X_test, y_test, save):
     _, final_accuracy = model.evaluate(X_test, y_test, verbose=0)
 
     if save == True:
-        model.save(f"{CNN_MODELS_PATH_MRI}/{round(final_accuracy, 4)}.h5")
+        model.save(f"/home/user/Desktop/ADHD-Recognition/MRI/CNN/MODEL/{round(final_accuracy, 4)}.h5")
+        #model.save("CNNFORMRI.h5")
 
     return round(final_accuracy, 4)

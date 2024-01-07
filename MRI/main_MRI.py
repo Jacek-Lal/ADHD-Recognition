@@ -14,13 +14,16 @@ if gpu_devices:
 else:
     print("TensorFlow korzysta z CPU.")
 
+
+# uruchamia trening GAN
+#train_GAN(save=True, data_type="CONTROL")
+
 # uruchamia trening
-train_CNN(save=False)
+train_CNN(save=True)
 
 # uruchamia predict
 # MODEL_CNN_NAME = "0.9478"
 #
 # predict_CNN(MODEL_CNN_NAME)
 
-# uruchamia trening GAN
-#train_GAN(save=True, data_type="CONTROL")
+
