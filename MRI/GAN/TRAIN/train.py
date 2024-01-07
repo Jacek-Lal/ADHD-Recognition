@@ -103,7 +103,7 @@ def fake_samples(generator, latent_dim, n):
 
     return X, y
 
-def train(g_model, d_model, gan_model, dataset, latent_dim, n_epochs, n_batch, save):
+def train(g_model, d_model, gan_model, dataset, latent_dim, n_epochs, n_batch):
 
     # Our batch to train the discriminator will consist of half real images and half fake (generated) images
     half_batch = int(n_batch / 2)
@@ -134,20 +134,20 @@ def train(g_model, d_model, gan_model, dataset, latent_dim, n_epochs, n_batch, s
             plt.title(f"Epoch: {i}, D loss: {discriminator_loss:}, A acc: {discriminator_acc:}, G loss: {generator_loss:}")
             plt.show()
 
-    if save == True:
-        generator.save(f"{GAN_MODELS_PATH}/{round(discriminator_acc, 4)}.h5")
+    return gan_model, discriminator_acc
+
 
 def train_GAN(save, data_type):
 
-    while True:
-        if data_type == "ADHD":
-            data = readPickle(PICKLE_DATA_ADHD_PATH)
-            break
-        elif data_type == "CONTROL":
-            data = readPickle(PICKLE_DATA_CONTROL_PATH)
-            break
-        else:
-            print("data_type ADHD LUB CONTROL")
+    if data_type == "ADHD":
+        data = readPickle(PICKLE_DATA_ADHD_PATH)
+
+    elif data_type == "CONTROL":
+        data = readPickle(PICKLE_DATA_CONTROL_PATH)
+
+    else:
+        print("data_type ADHD LUB CONTROL")
+        return
 
     X_train = np.array(trim(data))
 
@@ -161,4 +161,10 @@ def train_GAN(save, data_type):
 
     gan_model = def_gan(gen_model, dis_model)
 
-    train(gen_model, dis_model, gan_model, X_train, latent_dim, n_epochs=epochs, n_batch=batch_size, save=save)
+    gen, d_acc = train(gen_model, dis_model, gan_model, X_train, latent_dim, n_epochs=epochs, n_batch=batch_size)
+
+    if save == True:
+        if data_type == "ADHD":
+            gen.save(f"{GAN_MODELS_PATH}/ADHD_{round(d_acc, 4)}.h5")
+        elif data_type == "CONTROL":
+            gen.save(f"{GAN_MODELS_PATH}/CONTROL_{round(d_acc, 4)}.h5")

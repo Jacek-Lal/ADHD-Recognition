@@ -2,6 +2,7 @@ from MRI.mri_read import *
 from MRI.mri_filter import *
 from MRI.CNN.TRAIN.train_model import *
 from MRI.config import *
+from MRI.GAN.GENERATE.generate import *
 
 def train_CNN(save):
 
@@ -17,7 +18,15 @@ def train_CNN(save):
 
     CONTROL_normalized = normalize(CONTROL_trimmed)
 
-    X_train, y_train, X_test, y_test, X_val, y_val = prepareForCnn(ADHD_normalized, CONTROL_normalized)
+    MODEL_GAN_NAME = ""
+
+    ADHD_GAN = generate_GAN(MODEL_GAN_NAME,im_amount=50, data_type="ADHD")
+
+    CONTROL_GAN = generate_GAN(MODEL_GAN_NAME,im_amount=50, data_type="")
+
+    ADHD_CONCAT, CONTROL_CONCAT = concatWithGan(ADHD_GAN, CONTROL_GAN)
+
+    X_train, y_train, X_test, y_test, X_val, y_val = prepareForCnn(ADHD_CONCAT, CONTROL_normalized)
 
     accuracy = CnnFit(X_train, y_train, X_test, y_test, save)
 

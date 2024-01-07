@@ -5,6 +5,7 @@ import tensorflow as tf
 from CNN.TRAIN.train import *
 from CNN.PREDICT.predict import *
 from GAN.TRAIN.train import *
+from GAN.GENERATE.generate import *
 
 gpu_devices = tf.config.list_physical_devices('GPU')
 
@@ -23,9 +24,4 @@ else:
 # predict_CNN(MODEL_CNN_NAME)
 
 # uruchamia trening GAN
-# train_GAN(False, data_type="ADHD")
-
-# MODEL_GAN_NAME = ""
-
-#generate_GAN(MODEL_GAN_NAME)
-
+# train_GAN(save=False, data_type="ADHD")
