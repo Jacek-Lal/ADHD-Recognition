@@ -3,32 +3,29 @@ import os
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 sys.path.append(os.path.abspath(__file__))
-from config import *
 
-def showPhoto(X):
-
-    plt.imshow(X, cmap="gray")
-
-    plt.show()
-
-def generate_noise(batch_size, noise_dim):
-    x_input = np.random.randn(batch_size * noise_dim)
-
-    x_input = x_input.reshape(batch_size, noise_dim)
-
-    #np.random.normal(0, 1, size=(batch_size, noise_dim))
-
-    return x_input
+from MRI.config import *
+from MRI.mri_plot import *
+from MRI.mri_read import *
+from MRI.GAN.TRAIN.train import latent_vector, latent_dim
 
 
-MODEL_NAME = "0.9531"
+def generate_GAN(MODEL_GAN_NAME, im_amount):
 
-generator = load_model(f"MRI/GAN/MODEL/0.9531.h5")
 
-sample_noise = generate_noise(1, noise_dim)
+    generator = load_model(f"{GAN_MODELS_PATH}/{MODEL_GAN_NAME}.h5")
 
-generated_sample = generator.predict(sample_noise)
+    data = []
 
-showPhoto(generated_sample)
+    for i in range(im_amount):
+
+        sample_noise = latent_vector(latent_dim, 1)
+
+        generated_sample = generator.predict(sample_noise)
+
+        data.append(generated_sample[0])
+
+    return data

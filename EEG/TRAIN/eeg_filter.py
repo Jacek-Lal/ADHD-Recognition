@@ -7,7 +7,7 @@ import os
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
-from config import *
+from EEG.config import *
 
 def filterEEGData(ADHD_DATA, CONTROL_DATA, band_type=2):
 
@@ -84,24 +84,3 @@ def clipEEGData(ADHD_DATA, CONTROL_DATA):
             CONTROL_TRESHOLDS.append(treshold)
 
     return ADHD_CLIPPED, CONTROL_CLIPPED
-
-def deleteMedianEEG(ADHD_DATA,CONTROL_DATA, median_level = 4):
-
-    ADHD_MEDIANED = copy.deepcopy(ADHD_DATA)
-    CONTROL_MEDIANED = copy.deepcopy(CONTROL_DATA)
-
-    for i in range(len(ADHD_DATA)):
-        for j in range(CNN_INPUT_SHAPE[0]):
-            median = np.median(ADHD_DATA[i][j])
-            median_mask = np.abs(median_level*median)
-            channel_data = ADHD_DATA[i][j]
-            ADHD_MEDIANED[i][j][(channel_data>median_mask) | (channel_data<-median_mask)] = median
-
-    for i in range(len(CONTROL_DATA)):
-        for j in range(CNN_INPUT_SHAPE[0]):
-            median = np.median(CONTROL_DATA[i][j])
-            median_mask = np.abs(median_level*median)
-            channel_data = CONTROL_DATA[i][j]
-            CONTROL_MEDIANED[i][j][(channel_data>median_mask) | (channel_data<-median_mask)] = median
-
-    return ADHD_MEDIANED, CONTROL_MEDIANED

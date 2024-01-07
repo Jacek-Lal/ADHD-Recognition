@@ -4,14 +4,14 @@ from scipy.io import loadmat
 from sklearn.model_selection import train_test_split
 import math
 
-from eeg_filter import *
+from EEG.TRAIN.eeg_filter import *
 import sys
 
 # Add the directory containing config.py to the Python path
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
-from config import *
+from EEG.config import *
 
     
 def readEEGRaw(folder_path):
