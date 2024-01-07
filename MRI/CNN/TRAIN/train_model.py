@@ -40,6 +40,7 @@ def CnnFit(X_train, y_train, X_test, y_test, save):
     _, final_accuracy = model.evaluate(X_test, y_test, verbose=0)
 
     if save == True:
+        # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
         model.save(f"/home/user/Desktop/ADHD-Recognition/MRI/CNN/MODEL/{round(final_accuracy, 4)}.h5")
         #model.save("CNNFORMRI.h5")
 

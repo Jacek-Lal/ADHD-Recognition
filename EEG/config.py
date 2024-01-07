@@ -1,8 +1,10 @@
+#SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
 EEG_DATA_PATH = 'EEG/TRAIN/TRAIN_DATA'                                             # Folder z danymi
 EEG_SUBFOLDERS = ['ADHD', 'CONTROL']                                                # Wszystkie podfoldery z głównego folderu z danymi
 EEG_POS_PHRASE = 'ADHD'                                                             # Fraza zawierająca się w nazwie folderu z grupą chorych pacjentów
 EEG_NEG_PHRASE = 'CONTROL'                                                          # Fraza zawierająca się w nazwie folderu z grupą kontrolną
 EEG_SIGNAL_FRAME_SIZE = 128                                                        # wielkość pojedyńczej próbki pobieranej z danych elektrody
+#SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
 CNN_MODELS_PATH = '../EEG/MODEL'                                                       # folder do zapisywania modeli
 CNN_POS_LABEL = 1                                                             # wyjście pozytywne z modelu
 CNN_NEG_LABEL = 0                                                           # wyjście negatywne

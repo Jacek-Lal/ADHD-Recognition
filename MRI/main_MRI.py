@@ -19,11 +19,11 @@ else:
 #train_GAN(save=True, data_type="CONTROL")
 
 # uruchamia trening
-train_CNN(save=True)
+#train_CNN(save=True)
 
 # uruchamia predict
-# MODEL_CNN_NAME = "0.9478"
-#
-# predict_CNN(MODEL_CNN_NAME)
+MODEL_CNN_NAME = "1.0"
+
+predict_CNN(MODEL_CNN_NAME)
 
 

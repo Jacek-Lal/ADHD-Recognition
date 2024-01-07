@@ -5,7 +5,7 @@ from MRI.config import *
 from MRI.GAN.GENERATE.generate import *
 
 def train_CNN(save):
-
+    # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
     ADHD = readPickle("/home/user/Desktop/ADHD-Recognition/MRI/PICKLE_DATA/adhdImages.pkl")
 
     CONTROL = readPickle("/home/user/Desktop/ADHD-Recognition/MRI/PICKLE_DATA/controlImages.pkl")
@@ -25,7 +25,7 @@ def train_CNN(save):
     #savePickle("/home/user/Desktop/ADHD-Recognition/MRI/PICKLE_DATA/ADHD_GENERATED", ADHD_GAN)
 
     #savePickle("/home/user/Desktop/ADHD-Recognition/MRI/PICKLE_DATA/CONTROL_GENERATED", CONTROL_GAN)
-
+    # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
     ADHD_GAN = readPickle("/home/user/Desktop/ADHD_GENERATED")
 
     CONTROL_GAN = readPickle("/home/user/Desktop/CONTROL_GENERATED")
@@ -41,7 +41,7 @@ def train_CNN(save):
     print(f"accuracy: {accuracy}")
 
     if save == True:
-
+        # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
         savePickle(f"/home/user/Desktop/ADHD-Recognition/MRI/CNN/PREDICT/PREDICT_DATA/X_val_{round(accuracy, 4)}", X_val)
 
         savePickle(f"/home/user/Desktop/ADHD-Recognition/MRI/CNN/PREDICT/PREDICT_DATA/y_val_{round(accuracy, 4)}", y_val)

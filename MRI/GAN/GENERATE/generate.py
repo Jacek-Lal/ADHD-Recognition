@@ -15,7 +15,7 @@ from MRI.GAN.TRAIN.train import latent_vector, latent_dim
 
 def generate_GAN(MODEL_GAN_NAME, im_amount):
 
-
+    # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
     generator = load_model(f"/home/user/Desktop/ADHD-Recognition/MRI/GAN/MODELS/{MODEL_GAN_NAME}.h5")
 
     data = []

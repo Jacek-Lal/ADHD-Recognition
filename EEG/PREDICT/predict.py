@@ -9,6 +9,7 @@ import sys
 
 def predict(PATIENT_DIR, MODEL_NAME):
 
+    #SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
     DATA = readEEGRaw(f'../EEG/PREDICT/PREDICT_DATA/{PATIENT_DIR}.mat')
 
     DATA_FILTERED = filterEEGData(DATA)
