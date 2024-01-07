@@ -1,9 +1,3 @@
-# Parametry GAN
-latent_dim = 100 # Wymiar szumu generowanego przez generator.
-image_dim = (120, 120, 1)
-batch_size = 32 # Liczba obrazów w jednej iteracji treningowej.
-epochs = 10000 
-
 # Parametry CNN
 CNN_EPOCHS_MRI = 11
 BATCH_SIZE_MRI = 16
