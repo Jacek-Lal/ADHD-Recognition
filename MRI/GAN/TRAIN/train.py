@@ -103,39 +103,6 @@ def fake_samples(generator, latent_dim, n):
 
     return X, y
 
-def train(g_model, d_model, gan_model, dataset, latent_dim, n_epochs, n_batch):
-
-    # Our batch to train the discriminator will consist of half real images and half fake (generated) images
-    half_batch = int(n_batch / 2)
-
-    for i in range(n_epochs):
-
-        # Discriminator training
-
-        x_real, y_real = real_samples(half_batch, dataset)
-        x_fake, y_fake = fake_samples(g_model, latent_dim, half_batch)
-
-        # Train the discriminator using real and fake samples
-        X, y = np.vstack((x_real, x_fake)), np.vstack((y_real, y_fake))
-        discriminator_loss, discriminator_acc = d_model.train_on_batch(X, y)
-
-        # Generator training
-        x_gan = latent_vector(latent_dim, n_batch)
-        y_gan = np.ones((n_batch, 1))
-
-        # Train the generator via a composite GAN model
-        generator_loss = gan_model.train_on_batch(x_gan, y_gan)
-
-        # Evaluate the model at every n_eval epochs
-        if (i) % 500 == 0:
-            sample_noise = latent_vector(1, latent_dim)
-            generated_sample = g_model.predict(sample_noise)
-            plt.imshow(generated_sample[0])
-            plt.title(f"Epoch: {i}, D loss: {discriminator_loss:}, A acc: {discriminator_acc:}, G loss: {generator_loss:}")
-            plt.show()
-
-    return gan_model, discriminator_acc
-
 
 def train_GAN(save, data_type):
 
@@ -161,10 +128,41 @@ def train_GAN(save, data_type):
 
     gan_model = def_gan(gen_model, dis_model)
 
-    gen, d_acc = train(gen_model, dis_model, gan_model, X_train, latent_dim, n_epochs=epochs, n_batch=batch_size)
+    n_batch = batch_size
+
+    n_epochs = epochs
+
+    # Our batch to train the discriminator will consist of half real images and half fake (generated) images
+    half_batch = int(n_batch / 2)
+
+    for i in range(n_epochs):
+
+        # Discriminator training
+
+        x_real, y_real = real_samples(half_batch, X_train)
+        x_fake, y_fake = fake_samples(gen_model, latent_dim, half_batch)
+
+        # Train the discriminator using real and fake samples
+        X, y = np.vstack((x_real, x_fake)), np.vstack((y_real, y_fake))
+        discriminator_loss, discriminator_acc = dis_model.train_on_batch(X, y)
+
+        # Generator training
+        x_gan = latent_vector(latent_dim, n_batch)
+        y_gan = np.ones((n_batch, 1))
+
+        # Train the generator via a composite GAN model
+        generator_loss = gan_model.train_on_batch(x_gan, y_gan)
+
+        # Evaluate the model at every n_eval epochs
+        if (i) % 500 == 0:
+            sample_noise = latent_vector(1, latent_dim)
+            generated_sample = gen_model.predict(sample_noise)
+            plt.imshow(generated_sample[0])
+            plt.title(f"Epoch: {i}, D loss: {discriminator_loss:}, A acc: {discriminator_acc:}, G loss: {generator_loss:}")
+            plt.show()
 
     if save == True:
         if data_type == "ADHD":
-            gen.save(f"{GAN_MODELS_PATH}/ADHD_{round(d_acc, 4)}.h5")
+            gen_model.save(f"{GAN_MODELS_PATH}/ADHD_{round(discriminator_acc, 4)}.h5")
         elif data_type == "CONTROL":
-            gen.save(f"{GAN_MODELS_PATH}/CONTROL_{round(d_acc, 4)}.h5")
+            gen_model.save(f"{GAN_MODELS_PATH}/CONTROL_{round(discriminator_acc, 4)}.h5")
