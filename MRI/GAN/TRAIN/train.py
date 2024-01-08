@@ -1,9 +1,9 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Reshape, Conv2DTranspose, Conv2D, ReLU, LeakyReLU, Flatten, Dropout
-from tensorflow.keras.optimizers import Adam
+from tensorflow import keras
+from keras.models import Sequential
+from keras.layers import Dense, Reshape, Conv2DTranspose, Conv2D, ReLU, LeakyReLU, Flatten, Dropout
+from keras.optimizers import Adam
 import matplotlib.pyplot as plt
 
 from MRI.config import *
