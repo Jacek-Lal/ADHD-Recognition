@@ -6,9 +6,9 @@ from MRI.GAN.GENERATE.generate import *
 
 def train_CNN(save):
     # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
-    ADHD = readPickle("/home/user/Desktop/ADHD-Recognition/MRI/PICKLE_DATA/adhdImages.pkl")
+    ADHD = readPickle(f'../PICKLE_DATA/adhdImages.pkl')
 
-    CONTROL = readPickle("/home/user/Desktop/ADHD-Recognition/MRI/PICKLE_DATA/controlImages.pkl")
+    CONTROL = readPickle('../PICKLE_DATA/controlImages.pkl')
 
     ADHD_trimmed = trim(ADHD)
 
@@ -26,10 +26,9 @@ def train_CNN(save):
 
     #savePickle("/home/user/Desktop/ADHD-Recognition/MRI/PICKLE_DATA/CONTROL_GENERATED", CONTROL_GAN)
     # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
-    ADHD_GAN = readPickle("/home/user/Desktop/ADHD_GENERATED")
+    ADHD_GAN = readPickle(f'../GENERATED_ADHD')
 
-    CONTROL_GAN = readPickle("/home/user/Desktop/CONTROL_GENERATED")
-
+    CONTROL_GAN = readPickle(f'../GENERATED_CONTROL')
 
 
     ADHD_CONCAT, CONTROL_CONCAT = concatWithGan(ADHD_GAN, CONTROL_GAN, ADHD_normalized, CONTROL_normalized)
@@ -42,6 +41,6 @@ def train_CNN(save):
 
     if save == True:
         # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
-        savePickle(f"/home/user/Desktop/ADHD-Recognition/MRI/CNN/PREDICT/PREDICT_DATA/X_val_{round(accuracy, 4)}", X_val)
+        savePickle(f'../PREDICT/PREDICT_DATA/X_val_{round(accuracy, 4)}', X_val)
 
-        savePickle(f"/home/user/Desktop/ADHD-Recognition/MRI/CNN/PREDICT/PREDICT_DATA/y_val_{round(accuracy, 4)}", y_val)
+        savePickle(f'../PREDICT/PREDICT_DATA/y_val_{round(accuracy, 4)}', y_val)

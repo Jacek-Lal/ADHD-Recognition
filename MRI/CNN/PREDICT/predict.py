@@ -12,11 +12,11 @@ def predict_CNN(MODEL_NAME):
 
     try:
         # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
-        model = load_model(f'{CNN_MODELS_PATH_MRI}/{MODEL_NAME}.h5')
+        model = load_model(f'../MODEL/{MODEL_NAME}.h5')
 
-        X = readPickle(f"{CNN_PREDICT_PATH_MRI}/X_val_{MODEL_NAME}")
+        X = readPickle(f'./PREDICT_DATA/X_val_{MODEL_NAME}')
 
-        y = readPickle(f"{CNN_PREDICT_PATH_MRI}/y_val_{MODEL_NAME}")
+        y = readPickle(f'./PREDICT_DATA/y_val_{MODEL_NAME}')
 
     except OSError as e:
         print("Błędna ścieżka do modelu")

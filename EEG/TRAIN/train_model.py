@@ -68,7 +68,6 @@ def CnnFit(X_train, y_train, X_test, y_test):
 
     _, final_accuracy = model.evaluate(X_test, y_test, verbose=0)
 
-    # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
-    #model.save(f"{CNN_MODELS_PATH}/{round(final_accuracy, 4)}.h5")
+    model.save(f'../MODEL/{round(final_accuracy, 4)}.h5')
 
     return round(final_accuracy, 4)
