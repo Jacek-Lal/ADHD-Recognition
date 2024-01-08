@@ -12,14 +12,14 @@ def predict_CNN(MODEL_NAME):
 
     try:
         # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
-        model = load_model(f'../MODEL/{MODEL_NAME}.h5')
+        model = load_model(f'./CNN/MODEL/{MODEL_NAME}.h5')
 
-        X = readPickle(f'./PREDICT_DATA/X_val_{MODEL_NAME}')
+        X = readPickle(f'./CNN/PREDICT/PREDICT_DATA/X_val_{MODEL_NAME}')
 
-        y = readPickle(f'./PREDICT_DATA/y_val_{MODEL_NAME}')
+        y = readPickle(f'./CNN/PREDICT/PREDICT_DATA/y_val_{MODEL_NAME}')
 
     except OSError as e:
-        print("Błędna ścieżka do modelu")
+        print(f'Błędna ścieżka do modelu {e}')
         return
 
     print(f"Indeksy ADHD{np.where(y==1)[0]}")

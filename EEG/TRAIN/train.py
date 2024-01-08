@@ -12,7 +12,7 @@ from EEG.TRAIN.eeg_read import *
 from EEG.TRAIN.train_model import *
 
 def train():
-    ADHD_DATA, CONTROL_DATA = readEEGRaw(EEG_DATA_PATH)
+    ADHD_DATA, CONTROL_DATA = readEEGRaw(f'./TRAIN/TRAIN_DATA')
 
     ADHD_FILTERED, CONTROL_FILTERED = filterEEGData(ADHD_DATA, CONTROL_DATA)
 

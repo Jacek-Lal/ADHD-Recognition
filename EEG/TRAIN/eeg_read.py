@@ -23,7 +23,7 @@ def readEEGRaw(folder_path):
 
     for subfolder in subfolders:
 
-        current_folder = os.path.join(folder_path, subfolder)
+        current_folder = folder_path + "/" + subfolder
 
         mat_files = [f for f in os.listdir(current_folder) if f.endswith('.mat')]
 
