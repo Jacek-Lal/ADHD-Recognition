@@ -14,7 +14,7 @@ parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
 from EEG.config import *
 
-def CnnFit(X_train, y_train, X_test, y_test):
+def CnnFit(X_train, y_train, X_test, y_test, save):
 
     model = Sequential()
 
@@ -64,10 +64,10 @@ def CnnFit(X_train, y_train, X_test, y_test):
 
         print(f"Epoch: {epoch + 1} Loss: {loss:.4f}, Accuracy: {accuracy:.4f}")
 
-    #model.fit(X_train, y_train, epochs=CNN_EPOCHS, validation_data=(X_test, y_test))
-
     _, final_accuracy = model.evaluate(X_test, y_test, verbose=0)
 
-    model.save(f'../MODEL/{round(final_accuracy, 4)}.h5')
+    #if save == True:
+
+        #model.save(f'../MODEL/{round(final_accuracy, 4)}.h5')
 
     return round(final_accuracy, 4)

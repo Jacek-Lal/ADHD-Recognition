@@ -5,10 +5,44 @@ from keras.models import load_model
 from EEG.PREDICT.eeg_read import *
 from EEG.PREDICT.eeg_filter import *
 from EEG.config import *
+from MRI.mri_read import readPickle
 
-def predict(PATIENT_DIR, MODEL_NAME):
+def predict(MODEL_NAME):
 
-    DATA = readEEGRaw(f'./PREDICT_DATA/{PATIENT_DIR}.mat')
+    try:
+        # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
+        model = load_model(rf'C:\Users\Radek\Desktop\IPZ\GIT\ADHD-Recognition\EEG\MODEL\{MODEL_NAME}.h5')
+
+        X = readPickle(rf'C:\Users\Radek\Desktop\IPZ\GIT\ADHD-Recognition\EEG\PREDICT\PREDICT_DATA\X_val_{MODEL_NAME}')
+
+        y = readPickle(rf'C:\Users\Radek\Desktop\IPZ\GIT\ADHD-Recognition\EEG\PREDICT\PREDICT_DATA\y_val_{MODEL_NAME}')
+
+    except OSError as e:
+        print(f'Błędna ścieżka do modelu {e}')
+        return
+
+    print(f"Indeksy ADHD{np.where(y==1)[0]}")
+
+    print(f"Indeksy Zdrowe{np.where(y == 0)[0]}")
+
+    while True:
+        try:
+            patient_number = int(input("Wybierz numer pacjenta: "))
+            if patient_number < len(X) and patient_number >= 0:
+                break
+            else:
+                print("Wpisz numer pacjenta w zakresie")
+        except ValueError:
+            print("Wpisz numer pacjenta zakresie")
+
+    if y[patient_number] == 1:
+        print("Wybrales ADHD")
+    elif y[patient_number] == 0:
+        print("Wybrales Zdrowy")
+
+
+
+    DATA = X[patient_number]
 
     DATA_FILTERED = filterEEGData(DATA)
 
@@ -17,8 +51,6 @@ def predict(PATIENT_DIR, MODEL_NAME):
     DATA_NORMALIZED = normalizeEEGData(DATA_CLIPPED)
 
     DATA_FRAMED = frameDATA(DATA_NORMALIZED)
-
-    model = load_model(f'../MODEL/{MODEL_NAME}.h5')
 
     predictions = model.predict(DATA_FRAMED)
 
