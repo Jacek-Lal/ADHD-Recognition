@@ -1,47 +1,44 @@
-import os
-import nibabel as nib
+import pickle
+from sklearn.model_selection import train_test_split
 import numpy as np
 
-MRI_DATA_PATH = './MRI'
+from MRI.config import *
 
+def readPickle(nazwa):
+    with open(nazwa, 'rb') as file:
+        loaded_data = pickle.load(file)
 
-def read_nii_file(file_path):
-    img = nib.load(file_path)
-    data = img.get_fdata()
-    return data
-def read_MRI_file(root_folder):
-    tasks = [
-        'task-SLD',
-        'task-SLI',
-        'task-SSD',
-        'task-SSI',
-        'task-VLD',
-        'task-VLI',
-        'task-VSD',
-        'task-VSI',
-    ]
+    return loaded_data
 
-    data_dict = {}
+def savePickle(path, data):
+    with open(path, 'wb') as file:
+        pickle.dump(data, file)
 
-    for task in tasks:
-        task_data = {}
-        for sub_num in range(1, 80):
-            sub_folder = f'sub-{sub_num:02d}'
-            sub_path = os.path.join(root_folder, sub_folder, 'ses-T1', 'func')
-            if os.path.exists(sub_path):
-                nii_files = [f for f in os.listdir(sub_path) if f.startswith(f'{sub_folder}_ses-T1_{task}_bold.nii.gz')]
-                if nii_files:
-                    task_data[sub_folder] = []
-                    for nii_file in nii_files:
-                        nii_path = os.path.join(sub_path, nii_file)
-                        nii_data = read_nii_file(nii_path)
-                        task_data[sub_folder].append(np.array(nii_data))
+def prepareForCnn(ADHD, CONTROL):
+    y_ADHD = np.ones((len(ADHD)))
 
-        data_dict[task] = task_data
+    y_CONTROL = np.zeros((len(CONTROL)))
 
-    return data_dict
+    y = np.hstack((y_ADHD, y_CONTROL))
 
+    X_ADHD = np.reshape(ADHD,(len(ADHD), 120, 120, 1))
 
-MRI_data = read_MRI_file(MRI_DATA_PATH)
-print(MRI_data)
+    X_CONTROL = np.reshape(CONTROL, (len(CONTROL), 120, 120, 1))
 
+    X = np.vstack((X_ADHD, X_CONTROL))
+
+    X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.2, shuffle=True)
+
+    X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=VALIDATE_RATIO, shuffle=True)
+
+    return X_train, y_train, X_test, y_test, X_val, y_val
+
+def concatWithGan(ADHD_GAN, CONTROL_GAN, ADHD, CONTROL):
+
+    for i in range(len(ADHD)):
+        ADHD[i] = ADHD[i].reshape(ADHD[i].shape[0], ADHD[i].shape[1],1)
+
+    for i in range(len(CONTROL)):
+        CONTROL[i] = CONTROL[i].reshape(CONTROL[i].shape[0], CONTROL[i].shape[1], 1)
+
+    return ADHD+ADHD_GAN, CONTROL_GAN+CONTROL

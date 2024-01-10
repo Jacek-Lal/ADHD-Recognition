@@ -1,6 +1,4 @@
-/CNN/__pycache__
-/CNN/test.py
 *.nii
 *.nii.gz
-.vs
-.idea
+/MRI/files
+__pycache__

@@ -26,3 +26,16 @@ np.
 git pull
 git checkout jacek
 git merge main
+
+MATEUSZ:
+
+bedac na swoim branch:
+
+git pull origin main update z mainem
+git push
+
+git fetch ""
+git reset --hard ""  te 2 komendy sciagaja ostatniego commita z brancha
+
+git merge ""
+git push bedac na branchu np main robiac merge mateusz, wsadzasz na main dane branch mateusz
