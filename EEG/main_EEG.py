@@ -14,11 +14,11 @@ else:
     print("TensorFlow korzysta z CPU.")
 
 #uruchamia trening
-#train(save=True)
+train(True, rf'./TRAIN/TRAIN_DATA', rf'./PREDICT/PREDICT_DATA')
 
 #uruchamia predict
 # PATIENT_DIR = 'ADHD/v274'
 #
-MODEL_NAME = "0.4562"
+#MODEL_NAME = "0.4562"
 #
-predict(MODEL_NAME)
+#predict(MODEL_NAME, rf'./MODEL', rf'./PREDICT/PREDICT_DATA')

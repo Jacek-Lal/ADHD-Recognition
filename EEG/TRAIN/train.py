@@ -12,8 +12,8 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from EEG.TRAIN.eeg_read import *
 from EEG.TRAIN.train_model import *
 
-def train(save):
-    ADHD_DATA, CONTROL_DATA = readEEGRaw(r'C:\Users\Radek\Desktop\IPZ\GIT\ADHD-Recognition\EEG\TRAIN\TRAIN_DATA')
+def train(save, data_path, pickle_path):
+    ADHD_DATA, CONTROL_DATA = readEEGRaw(rf'{data_path}')
 
     ADHD_FILTERED, CONTROL_FILTERED = filterEEGData(ADHD_DATA, CONTROL_DATA)
 
@@ -29,6 +29,6 @@ def train(save):
 
     if save == True:
         # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
-        savePickle(rf'C:\Users\Radek\Desktop\IPZ\GIT\ADHD-Recognition\EEG\PREDICT\PREDICT_DATA\X_val_{round(accuracy, 4)}', X_valid)
+        savePickle(rf'{pickle_path}/X_val_{round(accuracy, 4)}', X_valid)
 
-        savePickle(rf'C:\Users\Radek\Desktop\IPZ\GIT\ADHD-Recognition\EEG\PREDICT\PREDICT_DATA\y_val_{round(accuracy, 4)}', y_valid)
+        savePickle(rf'{pickle_path}/y_val_{round(accuracy, 4)}', y_valid)

@@ -7,15 +7,15 @@ from EEG.PREDICT.eeg_filter import *
 from EEG.config import *
 from MRI.mri_read import readPickle
 
-def predict(MODEL_NAME):
+def predict(MODEL_NAME, model_path, pickle_path):
 
     try:
         # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
-        model = load_model(rf'C:\Users\Radek\Desktop\IPZ\GIT\ADHD-Recognition\EEG\MODEL\{MODEL_NAME}.h5')
+        model = load_model(rf'{model_path}/{MODEL_NAME}.h5')
 
-        X = readPickle(rf'C:\Users\Radek\Desktop\IPZ\GIT\ADHD-Recognition\EEG\PREDICT\PREDICT_DATA\X_val_{MODEL_NAME}')
+        X = readPickle(rf'{pickle_path}/X_val_{MODEL_NAME}')
 
-        y = readPickle(rf'C:\Users\Radek\Desktop\IPZ\GIT\ADHD-Recognition\EEG\PREDICT\PREDICT_DATA\y_val_{MODEL_NAME}')
+        y = readPickle(rf'{pickle_path}/y_val_{MODEL_NAME}')
 
     except OSError as e:
         print(f'Błędna ścieżka do modelu {e}')
