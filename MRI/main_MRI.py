@@ -16,6 +16,7 @@ def MRI():
     else:
         print("TensorFlow korzysta z CPU.")
 
+    print(os.getcwd())
     print("MRI")
     choice = input('Wybierz opcje:   1-(uruchamia trening CNN)   2-(uruchamia predict CNN)   3-(uruchamia trening GEN):')
 
