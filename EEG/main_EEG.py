@@ -5,6 +5,16 @@ import tensorflow as tf
 from TRAIN.train import *
 from PREDICT.predict import *
 
+import os
+
+current_dir = os.path.dirname(__file__)
+
+MODEL_NAME = "0.4562"
+MODEL_PATH = rf'{current_dir}/MODEL'
+TRAIN_PATH = rf'{current_dir}/TRAIN/TRAIN_DATA'
+PREDICT_PATH = rf'{current_dir}/PREDICT/PREDICT_DATA'
+
+
 
 def EEG():
     gpu_devices = tf.config.list_physical_devices('GPU')
@@ -19,7 +29,6 @@ def EEG():
     choice = input('Wybierz opcje:   1-(uruchamia trening CNN)   2-(uruchamia predict CNN):')
 
     if choice == '1':
-        train(True, rf'EEG/TRAIN/TRAIN_DATA', rf'EEG/PREDICT/PREDICT_DATA')
+        train(True, TRAIN_PATH, PREDICT_PATH)
     elif choice == '2':
-        MODEL_NAME = "0.4562"
-        predict(MODEL_NAME, rf'EEG/MODEL', rf'EEG/PREDICT/PREDICT_DATA')
+        predict(MODEL_NAME, MODEL_PATH, PREDICT_PATH)
