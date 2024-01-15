@@ -14,8 +14,6 @@ MODEL_PATH = rf'{current_dir}/MODEL'
 TRAIN_PATH = rf'{current_dir}/TRAIN/TRAIN_DATA'
 PREDICT_PATH = rf'{current_dir}/PREDICT/PREDICT_DATA'
 
-
-
 def EEG():
     gpu_devices = tf.config.list_physical_devices('GPU')
 
@@ -29,6 +27,6 @@ def EEG():
     choice = input('Wybierz opcje:   1-(uruchamia trening CNN)   2-(uruchamia predict CNN):')
 
     if choice == '1':
-        train(True, TRAIN_PATH, PREDICT_PATH)
+        train(True, TRAIN_PATH, PREDICT_PATH, MODEL_PATH)
     elif choice == '2':
         predict(MODEL_NAME, MODEL_PATH, PREDICT_PATH)

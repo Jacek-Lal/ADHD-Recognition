@@ -12,7 +12,7 @@ from MRI.mri_plot import *
 from MRI.mri_read import *
 from MRI.GAN.TRAIN.train import latent_vector, latent_dim
 
-
+#NIE ZNAJDUJE UŻYTKU W KODZIE WIĘC NIE POPRAWIAM
 def generate_GAN(MODEL_GAN_NAME, im_amount):
 
     # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ

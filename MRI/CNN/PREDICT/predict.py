@@ -8,15 +8,15 @@ from MRI.config import *
 from MRI.mri_plot import *
 from MRI.mri_read import *
 
-def predict_CNN(MODEL_NAME):
+def predict_CNN(MODEL_NAME, cnn_model, cnn_predict):
 
     try:
         # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
-        model = load_model(f'./CNN/MODEL/{MODEL_NAME}.h5')
+        model = load_model(rf'{cnn_model}/{MODEL_NAME}.h5')
 
-        X = readPickle(f'./CNN/PREDICT/PREDICT_DATA/X_val_{MODEL_NAME}')
+        X = readPickle(rf'{cnn_predict}/X_val_{MODEL_NAME}')
 
-        y = readPickle(f'./CNN/PREDICT/PREDICT_DATA/y_val_{MODEL_NAME}')
+        y = readPickle(rf'{cnn_predict}/y_val_{MODEL_NAME}')
 
     except OSError as e:
         print(f'Błędna ścieżka do modelu {e}')
