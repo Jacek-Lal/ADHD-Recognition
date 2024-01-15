@@ -4,8 +4,8 @@ from PyQt5.QtCore import Qt, QRegExp
 from PyQt5.QtXml import QDomElement
 from PyQt5 import uic
 import sys
-#from MRI.main_MRI import MRI
-#from EEG.main_EEG import EEG
+from MRI.main_MRI import MRI
+from EEG.main_EEG import EEG
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -14,9 +14,16 @@ class MainWindow(QMainWindow):
 
     def loadMainUI(self):
         uic.loadUi("UI/MainWindow.ui", self)
-        #self.btn_EEG.clicked.connect(EEG())
-        #self.btn_MRI.clicked.connect(MRI())
+        self.btn_EEG.clicked.connect(self.runEEG)
+        self.btn_MRI.clicked.connect(self.runMRI)
 
+    def runEEG(self):
+        EEG()
+        print("Uruchomienie EEG")
+
+    def runMRI(self):
+        MRI()
+        print("Uruchomienie MRI")
 
 app = QApplication(sys.argv)
 window = MainWindow()

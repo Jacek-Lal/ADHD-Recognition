@@ -15,12 +15,11 @@ def EEG():
     else:
         print("TensorFlow korzysta z CPU.")
 
-    #uruchamia trening
-    train(True, rf'./TRAIN/TRAIN_DATA', rf'./PREDICT/PREDICT_DATA')
+    print("EEG")
+    choice = input('Wybierz opcje:   1-(uruchamia trening CNN)   2-(uruchamia predict CNN):')
 
-    #uruchamia predict
-    # PATIENT_DIR = 'ADHD/v274'
-    #
-    #MODEL_NAME = "0.4562"
-    #
-    #predict(MODEL_NAME, rf'./MODEL', rf'./PREDICT/PREDICT_DATA')
+    if choice == '1':
+        train(True, rf'./TRAIN/TRAIN_DATA', rf'./PREDICT/PREDICT_DATA')
+    elif choice == '2':
+        MODEL_NAME = "0.4562"
+        predict(MODEL_NAME, rf'./MODEL', rf'./PREDICT/PREDICT_DATA')
