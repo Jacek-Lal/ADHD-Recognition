@@ -6,24 +6,26 @@ from CNN.TRAIN.train import *
 from CNN.PREDICT.predict import *
 from GAN.TRAIN.train import *
 
-gpu_devices = tf.config.list_physical_devices('GPU')
+def MRI():
 
-if gpu_devices:
-    print("TensorFlow korzysta z karty graficznej.")
-    print("Dostępne GPU:", gpu_devices)
-else:
-    print("TensorFlow korzysta z CPU.")
+    gpu_devices = tf.config.list_physical_devices('GPU')
+
+    if gpu_devices:
+        print("TensorFlow korzysta z karty graficznej.")
+        print("Dostępne GPU:", gpu_devices)
+    else:
+        print("TensorFlow korzysta z CPU.")
 
 
-# uruchamia trening GAN
-#train_GAN(save=True, data_type="CONTROL")
+    # uruchamia trening GAN
+    #train_GAN(save=True, data_type="CONTROL")
 
-# uruchamia trening
-#train_CNN(save=True)
+    # uruchamia trening
+    #train_CNN(save=True)
 
-# uruchamia predict
-MODEL_CNN_NAME = "1.0"
+    # uruchamia predict
+    MODEL_CNN_NAME = "1.0"
 
-predict_CNN(MODEL_CNN_NAME)
+    predict_CNN(MODEL_CNN_NAME)
 
 
