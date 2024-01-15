@@ -26,7 +26,7 @@ def train_CNN(save, pickle_data, adhd, control, cnn_predict):
 
     #savePickle("/home/user/Desktop/ADHD-Recognition/MRI/PICKLE_DATA/CONTROL_GENERATED", CONTROL_GAN)
     # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
-    ADHD_GAN = readPickle(rf'.{adhd}')
+    ADHD_GAN = readPickle(rf'{adhd}')
 
     CONTROL_GAN = readPickle(rf'{control}')
 
