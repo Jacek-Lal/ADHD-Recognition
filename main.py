@@ -1,10 +1,9 @@
-from PyQt5.QtWidgets import QMainWindow, QApplication
-
-from PyQt5 import uic
+import os
 import sys
+from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5 import uic
 from MRI.main_MRI import MRI
 from EEG.main_EEG import EEG
-import os
 
 current_dir = os.path.dirname(__file__)
 UI_PATH = rf'{current_dir}/UI'

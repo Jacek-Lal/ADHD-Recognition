@@ -50,4 +50,4 @@ def MRI():
 
 
 
-MRI()
+#MRI()

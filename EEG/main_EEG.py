@@ -27,4 +27,4 @@ def EEG():
     elif choice == '2':
         predict(MODEL_NAME, MODEL_PATH, PREDICT_PATH)
 
-EEG()
+#EEG()
