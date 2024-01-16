@@ -33,7 +33,8 @@ def MRI():
                 elif save == '2':
                     train_CNN(False, PICKLE_PATH, ADHD_PATH, CONTROL_PATH, CNN_PREDICT_PATH, CNN_MODEL_PATH)
             elif choice == '2':
-                predict_CNN(MODEL_CNN_NAME, CNN_MODEL_PATH, CNN_PREDICT_PATH)
+                while(True):
+                    predict_CNN(MODEL_CNN_NAME, CNN_MODEL_PATH, CNN_PREDICT_PATH)
             elif choice == '3':
                 data_type = input('Wybierz opcję:   1-(CONTROL)   2-(ADHD): ')
                 save = input('Wybierz opcję:   1-(zapisz model)   2-(nie zapisuj modelu): ')

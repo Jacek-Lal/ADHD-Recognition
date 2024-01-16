@@ -40,11 +40,9 @@ class MainWindow():
 
     def runEEG(self):
         EEG()
-        print("Uruchomienie EEG")
 
     def runMRI(self):
         MRI()
-        print("Uruchomienie MRI")
 
 #app = QApplication(sys.argv)
 window = MainWindow()
