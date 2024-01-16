@@ -38,4 +38,4 @@ def EEG():
         except Exception as e:
             print(f"Wystąpił błąd: {e}")
 
-EEG()
+#EEG()

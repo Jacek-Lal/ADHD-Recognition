@@ -50,4 +50,4 @@ def MRI():
             print(f"Wystąpił błąd: {e}")
 
 
-MRI()
+#MRI()
