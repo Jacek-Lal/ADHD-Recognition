@@ -31,11 +31,11 @@ def EEG():
                 else:
                     print("Niepoprawny wybór. Wprowadź 1 lub 2.")
             elif choice == '2':
-                predict(MODEL_NAME, MODEL_PATH, PREDICT_PATH)
-                break
+                while(True):
+                    predict(MODEL_NAME, MODEL_PATH, PREDICT_PATH)
             else:
                 print("Niepoprawny wybór. Wprowadź 1 lub 2.")
         except Exception as e:
             print(f"Wystąpił błąd: {e}")
 
-#EEG()
+EEG()
