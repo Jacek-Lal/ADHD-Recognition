@@ -12,11 +12,9 @@ from MRI.mri_plot import *
 from MRI.mri_read import *
 from MRI.GAN.TRAIN.train import latent_vector, latent_dim
 
-#NIE ZNAJDUJE UŻYTKU W KODZIE WIĘC NIE POPRAWIAM
-def generate_GAN(MODEL_GAN_NAME, im_amount):
+def generate_GAN(MODEL_GAN_NAME, im_amount, model_path):
 
-    # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
-    generator = load_model(f'./MODELS/{MODEL_GAN_NAME}.h5')
+    generator = load_model(rf'{model_path}/{MODEL_GAN_NAME}.h5')
 
     data = []
 
