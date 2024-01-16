@@ -10,7 +10,7 @@ import math
 from EEG.TRAIN.eeg_filter import *
 import sys
 
-# Add the directory containing config.py to the Python path
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)

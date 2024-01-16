@@ -11,7 +11,7 @@ from MRI.mri_read import *
 def predict_CNN(MODEL_NAME, cnn_model, cnn_predict):
 
     try:
-        # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
+
         model = load_model(rf'{cnn_model}/{MODEL_NAME}.h5')
 
         X = readPickle(rf'{cnn_predict}/X_val_{MODEL_NAME}')

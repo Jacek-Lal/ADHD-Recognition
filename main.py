@@ -1,7 +1,5 @@
-from PyQt5.QtWidgets import QMainWindow, QApplication, QLabel, QPushButton, QVBoxLayout, QWidget, QGridLayout, QLineEdit, QComboBox
-from PyQt5.QtGui import QTextDocument, QRegExpValidator
-from PyQt5.QtCore import Qt, QRegExp
-from PyQt5.QtXml import QDomElement
+from PyQt5.QtWidgets import QMainWindow, QApplication
+
 from PyQt5 import uic
 import sys
 from MRI.main_MRI import MRI

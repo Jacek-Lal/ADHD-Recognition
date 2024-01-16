@@ -37,7 +37,7 @@ def MRI():
         MODEL_CNN_NAME = "1.0"
         predict_CNN(MODEL_CNN_NAME, CNN_MODEL_PATH, CNN_PREDICT_PATH)
     elif choice == '3':
-        train_GAN(save=True, data_type="CONTROL", pickle=PICKLE_PATH, model=GAN_MODEL_PATH)
+        train_GAN(True, data_type="CONTROL", pickle=PICKLE_PATH, model=GAN_MODEL_PATH)
 
 
 

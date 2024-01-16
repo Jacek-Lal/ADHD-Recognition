@@ -158,6 +158,6 @@ def train_GAN(save, data_type, pickle, model, n_epochs=2000, n_batch=32, g_model
     if save == True:
         if data_type == "ADHD":
             # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
-            g_model.save(rf'{model}L/ADHD_{round(discriminator_loss, 4)}.h5')
+            g_model.save(rf'{model}/ADHD_{round(discriminator_loss, 4)}.h5')
         elif data_type == "CONTROL":
             g_model.save(rf'{model}/CONTROL_{round(discriminator_loss, 4)}.h5')

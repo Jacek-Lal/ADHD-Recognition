@@ -10,7 +10,7 @@ from MRI.mri_read import readPickle
 def predict(MODEL_NAME, model_path, pickle_path):
 
     try:
-        # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
+
         model = load_model(rf'{model_path}/{MODEL_NAME}.h5')
 
         X = readPickle(rf'{pickle_path}/X_val_{MODEL_NAME}')
