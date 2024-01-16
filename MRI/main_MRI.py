@@ -12,9 +12,7 @@ current_dir = os.path.dirname(__file__)
 
 MODEL_CNN_NAME = "1.0"
 PICKLE_PATH = rf'{current_dir}/PICKLE_DATA'
-#ADHD_PATH = rf'{current_dir}/GENERATED_ADHD'    #SCIEZKA DO PLIKU PICKLE Z WYGENEROWANYM ADHD
 ADHD_PATH = r'/home/user/Desktop/ADHD_GENERATED'    #na potrzeby korzystania z serwera musi być sztywna
-#CONTROL_PATH = rf'{current_dir}/GENERATED_CONTROL'  #SCIEZKA DO PLIKU PICKLE Z WYGENEROWANYM CONTROL
 CONTROL_PATH = r'/home/user/Desktop/CONTROL_GENERATED'  #na potrzeby korzystania z serwera musi być sztywna
 CNN_PREDICT_PATH = rf'{current_dir}/CNN/PREDICT/PREDICT_DATA'
 CNN_MODEL_PATH = rf'{current_dir}/CNN/MODEL'
