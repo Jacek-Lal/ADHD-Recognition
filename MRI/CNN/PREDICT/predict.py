@@ -8,18 +8,18 @@ from MRI.config import *
 from MRI.mri_plot import *
 from MRI.mri_read import *
 
-def predict_CNN(MODEL_NAME):
+def predict_CNN(MODEL_NAME, cnn_model, cnn_predict):
 
     try:
-        # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
-        model = load_model(f'{CNN_MODELS_PATH_MRI}/{MODEL_NAME}.h5')
 
-        X = readPickle(f"{CNN_PREDICT_PATH_MRI}/X_val_{MODEL_NAME}")
+        model = load_model(rf'{cnn_model}/{MODEL_NAME}.h5')
 
-        y = readPickle(f"{CNN_PREDICT_PATH_MRI}/y_val_{MODEL_NAME}")
+        X = readPickle(rf'{cnn_predict}/X_val_{MODEL_NAME}')
+
+        y = readPickle(rf'{cnn_predict}/y_val_{MODEL_NAME}')
 
     except OSError as e:
-        print("Błędna ścieżka do modelu")
+        print(f'Błędna ścieżka do modelu {e}')
         return
 
     print(f"Indeksy ADHD{np.where(y==1)[0]}")

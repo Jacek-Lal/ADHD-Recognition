@@ -4,11 +4,11 @@ from MRI.CNN.TRAIN.train_model import *
 from MRI.config import *
 from MRI.GAN.GENERATE.generate import *
 
-def train_CNN(save):
+def train_CNN(save, pickle_data, adhd, control, cnn_predict):
     # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
-    ADHD = readPickle("/home/user/Desktop/ADHD-Recognition/MRI/PICKLE_DATA/adhdImages.pkl")
+    ADHD = readPickle(rf'{pickle_data}/adhdImages.pkl')
 
-    CONTROL = readPickle("/home/user/Desktop/ADHD-Recognition/MRI/PICKLE_DATA/controlImages.pkl")
+    CONTROL = readPickle(rf'{pickle_data}/controlImages.pkl')
 
     ADHD_trimmed = trim(ADHD)
 
@@ -25,12 +25,16 @@ def train_CNN(save):
     #savePickle("/home/user/Desktop/ADHD-Recognition/MRI/PICKLE_DATA/ADHD_GENERATED", ADHD_GAN)
 
     #savePickle("/home/user/Desktop/ADHD-Recognition/MRI/PICKLE_DATA/CONTROL_GENERATED", CONTROL_GAN)
-    # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
-    ADHD_GAN = readPickle("/home/user/Desktop/ADHD_GENERATED")
 
-    CONTROL_GAN = readPickle("/home/user/Desktop/CONTROL_GENERATED")
+    try:
+        ADHD_GAN = readPickle(rf'{adhd}')
 
-
+        CONTROL_GAN = readPickle(rf'{control}')
+    except Exception as e:
+        print(r"Bledna sciezka do plikow 'GENERATED'")
+        print(r"Uczenie na danych rzeczywistych...")
+        ADHD_GAN = []
+        CONTROL_GAN = []
 
     ADHD_CONCAT, CONTROL_CONCAT = concatWithGan(ADHD_GAN, CONTROL_GAN, ADHD_normalized, CONTROL_normalized)
 
@@ -42,6 +46,7 @@ def train_CNN(save):
 
     if save == True:
         # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
-        savePickle(f"/home/user/Desktop/ADHD-Recognition/MRI/CNN/PREDICT/PREDICT_DATA/X_val_{round(accuracy, 4)}", X_val)
+        savePickle(rf'{cnn_predict}/X_val_{round(accuracy, 4)}', X_val)
 
-        savePickle(f"/home/user/Desktop/ADHD-Recognition/MRI/CNN/PREDICT/PREDICT_DATA/y_val_{round(accuracy, 4)}", y_val)
+        savePickle(rf'{cnn_predict}/y_val_{round(accuracy, 4)}', y_val)
+

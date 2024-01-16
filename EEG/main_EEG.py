@@ -5,20 +5,26 @@ import tensorflow as tf
 from TRAIN.train import *
 from PREDICT.predict import *
 
-gpu_devices = tf.config.list_physical_devices('GPU')
+import os
 
-if gpu_devices:
-    print("TensorFlow korzysta z karty graficznej.")
-    print("Dostępne GPU:", gpu_devices)
-else:
-    print("TensorFlow korzysta z CPU.")
+current_dir = os.path.dirname(__file__)
 
-#uruchamia trening
-train()
+MODEL_NAME = "0.4562"
+MODEL_PATH = rf'{current_dir}/MODEL'
+TRAIN_PATH = rf'{current_dir}/TRAIN/TRAIN_DATA'
+PREDICT_PATH = rf'{current_dir}/PREDICT/PREDICT_DATA'
 
-#uruchamia predict
-# PATIENT_DIR = 'ADHD/v274'
-#
-# MODEL_NAME = "0.7892"
-#
-# predict(PATIENT_DIR, MODEL_NAME)
+def EEG():
+
+    print("EEG")
+    choice = input('Wybierz opcje:   1-(uruchamia trening CNN)   2-(uruchamia predict CNN):')
+    if choice == '1':
+        save = input('Wybierz opcje:   1-(zapisz model)   2-(nie zapisuj modelu):')
+        if save == 1:
+            train(True, TRAIN_PATH, PREDICT_PATH, MODEL_PATH)
+        elif save == 2:
+            train(False, TRAIN_PATH, PREDICT_PATH, MODEL_PATH)
+    elif choice == '2':
+        predict(MODEL_NAME, MODEL_PATH, PREDICT_PATH)
+
+EEG()
