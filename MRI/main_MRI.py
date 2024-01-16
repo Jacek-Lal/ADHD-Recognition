@@ -10,35 +10,46 @@ import os
 
 current_dir = os.path.dirname(__file__)
 
+MODEL_CNN_NAME = "1.0"
 PICKLE_PATH = rf'{current_dir}/PICKLE_DATA'
-ADHD_PATH = rf'{current_dir}/GENERATED_ADHD'
-CONTROL_PATH = rf'{current_dir}/GENERATED_CONTROL'
+#ADHD_PATH = rf'{current_dir}/GENERATED_ADHD'    #SCIEZKA DO PLIKU PICKLE Z WYGENEROWANYM ADHD
+ADHD_PATH = r'/home/user/Desktop/ADHD_GENERATED'    #na potrzeby korzystania z serwera musi być sztywna
+#CONTROL_PATH = rf'{current_dir}/GENERATED_CONTROL'  #SCIEZKA DO PLIKU PICKLE Z WYGENEROWANYM CONTROL
+CONTROL_PATH = r'/home/user/Desktop/CONTROL_GENERATED'  #na potrzeby korzystania z serwera musi być sztywna
 CNN_PREDICT_PATH = rf'{current_dir}/CNN/PREDICT/PREDICT_DATA'
 CNN_MODEL_PATH = rf'{current_dir}/CNN/MODEL'
 GAN_MODEL_PATH = rf'{current_dir}/GAN/MODEL'
 
 def MRI():
 
-    gpu_devices = tf.config.list_physical_devices('GPU')
-
-    if gpu_devices:
-        print("TensorFlow korzysta z karty graficznej.")
-        print("Dostępne GPU:", gpu_devices)
-    else:
-        print("TensorFlow korzysta z CPU.")
-
-    print(os.getcwd())
     print("MRI")
-    choice = input('Wybierz opcje:   1-(uruchamia trening CNN)   2-(uruchamia predict CNN)   3-(uruchamia trening GEN):')
+    choice = input('Wybierz opcje:   1-(uruchamia trening CNN)   2-(uruchamia predict CNN)   3-(uruchamia trening GAN):')
 
     if choice == '1':
-        train_CNN(True, PICKLE_PATH, ADHD_PATH, CONTROL_PATH, CNN_PREDICT_PATH)
+        save = input('Wybierz opcje:   1-(zapisz model)   2-(nie zapisuj modelu):')
+        if save == '1':
+            train_CNN(True, PICKLE_PATH, ADHD_PATH, CONTROL_PATH, CNN_PREDICT_PATH)
+        elif save == 2:
+            train_CNN(False, PICKLE_PATH, ADHD_PATH, CONTROL_PATH, CNN_PREDICT_PATH)
     elif choice == '2':
-        MODEL_CNN_NAME = "1.0"
         predict_CNN(MODEL_CNN_NAME, CNN_MODEL_PATH, CNN_PREDICT_PATH)
     elif choice == '3':
-        train_GAN(True, data_type="CONTROL", pickle=PICKLE_PATH, model=GAN_MODEL_PATH)
+        save = input('Wybierz opcje:   1-(zapisz model)   2-(nie zapisuj modelu):')
+        type = input('Wybierz opcje:   1-(CONTROL)   2-(ADHD):')
+        if save == '1':
+            if type == 'CONTROL':
+                train_GAN(True, data_type="CONTROL", pickle=PICKLE_PATH, model=GAN_MODEL_PATH)
+            elif type == 'ADHD':
+                train_GAN(True, data_type="ADHD", pickle=PICKLE_PATH, model=GAN_MODEL_PATH)
+        elif save == 2:
+            if type == 'CONTROL':
+                train_GAN(False, data_type="CONTROL", pickle=PICKLE_PATH, model=GAN_MODEL_PATH)
+            elif type == 'ADHD':
+                train_GAN(False, data_type="ADHD", pickle=PICKLE_PATH, model=GAN_MODEL_PATH)
 
+
+
+MRI()
 
 
 
