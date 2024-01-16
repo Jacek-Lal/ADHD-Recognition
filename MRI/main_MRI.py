@@ -25,23 +25,26 @@ def MRI():
     print("MRI")
     choice = input('Wybierz opcje:   1-(uruchamia trening CNN)   2-(uruchamia predict CNN)   3-(uruchamia trening GAN):')
 
+
+
     if choice == '1':
         save = input('Wybierz opcje:   1-(zapisz model)   2-(nie zapisuj modelu):')
         if save == '1':
             train_CNN(True, PICKLE_PATH, ADHD_PATH, CONTROL_PATH, CNN_PREDICT_PATH)
-        elif save == 2:
+        elif save == '2':
             train_CNN(False, PICKLE_PATH, ADHD_PATH, CONTROL_PATH, CNN_PREDICT_PATH)
     elif choice == '2':
         predict_CNN(MODEL_CNN_NAME, CNN_MODEL_PATH, CNN_PREDICT_PATH)
     elif choice == '3':
-        save = input('Wybierz opcje:   1-(zapisz model)   2-(nie zapisuj modelu):')
+
         type = input('Wybierz opcje:   1-(CONTROL)   2-(ADHD):')
+        save = input('Wybierz opcje:   1-(zapisz model)   2-(nie zapisuj modelu):')
         if save == '1':
             if type == 'CONTROL':
                 train_GAN(True, data_type="CONTROL", pickle=PICKLE_PATH, model=GAN_MODEL_PATH)
             elif type == 'ADHD':
                 train_GAN(True, data_type="ADHD", pickle=PICKLE_PATH, model=GAN_MODEL_PATH)
-        elif save == 2:
+        elif save == '2':
             if type == 'CONTROL':
                 train_GAN(False, data_type="CONTROL", pickle=PICKLE_PATH, model=GAN_MODEL_PATH)
             elif type == 'ADHD':
@@ -50,7 +53,3 @@ def MRI():
 
 
 MRI()
-
-
-
-

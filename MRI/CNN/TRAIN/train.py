@@ -25,10 +25,14 @@ def train_CNN(save, pickle_data, adhd, control, cnn_predict):
     #savePickle("/home/user/Desktop/ADHD-Recognition/MRI/PICKLE_DATA/ADHD_GENERATED", ADHD_GAN)
 
     #savePickle("/home/user/Desktop/ADHD-Recognition/MRI/PICKLE_DATA/CONTROL_GENERATED", CONTROL_GAN)
-    # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
-    ADHD_GAN = readPickle(rf'{adhd}')
 
-    CONTROL_GAN = readPickle(rf'{control}')
+    try:
+        ADHD_GAN = readPickle(rf'{adhd}')
+
+        CONTROL_GAN = readPickle(rf'{control}')
+    except Exception as e:
+        print(r"Bledna sciezka do plikow 'GENERATED'")
+        return
 
 
     ADHD_CONCAT, CONTROL_CONCAT = concatWithGan(ADHD_GAN, CONTROL_GAN, ADHD_normalized, CONTROL_normalized)
