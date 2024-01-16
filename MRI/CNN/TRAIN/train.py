@@ -4,7 +4,7 @@ from MRI.CNN.TRAIN.train_model import *
 from MRI.config import *
 from MRI.GAN.GENERATE.generate import *
 
-def train_CNN(save, pickle_data, adhd, control, cnn_predict):
+def train_CNN(save, pickle_data, adhd, control, cnn_predict, model_path):
     # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
     ADHD = readPickle(rf'{pickle_data}/adhdImages.pkl')
 
@@ -40,7 +40,7 @@ def train_CNN(save, pickle_data, adhd, control, cnn_predict):
 
     X_train, y_train, X_test, y_test, X_val, y_val = prepareForCnn(ADHD_CONCAT, CONTROL_CONCAT)
 
-    accuracy = CnnFit(X_train, y_train, X_test, y_test, save)
+    accuracy = CnnFit(X_train, y_train, X_test, y_test, save, model_path)
 
     print(f"accuracy: {accuracy}")
 
