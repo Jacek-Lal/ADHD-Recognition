@@ -32,8 +32,9 @@ def train_CNN(save, pickle_data, adhd, control, cnn_predict):
         CONTROL_GAN = readPickle(rf'{control}')
     except Exception as e:
         print(r"Bledna sciezka do plikow 'GENERATED'")
-        return
-
+        print(r"Uczenie na danych rzeczywistych...")
+        ADHD_GAN = []
+        CONTROL_GAN = []
 
     ADHD_CONCAT, CONTROL_CONCAT = concatWithGan(ADHD_GAN, CONTROL_GAN, ADHD_normalized, CONTROL_normalized)
 
@@ -48,3 +49,4 @@ def train_CNN(save, pickle_data, adhd, control, cnn_predict):
         savePickle(rf'{cnn_predict}/X_val_{round(accuracy, 4)}', X_val)
 
         savePickle(rf'{cnn_predict}/y_val_{round(accuracy, 4)}', y_val)
+
