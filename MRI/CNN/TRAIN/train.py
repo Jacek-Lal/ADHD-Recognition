@@ -31,9 +31,7 @@ def train_CNN(save, pickle_data, adhd, control, cnn_predict, model_path):
         CONTROL_GAN = readPickle(rf'{control}')
     except Exception as e:
         print(r"Bledna sciezka do plikow 'GENERATED'")
-        print(r"Uczenie na danych rzeczywistych...")
-        ADHD_GAN = []
-        CONTROL_GAN = []
+        return
 
     X_val, y_val = makeValidData(ADHD_normalized, CONTROL_normalized)
 
