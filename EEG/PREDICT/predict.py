@@ -6,6 +6,7 @@ from EEG.PREDICT.eeg_read import *
 from EEG.PREDICT.eeg_filter import *
 from EEG.config import *
 from MRI.mri_read import readPickle
+from MRI.CNN.PREDICT.predict import print_index_ranges
 
 def predict(MODEL_NAME, model_path, pickle_path):
 
@@ -21,9 +22,7 @@ def predict(MODEL_NAME, model_path, pickle_path):
         print(f'Błędna ścieżka do modelu {e}')
         return
 
-    print(f"Indeksy ADHD{np.where(y==1)[0]}")
-
-    print(f"Indeksy Zdrowe{np.where(y == 0)[0]}")
+    print_index_ranges(y)
 
     while True:
         try:
@@ -39,7 +38,6 @@ def predict(MODEL_NAME, model_path, pickle_path):
         print("Wybrales ADHD")
     elif y[patient_number] == 0:
         print("Wybrales Zdrowy")
-
 
 
     DATA = X[patient_number]

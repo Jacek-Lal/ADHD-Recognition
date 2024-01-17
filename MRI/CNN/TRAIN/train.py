@@ -35,9 +35,9 @@ def train_CNN(save, pickle_data, adhd, control, cnn_predict, model_path):
         ADHD_GAN = []
         CONTROL_GAN = []
 
-    ADHD_CONCAT, CONTROL_CONCAT = concatWithGan(ADHD_GAN, CONTROL_GAN, ADHD_normalized, CONTROL_normalized)
+    X_val, y_val = makeValidData(ADHD_normalized, CONTROL_normalized)
 
-    X_train, y_train, X_test, y_test, X_val, y_val = prepareForCnn(ADHD_CONCAT, CONTROL_CONCAT)
+    X_train, y_train, X_test, y_test = prepareForCnn(ADHD_GAN, CONTROL_GAN)
 
     accuracy = CnnFit(X_train, y_train, X_test, y_test, save, model_path)
 
@@ -47,4 +47,3 @@ def train_CNN(save, pickle_data, adhd, control, cnn_predict, model_path):
         savePickle(rf'{cnn_predict}/X_val_{round(accuracy, 4)}', X_val)
 
         savePickle(rf'{cnn_predict}/y_val_{round(accuracy, 4)}', y_val)
-

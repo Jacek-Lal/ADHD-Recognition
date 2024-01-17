@@ -8,6 +8,23 @@ from MRI.config import *
 from MRI.mri_plot import *
 from MRI.mri_read import *
 
+def print_index_ranges(y):
+    adhd_indices = np.where(y == 1)[0]
+    healthy_indices = np.where(y == 0)[0]
+
+    if adhd_indices.size > 0:
+        adhd_range = f"{adhd_indices[0]}-{adhd_indices[-1]}"
+    else:
+        adhd_range = "Brak indeksów"
+
+    if healthy_indices.size > 0:
+        healthy_range = f"{healthy_indices[0]}-{healthy_indices[-1]}"
+    else:
+        healthy_range = "Brak indeksów"
+
+    print(f"Indeksy ADHD: {adhd_range}")
+    print(f"Indeksy Zdrowe: {healthy_range}")
+
 def predict_CNN(MODEL_NAME, cnn_model, cnn_predict):
 
     try:
@@ -22,9 +39,7 @@ def predict_CNN(MODEL_NAME, cnn_model, cnn_predict):
         print(f'Błędna ścieżka do modelu {e}')
         return
 
-    print(f"Indeksy ADHD{np.where(y==1)[0]}")
-
-    print(f"Indeksy Zdrowe{np.where(y == 0)[0]}")
+    print_index_ranges(y)
 
     while True:
         try:
@@ -51,4 +66,4 @@ def predict_CNN(MODEL_NAME, cnn_model, cnn_predict):
 
     checkResult(predictions)
 
-    print(f"Wynik na całym zbiorze walidacyjnym: {accuracy:.4f}")
+    print(f"Wynik na całym zbiorze walidacyjnym: {accuracy*100:.4f} %")

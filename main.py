@@ -48,4 +48,3 @@ class MainWindow():
 window = MainWindow()
 #app.exec_()
 
-
