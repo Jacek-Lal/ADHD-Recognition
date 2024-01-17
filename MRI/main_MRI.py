@@ -6,6 +6,8 @@ from MRI.CNN.TRAIN.train import *
 from CNN.PREDICT.predict import *
 from GAN.TRAIN.train import *
 
+import os
+
 current_dir = os.path.dirname(__file__)
 
 MODEL_CNN_NAME = "1.0"
