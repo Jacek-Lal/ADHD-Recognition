@@ -27,18 +27,22 @@ def prepareForCnn(ADHD, CONTROL):
 
     X = np.vstack((X_ADHD, X_CONTROL))
 
-    X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.2, shuffle=True)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, shuffle=True)
 
-    X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=VALIDATE_RATIO, shuffle=True)
+    return X_train, y_train, X_test, y_test
 
-    return X_train, y_train, X_test, y_test, X_val, y_val
+def makeValidData(ADHD, CONTROL):
 
-def concatWithGan(ADHD_GAN, CONTROL_GAN, ADHD, CONTROL):
+    y_ADHD = np.ones((len(ADHD)))
 
-    for i in range(len(ADHD)):
-        ADHD[i] = ADHD[i].reshape(ADHD[i].shape[0], ADHD[i].shape[1],1)
+    y_CONTROL = np.zeros((len(CONTROL)))
 
-    for i in range(len(CONTROL)):
-        CONTROL[i] = CONTROL[i].reshape(CONTROL[i].shape[0], CONTROL[i].shape[1], 1)
+    y_val = np.hstack((y_ADHD, y_CONTROL))
 
-    return ADHD+ADHD_GAN, CONTROL_GAN+CONTROL
+    X_ADHD = np.reshape(ADHD, (len(ADHD), 120, 120, 1))
+
+    X_CONTROL = np.reshape(CONTROL, (len(CONTROL), 120, 120, 1))
+
+    X_val = np.vstack((X_ADHD, X_CONTROL))
+
+    return X_val, y_val
