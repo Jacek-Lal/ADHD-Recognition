@@ -66,4 +66,4 @@ def predict_CNN(MODEL_NAME, cnn_model, cnn_predict):
 
     checkResult(predictions)
 
-    print(f"Wynik na całym zbiorze walidacyjnym: {accuracy*100:.4f} %")
+    print(f"Wynik na całym zbiorze walidacyjnym: {accuracy*100:.2f} %")
