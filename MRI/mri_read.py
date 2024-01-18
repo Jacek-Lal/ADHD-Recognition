@@ -1,57 +1,82 @@
-import os
-import nibabel as nib
-import csv
-from config import *
+import pickle
+from sklearn.model_selection import train_test_split
+import numpy as np
 
-def read_nii_file(file_path):
-    img = nib.load(file_path)
-    data = img.get_fdata()
+from MRI.config import *
 
-    return data
+def readPickle(nazwa):
+    with open(nazwa, 'rb') as file:
+        loaded_data = pickle.load(file)
 
-def getAdhdLabels(file_path):
-    data = []
-    with open(file_path, 'r', newline='', encoding='utf-8') as file:
-        reader = csv.reader(file, delimiter='\t')
-        next(reader, None)
+    return loaded_data
 
-        for row in reader:
-            hasAdhd = int(row[5])
-            data.append(hasAdhd)
-    
-    return data
+def savePickle(path, data):
+    with open(path, 'wb') as file:
+        pickle.dump(data, file)
 
-def getTaskMRI(task, adhd_labels):
-    
-    adhd_diagnosis = getAdhdLabels(PATIENTS_DATA_PATH)
-    data = []
+def prepareForCnn(ADHD, CONTROL):
+    y_ADHD = np.ones((len(ADHD)))
 
-    for sub_num in range(1,len(adhd_diagnosis) + 1):
-        
-        hasAdhd = adhd_labels[sub_num - 1]
-        
-        sub_folder_name = f'sub-{sub_num:02d}'
-        sub_folder_path = os.path.join(MRI_DATA_PATH, sub_folder_name, 'ses-T1', 'func')
-        
-        if not os.path.exists(sub_folder_path): 
-            print("Path does not exist")
-            continue
-        
-        file = None
-        for f in os.listdir(sub_folder_path):
-            if f.endswith(f"{task}_bold.nii.gz"):
-                file = f
-           
-        if file == None: 
-            print(f"There is no task {task} in this folder")
-            continue
-        
-        nii_path = os.path.join(sub_folder_path, file)
-        nii_file_data = read_nii_file(nii_path)
+    y_CONTROL = np.zeros((len(CONTROL)))
 
-        patient_data = {"data": nii_file_data, "hasAdhd": hasAdhd}
-        
-        data.append(patient_data)
-            
-    return data
+    y = np.hstack((y_ADHD, y_CONTROL))
 
+    X_ADHD = np.reshape(ADHD,(len(ADHD), 120, 120, 1))
+
+    X_CONTROL = np.reshape(CONTROL, (len(CONTROL), 120, 120, 1))
+
+    X = np.vstack((X_ADHD, X_CONTROL))
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, shuffle=True)
+
+    return X_train, y_train, X_test, y_test
+
+def concatWithGan(ADHD, CONTROL, ADHD_GENERATED, CONTROL_GENERATED):
+
+    for i in range(len(ADHD)):
+        ADHD[i] = np.reshape(ADHD[i], (120, 120,1))
+
+    for i in range(len(CONTROL)):
+        CONTROL[i] = np.reshape(CONTROL[i], (120, 120,1))
+
+    return ADHD + ADHD_GENERATED, CONTROL + CONTROL_GENERATED
+
+def makeValidData(ADHD_raw, CONTROL_raw):
+
+    ADHD = []
+
+    ADHD_UPDATED = []
+
+    CONTROL = []
+
+    CONTROL_UPDATED = []
+
+    adhd_Random = np.random.randint(0,len(ADHD_raw), 5)
+
+    control_Random = np.random.randint(0,len(CONTROL_raw), 5)
+
+    for i in range(len(ADHD_raw)):
+        if i in adhd_Random:
+            ADHD.append(ADHD_raw[i])
+        else:
+            ADHD_UPDATED.append(ADHD_raw[i])
+
+    for i in range(len(CONTROL_raw)):
+        if i in control_Random:
+            CONTROL.append(CONTROL_raw[i])
+        else:
+            CONTROL_UPDATED.append(CONTROL_raw[i])
+
+    y_ADHD = np.ones((len(ADHD)))
+
+    y_CONTROL = np.zeros((len(CONTROL)))
+
+    y_val = np.hstack((y_ADHD, y_CONTROL))
+
+    X_ADHD = np.reshape(ADHD, (len(ADHD), 120, 120, 1))
+
+    X_CONTROL = np.reshape(CONTROL, (len(CONTROL), 120, 120, 1))
+
+    X_val = np.vstack((X_ADHD, X_CONTROL))
+
+    return X_val, y_val, ADHD_UPDATED, CONTROL_UPDATED

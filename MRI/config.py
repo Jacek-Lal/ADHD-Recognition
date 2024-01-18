@@ -1,3 +1,4 @@
-TASKS = ['SLD','SLI','SSD','SSI','VLD','VLI','VSD','VSI']
-MRI_DATA_PATH = r"MRI\files"
-PATIENTS_DATA_PATH = r"MRI\files\participants.tsv"
+# Parametry CNN
+CNN_EPOCHS_MRI = 11
+BATCH_SIZE_MRI = 32
+CNN_INPUT_SHAPE_MRI = (120,120,1)

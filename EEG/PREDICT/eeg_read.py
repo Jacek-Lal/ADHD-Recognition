@@ -5,11 +5,11 @@ import numpy as np
 
 import sys
 
-# Add the directory containing config.py to the Python path
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
-from config import *
+from EEG.config import *
     
 def readEEGRaw(path):
     mat_data = loadmat(path, mat_dtype=True)
@@ -30,11 +30,14 @@ def frameDATA(DATA):
 
     return np.reshape(DATA_framed,(DATA_framed.shape[0],DATA_framed.shape[1],DATA_framed.shape[2],1))
 
-def checkResult(predictions):
+def checkResult(predictions, threshold = 0.5):
 
-    mean = np.mean(predictions, axis=0)
+    predictions[predictions>threshold] = 1
+    predictions[predictions<=threshold] = 0
 
-    if mean > 0.75:
+    mean = np.mean(predictions)
+
+    if mean > threshold:
         print(f"Wynik pacjenta: ADHD, z prawdopodobieństwem: {np.round(mean*100,2)}%")
         return np.round(mean*100,2), "ADHD"
     else:

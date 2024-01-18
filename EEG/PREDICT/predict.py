@@ -2,34 +2,54 @@ import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from keras.models import load_model
 
-from eeg_read import *
-from eeg_filter import *
-import sys
+from EEG.PREDICT.eeg_read import *
+from EEG.PREDICT.eeg_filter import *
+from EEG.config import *
+from MRI.mri_read import readPickle
+from MRI.CNN.PREDICT.predict import print_index_ranges
 
-# Add the directory containing config.py to the Python path
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(current_dir)
-sys.path.append(parent_dir)
-from config import *
-from plots import *
+def predict(MODEL_NAME, model_path, pickle_path):
+
+    try:
+
+        model = load_model(rf'{model_path}/{MODEL_NAME}.h5')
+
+        X = readPickle(rf'{pickle_path}/X_val_{MODEL_NAME}')
+
+        y = readPickle(rf'{pickle_path}/y_val_{MODEL_NAME}')
+
+    except OSError as e:
+        print(f'Błędna ścieżka do modelu {e}')
+        return
+
+    print_index_ranges(y)
+
+    while True:
+        try:
+            patient_number = int(input("Wybierz numer pacjenta: "))
+            if patient_number < len(X) and patient_number >= 0:
+                break
+            else:
+                print("Wpisz numer pacjenta w zakresie")
+        except ValueError:
+            print("Wpisz numer pacjenta zakresie")
+
+    if y[patient_number] == 1:
+        print("Wybrales ADHD")
+    elif y[patient_number] == 0:
+        print("Wybrales Zdrowy")
 
 
-PATIENT_DIR = 'CONTROL/v307'
+    DATA = X[patient_number]
 
-MODEL_NAME = "0.8828"
+    DATA_FILTERED = filterEEGData(DATA)
 
-DATA = readEEGRaw(f'EEG/PREDICT/PREDICT_DATA/{PATIENT_DIR}.mat')
+    DATA_CLIPPED = clipEEGData(DATA_FILTERED)
 
-DATA_FILTERED = filterEEGData(DATA)
+    DATA_NORMALIZED = normalizeEEGData(DATA_CLIPPED)
 
-DATA_CLIPPED = clipEEGData(DATA_FILTERED)
+    DATA_FRAMED = frameDATA(DATA_NORMALIZED)
 
-DATA_NORMALIZED = normalizeEEGData(DATA_CLIPPED)
+    predictions = model.predict(DATA_FRAMED)
 
-DATA_FRAMED = frameDATA(DATA_NORMALIZED)
-
-model = load_model(f'{CNN_MODELS_PATH}/{MODEL_NAME}.h5')
-
-predictions = model.predict(DATA_FRAMED)
-
-checkResult(predictions)
+    checkResult(predictions)

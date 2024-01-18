@@ -3,11 +3,11 @@ import matplotlib.pyplot as plt
 import os
 import sys
 
-# Add the directory containing config.py to the Python path
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
-from config import *
+from EEG.config import *
 
 def plot(data, patient_number, channel_number):
 
