@@ -33,9 +33,13 @@ def train_CNN(save, pickle_data, adhd, control, cnn_predict, model_path):
         print(r"Bledna sciezka do plikow 'GENERATED'")
         return
 
-    X_val, y_val = makeValidData(ADHD_normalized, CONTROL_normalized)
+    X_val, y_val, ADHD_UPDATED, CONTROL_UPDATED = makeValidData(ADHD_normalized, CONTROL_normalized)
 
-    X_train, y_train, X_test, y_test = prepareForCnn(ADHD_GAN, CONTROL_GAN)
+    ADHD_CONCATED, CONTROL_CONCATED = concatWithGan(ADHD_UPDATED, CONTROL_UPDATED, ADHD_GAN, CONTROL_GAN)
+
+
+
+    X_train, y_train, X_test, y_test = prepareForCnn(ADHD_CONCATED, CONTROL_CONCATED)
 
     accuracy = CnnFit(X_train, y_train, X_test, y_test, save, model_path)
 
