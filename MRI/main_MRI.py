@@ -48,5 +48,3 @@ def MRI():
                 print("Niepoprawny wybór. Wprowadź 1 lub 2 lub 3.")
         except Exception as e:
             print(f"Wystąpił błąd: {e}")
-
-MRI()

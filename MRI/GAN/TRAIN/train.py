@@ -110,7 +110,6 @@ def fake_samples(generator, latent_dim, n):
 
 
 def train_GAN(save, data_type, pickle, model, n_epochs=2000, n_batch=32, g_model=gen_model, d_model=dis_model, gan_model=gan_model, latent_dim=latent_dim):
-    # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
     if data_type == "ADHD":
         data = readPickle(rf'{pickle}/controlImages.pkl')
 
