@@ -31,7 +31,41 @@ def prepareForCnn(ADHD, CONTROL):
 
     return X_train, y_train, X_test, y_test
 
-def makeValidData(ADHD, CONTROL):
+def concatWithGan(ADHD, CONTROL, ADHD_GENERATED, CONTROL_GENERATED):
+
+    for i in range(len(ADHD)):
+        ADHD[i] = np.reshape(ADHD[i], (120, 120,1))
+
+    for i in range(len(CONTROL)):
+        CONTROL[i] = np.reshape(CONTROL[i], (120, 120,1))
+
+    return ADHD + ADHD_GENERATED, CONTROL + CONTROL_GENERATED
+
+def makeValidData(ADHD_raw, CONTROL_raw):
+
+    ADHD = []
+
+    ADHD_UPDATED = []
+
+    CONTROL = []
+
+    CONTROL_UPDATED = []
+
+    adhd_Random = np.random.randint(0,len(ADHD_raw), 5)
+
+    control_Random = np.random.randint(0,len(CONTROL_raw), 5)
+
+    for i in range(len(ADHD_raw)):
+        if i in adhd_Random:
+            ADHD.append(ADHD_raw[i])
+        else:
+            ADHD_UPDATED.append(ADHD_raw[i])
+
+    for i in range(len(CONTROL_raw)):
+        if i in control_Random:
+            CONTROL.append(CONTROL_raw[i])
+        else:
+            CONTROL_UPDATED.append(CONTROL_raw[i])
 
     y_ADHD = np.ones((len(ADHD)))
 
@@ -45,4 +79,4 @@ def makeValidData(ADHD, CONTROL):
 
     X_val = np.vstack((X_ADHD, X_CONTROL))
 
-    return X_val, y_val
+    return X_val, y_val, ADHD_UPDATED, CONTROL_UPDATED
