@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\CNN",
+    "\\CNN\\EEG",
+    "\\CNN\\trained_models",
+    "\\MRI"
+  ],
+  "SelectedNode": "\\CNN\\eeg_read.py",
+  "PreviewInSolutionExplorer": false
+}
