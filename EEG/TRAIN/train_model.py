@@ -50,7 +50,7 @@ def CnnFit(X_train, y_train, X_test, y_test, save, model_path):
     # Compile
     model.compile(loss='binary_crossentropy', optimizer=optimizer, metrics=['accuracy'])
 
-    batch_size = 32
+    batch_size = CNN_BATCH_SIZE
 
 
     for epoch in range(CNN_EPOCHS):
