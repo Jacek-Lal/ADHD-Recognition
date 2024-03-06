@@ -6,24 +6,23 @@ from EEG.PREDICT.eeg_read import *
 from EEG.PREDICT.eeg_filter import *
 from EEG.config import *
 from MRI.mri_read import readPickle
+from MRI.CNN.PREDICT.predict import print_index_ranges
 
-def predict(MODEL_NAME):
+def predict(MODEL_NAME, model_path, pickle_path):
 
     try:
-        # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
-        model = load_model(rf'C:\Users\Radek\Desktop\IPZ\GIT\ADHD-Recognition\EEG\MODEL\{MODEL_NAME}.h5')
 
-        X = readPickle(rf'C:\Users\Radek\Desktop\IPZ\GIT\ADHD-Recognition\EEG\PREDICT\PREDICT_DATA\X_val_{MODEL_NAME}')
+        model = load_model(rf'{model_path}/{MODEL_NAME}.h5')
 
-        y = readPickle(rf'C:\Users\Radek\Desktop\IPZ\GIT\ADHD-Recognition\EEG\PREDICT\PREDICT_DATA\y_val_{MODEL_NAME}')
+        X = readPickle(rf'{pickle_path}/X_val_{MODEL_NAME}')
+
+        y = readPickle(rf'{pickle_path}/y_val_{MODEL_NAME}')
 
     except OSError as e:
         print(f'Błędna ścieżka do modelu {e}')
         return
 
-    print(f"Indeksy ADHD{np.where(y==1)[0]}")
-
-    print(f"Indeksy Zdrowe{np.where(y == 0)[0]}")
+    print_index_ranges(y)
 
     while True:
         try:
@@ -39,7 +38,6 @@ def predict(MODEL_NAME):
         print("Wybrales ADHD")
     elif y[patient_number] == 0:
         print("Wybrales Zdrowy")
-
 
 
     DATA = X[patient_number]

@@ -27,18 +27,56 @@ def prepareForCnn(ADHD, CONTROL):
 
     X = np.vstack((X_ADHD, X_CONTROL))
 
-    X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.2, shuffle=True)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, shuffle=True)
 
-    X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=VALIDATE_RATIO, shuffle=True)
+    return X_train, y_train, X_test, y_test
 
-    return X_train, y_train, X_test, y_test, X_val, y_val
-
-def concatWithGan(ADHD_GAN, CONTROL_GAN, ADHD, CONTROL):
+def concatWithGan(ADHD, CONTROL, ADHD_GENERATED, CONTROL_GENERATED):
 
     for i in range(len(ADHD)):
-        ADHD[i] = ADHD[i].reshape(ADHD[i].shape[0], ADHD[i].shape[1],1)
+        ADHD[i] = np.reshape(ADHD[i], (120, 120,1))
 
     for i in range(len(CONTROL)):
-        CONTROL[i] = CONTROL[i].reshape(CONTROL[i].shape[0], CONTROL[i].shape[1], 1)
+        CONTROL[i] = np.reshape(CONTROL[i], (120, 120,1))
 
-    return ADHD+ADHD_GAN, CONTROL_GAN+CONTROL
+    return ADHD + ADHD_GENERATED, CONTROL + CONTROL_GENERATED
+
+def makeValidData(ADHD_raw, CONTROL_raw):
+
+    ADHD = []
+
+    ADHD_UPDATED = []
+
+    CONTROL = []
+
+    CONTROL_UPDATED = []
+
+    adhd_Random = np.random.randint(0,len(ADHD_raw), 5)
+
+    control_Random = np.random.randint(0,len(CONTROL_raw), 5)
+
+    for i in range(len(ADHD_raw)):
+        if i in adhd_Random:
+            ADHD.append(ADHD_raw[i])
+        else:
+            ADHD_UPDATED.append(ADHD_raw[i])
+
+    for i in range(len(CONTROL_raw)):
+        if i in control_Random:
+            CONTROL.append(CONTROL_raw[i])
+        else:
+            CONTROL_UPDATED.append(CONTROL_raw[i])
+
+    y_ADHD = np.ones((len(ADHD)))
+
+    y_CONTROL = np.zeros((len(CONTROL)))
+
+    y_val = np.hstack((y_ADHD, y_CONTROL))
+
+    X_ADHD = np.reshape(ADHD, (len(ADHD), 120, 120, 1))
+
+    X_CONTROL = np.reshape(CONTROL, (len(CONTROL), 120, 120, 1))
+
+    X_val = np.vstack((X_ADHD, X_CONTROL))
+
+    return X_val, y_val, ADHD_UPDATED, CONTROL_UPDATED

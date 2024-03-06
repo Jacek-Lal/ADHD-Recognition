@@ -109,13 +109,13 @@ def fake_samples(generator, latent_dim, n):
     return X, y
 
 
-def train_GAN(save, data_type, n_epochs=2000, n_batch=32, g_model=gen_model, d_model=dis_model, gan_model=gan_model, latent_dim=latent_dim):
+def train_GAN(save, data_type, pickle, model, n_epochs=2000, n_batch=32, g_model=gen_model, d_model=dis_model, gan_model=gan_model, latent_dim=latent_dim):
     # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
     if data_type == "ADHD":
-        data = readPickle(f'../MRI/PICKLE_DATA/controlImages.pkl')
+        data = readPickle(rf'{pickle}/controlImages.pkl')
 
     elif data_type == "CONTROL":
-        data = readPickle(f'../MRI/PICKLE_DATA/controlImages.pkl')
+        data = readPickle(rf'{pickle}/controlImages.pkl')
 
     else:
         print("data_type ADHD LUB CONTROL")
@@ -158,6 +158,6 @@ def train_GAN(save, data_type, n_epochs=2000, n_batch=32, g_model=gen_model, d_m
     if save == True:
         if data_type == "ADHD":
             # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
-            g_model.save(f'../MODEL/ADHD_{round(discriminator_loss, 4)}.h5')
+            g_model.save(rf'{model}/ADHD_{round(discriminator_loss, 4)}.h5')
         elif data_type == "CONTROL":
-            g_model.save(f'../MODEL/CONTROL_{round(discriminator_loss, 4)}.h5')
+            g_model.save(rf'{model}/CONTROL_{round(discriminator_loss, 4)}.h5')

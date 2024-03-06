@@ -8,13 +8,13 @@ from keras.layers import Conv2D, Flatten, Dense, BatchNormalization, AveragePool
 
 import sys
 
-# Add the directory containing config.py to the Python path
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
 from EEG.config import *
 
-def CnnFit(X_train, y_train, X_test, y_test, save):
+def CnnFit(X_train, y_train, X_test, y_test, save, model_path):
 
     model = Sequential()
 
@@ -66,8 +66,8 @@ def CnnFit(X_train, y_train, X_test, y_test, save):
 
     _, final_accuracy = model.evaluate(X_test, y_test, verbose=0)
 
-    #if save == True:
+    if save == True:
 
-        #model.save(f'../MODEL/{round(final_accuracy, 4)}.h5')
+        model.save(rf'{model_path}/{round(final_accuracy, 4)}.h5')
 
     return round(final_accuracy, 4)
