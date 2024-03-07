@@ -11,7 +11,7 @@ import os
 #current_dir = os.path.dirname(__file__)
 #UI_PATH = rf'{current_dir}/UI'
 
-
+#eee
 class MainWindow():
     def __init__(self):
         super().__init__()
