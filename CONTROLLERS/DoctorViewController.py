@@ -1,19 +1,37 @@
 from PyQt5 import uic
 import os
 
+from PyQt5.QtWidgets import QFileDialog
+
 current_dir = os.path.dirname(__file__)
 UI_PATH = rf'{current_dir}/UI'
 parent_directory = os.path.dirname(current_dir)
+CORRECT_FILE_EXTENSIONS = [".txt",".mat"]
+
+def filterFileExtensions(file):
+    for ext in CORRECT_FILE_EXTENSIONS:
+        if file.endswith(ext):
+            return True
 
 class DoctorViewController:
     def __init__(self, mainWindow):
+        self.mainWindow = mainWindow
         self.ui = uic.loadUi(rf'{parent_directory}/UI/doctorView.ui', mainWindow)
         self.addEvents()
+        self.loadedFiles = None
+
     def addEvents(self):
         self.ui.loadDataBtn.clicked.connect(self.loadData)
 
     def loadData(self):
         print("chuj")
+        options = QFileDialog.Options()
+        filePaths, _ = QFileDialog.getOpenFileNames(self.mainWindow, "Open File", "", "All Files (*);;Text Files (*.txt)", options=options)
+
+        filteredFilePaths = filter(filterFileExtensions, filePaths)
+        self.loadedFiles = filteredFilePaths
+
+        for file in filteredFilePaths: print(file)
 
 # 1. Wprowadzenie danych
 
