@@ -2,36 +2,52 @@ from PyQt5 import uic
 import os
 
 from PyQt5.QtWidgets import QFileDialog
+import pyedflib
+import gzip
 
 current_dir = os.path.dirname(__file__)
 UI_PATH = rf'{current_dir}/UI'
 parent_directory = os.path.dirname(current_dir)
-CORRECT_FILE_EXTENSIONS = [".txt",".mat"]
-
-def filterFileExtensions(file):
-    for ext in CORRECT_FILE_EXTENSIONS:
-        if file.endswith(ext):
-            return True
+FILE_TYPES = ["mat","csv",'edf','nii.gz','nii']
 
 class DoctorViewController:
     def __init__(self, mainWindow):
         self.mainWindow = mainWindow
         self.ui = uic.loadUi(rf'{parent_directory}/UI/doctorView.ui', mainWindow)
         self.addEvents()
-        self.loadedFiles = None
+        self.filePaths = None
 
     def addEvents(self):
-        self.ui.loadDataBtn.clicked.connect(self.loadData)
+        self.ui.loadDataBtn.clicked.connect(self.getFilePaths)
 
-    def loadData(self):
-        print("chuj")
+    def getFilePaths(self):
         options = QFileDialog.Options()
-        filePaths, _ = QFileDialog.getOpenFileNames(self.mainWindow, "Open File", "", "All Files (*);;Text Files (*.txt)", options=options)
+        fileFilter = ";;".join([f"{ext} files (*.{ext})" for ext in FILE_TYPES])
+        self.filePaths, _ = QFileDialog.getOpenFileNames(self.mainWindow, "Choose files", "", filter=fileFilter, options=options)
+        self.processFiles()
 
-        filteredFilePaths = filter(filterFileExtensions, filePaths)
-        self.loadedFiles = filteredFilePaths
+    def processFiles(self):
 
-        for file in filteredFilePaths: print(file)
+        for path in self.filePaths:
+
+            if(path.endswith('.edf')):
+                print("EDF")
+                # załaduj plik ( zależnie od typu inaczej, po to tyle if'ów)
+                # zdecyduj czy eeg czy mri  (na podstawie struktury/rozszerzenia)
+                # wybierz z niego potrzebne dane
+                # wybierz model na podstawie struktury danych (np dla EEG różna ilość kanałów, dla mri różna płaszczyzna mózgu)
+                # wrzuć dane w model
+                # zwróc wynik
+            if(path.endswith('.nii.gz')):
+                with gzip.open(path, 'rb') as gz_file:
+                    # Read the uncompressed data
+                    uncompressed_data = gz_file.read()
+                    print(uncompressed_data)
+            if (path.endswith('.mat')):
+                print("MAT")
+
+            if (path.endswith('.csv')):
+                print("CSV")
 
 # 1. Wprowadzenie danych
 
