@@ -2,8 +2,10 @@ from PyQt5 import uic
 import os
 
 from PyQt5.QtWidgets import QFileDialog
-import pyedflib
-import gzip
+from pyedflib import EdfReader
+from nibabel import load
+from scipy.io import loadmat
+from pandas import read_csv
 
 current_dir = os.path.dirname(__file__)
 UI_PATH = rf'{current_dir}/UI'
@@ -23,31 +25,38 @@ class DoctorViewController:
     def getFilePaths(self):
         options = QFileDialog.Options()
         fileFilter = ";;".join([f"{ext} files (*.{ext})" for ext in FILE_TYPES])
-        self.filePaths, _ = QFileDialog.getOpenFileNames(self.mainWindow, "Choose files", "", filter=fileFilter, options=options)
+        self.filePaths, _ = QFileDialog.getOpenFileNames(self.mainWindow, "Choose files", "", "", options=options)
         self.processFiles()
 
     def processFiles(self):
 
         for path in self.filePaths:
 
-            if(path.endswith('.edf')):
-                print("EDF")
-                # załaduj plik ( zależnie od typu inaczej, po to tyle if'ów)
-                # zdecyduj czy eeg czy mri  (na podstawie struktury/rozszerzenia)
-                # wybierz z niego potrzebne dane
-                # wybierz model na podstawie struktury danych (np dla EEG różna ilość kanałów, dla mri różna płaszczyzna mózgu)
-                # wrzuć dane w model
-                # zwróc wynik
-            if(path.endswith('.nii.gz')):
-                with gzip.open(path, 'rb') as gz_file:
-                    # Read the uncompressed data
-                    uncompressed_data = gz_file.read()
-                    print(uncompressed_data)
-            if (path.endswith('.mat')):
-                print("MAT")
+            # załaduj plik ( zależnie od typu inaczej, po to tyle if'ów)
+            # zdecyduj czy eeg czy mri  (na podstawie struktury/rozszerzenia)
+            # wybierz z niego potrzebne dane
+            # wybierz model na podstawie struktury danych (np dla EEG różna ilość kanałów, dla mri różna płaszczyzna mózgu)
+            # wrzuć dane w model
+            # zwróc wynik
 
-            if (path.endswith('.csv')):
+            if path.endswith('.edf'):
+                print("EDF")
+                file = EdfReader(path)
+                signalsNum = file.signals_in_file
+                signals = [file.readsignal(i) for i in range(signalsNum)]
+
+            if path.endswith('.nii.gz') or path.endswith('.nii'):
+                print('NII')
+                file = load(path)
+                data = file.get_fdata()
+
+            if path.endswith('.mat'):
+                print("MAT")
+                data = loadmat(path)
+
+            if path.endswith('.csv'):
                 print("CSV")
+                data = read_csv(path)
 
 # 1. Wprowadzenie danych
 
