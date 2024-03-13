@@ -3,7 +3,7 @@ from keras import models, layers
 
 from MRI.config import *
 
-def CnnFit(X_train, y_train, X_test, y_test, save, model_path):
+def CnnFit(X_train, y_train, X_test, y_test, save):
 
     model = models.Sequential()
 
@@ -35,9 +35,13 @@ def CnnFit(X_train, y_train, X_test, y_test, save, model_path):
 
         print(f"Epoch: {epoch + 1} Loss: {loss:.4f}, Accuracy: {accuracy:.4f}")
 
+    #model.fit(X_train, y_train, epochs=CNN_EPOCHS, validation_data=(X_test, y_test))
+
     _, final_accuracy = model.evaluate(X_test, y_test, verbose=0)
 
     if save == True:
-        model.save(rf'{model_path}/{round(final_accuracy, 4)}.h5')
+        # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
+        model.save(f'../MODEL/{round(final_accuracy, 4)}.h5')
+        #model.save("CNNFORMRI.h5")
 
     return round(final_accuracy, 4)

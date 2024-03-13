@@ -12,7 +12,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from EEG.TRAIN.eeg_read import *
 from EEG.TRAIN.train_model import *
 
-def train(save, data_path, pickle_path, model_path):
+def train(save, data_path, pickle_path):
     ADHD_DATA, CONTROL_DATA = readEEGRaw(rf'{data_path}')
 
     ADHD_FILTERED, CONTROL_FILTERED = filterEEGData(ADHD_DATA, CONTROL_DATA)
@@ -23,7 +23,7 @@ def train(save, data_path, pickle_path, model_path):
 
     X_train, y_train, X_test, y_test, X_valid, y_valid = prepareForCNN(ADHD_NORMALIZED, CONTROL_NORMALIZED)
 
-    accuracy = CnnFit(X_train, y_train, X_test, y_test, save, model_path)
+    accuracy = CnnFit(X_train, y_train, X_test, y_test, save)
 
     print(f"accuracy: {accuracy}")
 

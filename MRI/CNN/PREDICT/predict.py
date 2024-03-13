@@ -8,38 +8,23 @@ from MRI.config import *
 from MRI.mri_plot import *
 from MRI.mri_read import *
 
-def print_index_ranges(y):
-    adhd_indices = np.where(y == 1)[0]
-    healthy_indices = np.where(y == 0)[0]
-
-    if adhd_indices.size > 0:
-        adhd_range = f"{adhd_indices[0]}-{adhd_indices[-1]}"
-    else:
-        adhd_range = "Brak indeksów"
-
-    if healthy_indices.size > 0:
-        healthy_range = f"{healthy_indices[0]}-{healthy_indices[-1]}"
-    else:
-        healthy_range = "Brak indeksów"
-
-    print(f"Indeksy ADHD: {adhd_range}")
-    print(f"Indeksy Zdrowe: {healthy_range}")
-
-def predict_CNN(MODEL_NAME, cnn_model, cnn_predict):
+def predict_CNN(MODEL_NAME):
 
     try:
+        # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
+        model = load_model(f'./CNN/MODEL/{MODEL_NAME}.h5')
 
-        model = load_model(rf'{cnn_model}/{MODEL_NAME}.h5')
+        X = readPickle(f'./CNN/PREDICT/PREDICT_DATA/X_val_{MODEL_NAME}')
 
-        X = readPickle(rf'{cnn_predict}/X_val_{MODEL_NAME}')
-
-        y = readPickle(rf'{cnn_predict}/y_val_{MODEL_NAME}')
+        y = readPickle(f'./CNN/PREDICT/PREDICT_DATA/y_val_{MODEL_NAME}')
 
     except OSError as e:
         print(f'Błędna ścieżka do modelu {e}')
         return
 
-    print_index_ranges(y)
+    print(f"Indeksy ADHD{np.where(y==1)[0]}")
+
+    print(f"Indeksy Zdrowe{np.where(y == 0)[0]}")
 
     while True:
         try:
@@ -66,4 +51,4 @@ def predict_CNN(MODEL_NAME, cnn_model, cnn_predict):
 
     checkResult(predictions)
 
-    print(f"Wynik na całym zbiorze walidacyjnym: {accuracy*100:.2f} %")
+    print(f"Wynik na całym zbiorze walidacyjnym: {accuracy:.4f}")

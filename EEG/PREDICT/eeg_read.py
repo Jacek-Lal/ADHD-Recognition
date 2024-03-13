@@ -5,7 +5,7 @@ import numpy as np
 
 import sys
 
-
+# Add the directory containing config.py to the Python path
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
@@ -39,7 +39,5 @@ def checkResult(predictions, threshold = 0.5):
 
     if mean > threshold:
         print(f"Wynik pacjenta: ADHD, z prawdopodobieństwem: {np.round(mean*100,2)}%")
-        return np.round(mean*100,2), "ADHD"
     else:
         print(f"Wynik pacjenta: ZDROWY, z prawdopodobieństwem: {np.abs(np.round((1-mean)*100,2))}%")
-        return np.abs(np.round((1-mean)*100,2)), "ZDROWY"
