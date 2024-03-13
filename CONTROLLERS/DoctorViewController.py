@@ -1,16 +1,25 @@
 from PyQt5 import uic
 import os
 
-from PyQt5.QtWidgets import QFileDialog
-from pyedflib import EdfReader
-from nibabel import load
+from PyQt5.QtWidgets import QFileDialog, QVBoxLayout
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_template import FigureCanvas
+#from pyedflib import EdfReader
+#from nibabel import load
 from scipy.io import loadmat
 from pandas import read_csv
+import numpy as np
+#from keras.models import load_model
+
+#from EEG.PREDICT.eeg_filter import filterEEGData, clipEEGData, normalizeEEGData
+#from EEG.PREDICT.eeg_read import frameDATA, checkResult
 
 current_dir = os.path.dirname(__file__)
 UI_PATH = rf'{current_dir}/UI'
 parent_directory = os.path.dirname(current_dir)
 FILE_TYPES = ["mat","csv",'edf','nii.gz','nii']
+
+
 
 class DoctorViewController:
     def __init__(self, mainWindow):
@@ -25,10 +34,11 @@ class DoctorViewController:
     def getFilePaths(self):
         options = QFileDialog.Options()
         fileFilter = ";;".join([f"{ext} files (*.{ext})" for ext in FILE_TYPES])
-        self.filePaths, _ = QFileDialog.getOpenFileNames(self.mainWindow, "Choose files", "", "", options=options)
+        self.filePaths, _ = QFileDialog.getOpenFileNames(self.mainWindow, "Choose files", "./EEG/TRAIN/TRAIN_DATA/ADHD", "", options=options)
         self.processFiles()
 
     def processFiles(self):
+        data = np.array([])
 
         for path in self.filePaths:
 
@@ -41,22 +51,62 @@ class DoctorViewController:
 
             if path.endswith('.edf'):
                 print("EDF")
-                file = EdfReader(path)
-                signalsNum = file.signals_in_file
-                signals = [file.readsignal(i) for i in range(signalsNum)]
+                #file = EdfReader(path)
+                #signalsNum = file.signals_in_file
+                #print(type(file.readsignal(1)))
+                #signals = [file.readsignal(i) for i in range(signalsNum)]
 
             if path.endswith('.nii.gz') or path.endswith('.nii'):
                 print('NII')
-                file = load(path)
-                data = file.get_fdata()
+                #file = load(path)
+                #data = file.get_fdata()
 
             if path.endswith('.mat'):
                 print("MAT")
-                data = loadmat(path)
+                file = loadmat(path)
+                data_key = list(file.keys())[-1]
+                data = file[data_key]
+                print(type(data))
 
             if path.endswith('.csv'):
                 print("CSV")
                 data = read_csv(path)
+
+            dataType = self.classifyData(data)
+            #model = self.getModel(dataType)
+            #results = self.processData(data, model)
+            self.showResult(data)
+
+    def classifyData(self, data):
+        print(data.shape)
+        return "EEG"
+        return "MRI/CNN"
+
+    def getModel(self,type):
+        #model = load_model(rf'{type}/MODEL/0.7974.h5')
+        #return model
+        pass
+
+    # def processData(self, DATA, model):
+    #
+    #     DATA_FILTERED = filterEEGData(DATA)
+    #
+    #     DATA_CLIPPED = clipEEGData(DATA_FILTERED)
+    #
+    #     DATA_NORMALIZED = normalizeEEGData(DATA_CLIPPED)
+    #
+    #     DATA_FRAMED = frameDATA(DATA_NORMALIZED)
+    #
+    #     predictions = model.predict(DATA_FRAMED)
+    #
+    #     checkResult(predictions)
+    #
+    #     return predictions
+
+    def showResult(self,data):
+        print("plot")
+        print("predicts")
+
 
 # 1. Wprowadzenie danych
 

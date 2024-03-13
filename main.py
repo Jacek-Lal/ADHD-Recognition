@@ -1,8 +1,8 @@
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5 import uic
 import sys
-from MRI.main_MRI import MRI
-from EEG.main_EEG import EEG
+#from MRI.main_MRI import MRI
+#from EEG.main_EEG import EEG
 import os
 
 from CONTROLLERS.DoctorViewController import DoctorViewController
@@ -43,10 +43,12 @@ class MainWindow(QMainWindow):
         # self.viewController.ui.switchSceneBtn.clicked.connect(self.loadDoctorUI)
 
     def runEEG(self):
-        EEG()
+        #EEG()
+        pass
 
     def runMRI(self):
-        MRI()
+        #MRI()
+        pass
 
 app = QApplication(sys.argv)
 window = MainWindow()
