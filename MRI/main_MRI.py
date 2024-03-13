@@ -49,4 +49,4 @@ def MRI():
         except Exception as e:
             print(f"Wystąpił błąd: {e}")
 
-MRI()
+#MRI()
