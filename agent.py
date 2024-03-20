@@ -12,19 +12,19 @@ class MainWindow(QtWidgets.QMainWindow):
 
         sys.stdout = self
 
-        self.pushButton_5.clicked.connect(self.train_cnn)
+        self.startButton.clicked.connect(self.train_cnn)
 
     def write(self, text):
-        self.textEdit_3.append(text)
+        self.terminal_Window.append(text)
 
     def train_cnn(self):
-        epochs = int(self.textEdit.toPlainText()) if self.textEdit.toPlainText().strip() else EEG.config.CNN_EPOCHS
-        batch_size = int(self.textEdit_2.toPlainText()) if self.textEdit_2.toPlainText().strip else EEG.config.CNN_BATCH_SIZE
-        learning_rate = int(self.textEdit_4.toPlainText()) if self.textEdit_4.toPlainText().strip else EEG.config.CNN_LEARNING_RATE
-        electrodes = int(self.textEdit_5.toPlainText()) if self.textEdit_5.toPlainText().strip else EEG.config.EEG_NUM_OF_ELECTRODES
-        frame_size = int(self.textEdit_6.toPlainText()) if self.textEdit_6.toPlainText().strip else EEG.config.EEG_SIGNAL_FRAME_SIZE
-        frequency = int(self.textEdit_7.toPlainText()) if self.textEdit_7.toPlainText().strip else EEG.config.FS
-        test_size = int(self.textEdit_8.toPlainText()) if self.textEdit_8.toPlainText().strip else EEG.config.CNN_TEST_SIZE
+        epochs = int(self.textEdit_epochs.toPlainText()) if self.textEdit.toPlainText().strip() else EEG.config.CNN_EPOCHS
+        batch_size = int(self.textEdit_batch_size.toPlainText()) if self.textEdit_2.toPlainText().strip else EEG.config.CNN_BATCH_SIZE
+        learning_rate = int(self.textEdit_learning_rate.toPlainText()) if self.textEdit_4.toPlainText().strip else EEG.config.CNN_LEARNING_RATE
+        electrodes = int(self.textEdit_electrodes.toPlainText()) if self.textEdit_5.toPlainText().strip else EEG.config.EEG_NUM_OF_ELECTRODES
+        frame_size = int(self.textEdit_frame_size.toPlainText()) if self.textEdit_6.toPlainText().strip else EEG.config.EEG_SIGNAL_FRAME_SIZE
+        frequency = int(self.textEdit_frequency.toPlainText()) if self.textEdit_7.toPlainText().strip else EEG.config.FS
+        test_size = int(self.textEdit_test_size.toPlainText()) if self.textEdit_8.toPlainText().strip else EEG.config.CNN_TEST_SIZE
 
         EEG.config.set_cnn_epochs(epochs)
         EEG.config.set_cnn_batch_size(batch_size)
