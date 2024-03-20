@@ -1,5 +1,3 @@
-*.nii
-*.nii.gz
-/MRI/files
-__pycache__
-.idea
+GENERATED/*
+__pycache__/
+.idea/
