@@ -2,8 +2,8 @@ from PyQt5 import uic
 import os
 
 from PyQt5.QtWidgets import QFileDialog, QVBoxLayout
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_template import FigureCanvas
+#import matplotlib.pyplot as plt
+#from matplotlib.backends.backend_template import FigureCanvas
 #from pyedflib import EdfReader
 #from nibabel import load
 from scipy.io import loadmat
@@ -13,13 +13,11 @@ import numpy as np
 
 #from EEG.PREDICT.eeg_filter import filterEEGData, clipEEGData, normalizeEEGData
 #from EEG.PREDICT.eeg_read import frameDATA, checkResult
-
+# commit  comment
 current_dir = os.path.dirname(__file__)
 UI_PATH = rf'{current_dir}/UI'
 parent_directory = os.path.dirname(current_dir)
 FILE_TYPES = ["mat","csv",'edf','nii.gz','nii']
-
-
 
 class DoctorViewController:
     def __init__(self, mainWindow):
