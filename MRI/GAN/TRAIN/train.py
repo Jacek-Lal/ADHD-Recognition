@@ -40,7 +40,7 @@ latent_dim=100
 gen_model = generator(latent_dim)
 
 
-def discriminator(in_shape=(120, 120, 1)):
+def discriminator(in_shape=(GAN_INPUT_SHAPE_MRI)):
 
     model = Sequential()
 
@@ -61,7 +61,7 @@ def discriminator(in_shape=(120, 120, 1)):
 
     model.add(Dense(1, activation='sigmoid'))  # Output Layer
 
-    model.compile(loss='binary_crossentropy', optimizer=Adam(learning_rate=0.0002, beta_1=0.5), metrics=['accuracy'])
+    model.compile(loss='binary_crossentropy', optimizer=Adam(learning_rate=GAN_LEARNING_RATE_MRI, beta_1=0.5), metrics=['accuracy'])
     return model
 
 
@@ -77,7 +77,7 @@ def def_gan(generator, discriminator):
     model.add(discriminator)
 
     # Compile the model
-    model.compile(loss='binary_crossentropy', optimizer=Adam(learning_rate=0.0002, beta_1=0.5))
+    model.compile(loss='binary_crossentropy', optimizer=Adam(learning_rate=GAN_LEARNING_RATE_MRI, beta_1=0.5))
     return model
 
 
@@ -109,7 +109,7 @@ def fake_samples(generator, latent_dim, n):
     return X, y
 
 
-def train_GAN(save, data_type, n_epochs=2000, n_batch=32, g_model=gen_model, d_model=dis_model, gan_model=gan_model, latent_dim=latent_dim):
+def train_GAN(save, data_type, n_epochs=GAN_EPOCHS_MRI, n_batch=GAN_BATCH_SIZE_MRI, g_model=gen_model, d_model=dis_model, gan_model=gan_model, latent_dim=latent_dim):
     # SPRAWDZ TĄ ŚCIEŻKĘ I POPRAW WZGLĘDNĄ
     if data_type == "ADHD":
         data = readPickle(f'../MRI/PICKLE_DATA/controlImages.pkl')

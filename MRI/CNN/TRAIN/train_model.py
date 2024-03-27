@@ -20,14 +20,14 @@ def CnnFit(X_train, y_train, X_test, y_test, save):
     model.add(layers.Dense(128, activation='relu'))
     model.add(layers.Dense(1, activation='sigmoid'))
 
-    optimizer = Adam(learning_rate=0.0002, beta_1=0.5)
+    optimizer = Adam(learning_rate=CNN_LEARNING_RATE_MRI, beta_1=0.5)
 
     model.compile(loss='binary_crossentropy', optimizer=optimizer, metrics=['accuracy'])
 
     for epoch in range(CNN_EPOCHS_MRI):
 
-        for batch_start in range(0, len(X_train), BATCH_SIZE_MRI):
-            batch_end = batch_start + BATCH_SIZE_MRI
+        for batch_start in range(0, len(X_train), CNN_BATCH_SIZE_MRI):
+            batch_end = batch_start + CNN_BATCH_SIZE_MRI
             x_batch = X_train[batch_start:batch_end]
             y_batch = y_train[batch_start:batch_end]
             model.train_on_batch(x_batch, y_batch)
